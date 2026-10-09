@@ -9,6 +9,10 @@ import { BRAND_DIR, FFMPEG, LIBRARY_DIR, REPO_DIR, debug, ensureDir, exists, fil
 
 const MOTION_DIR = join(LIBRARY_DIR, 'motion');
 
+// Images go in as data: URLs; file:// images taint the canvas and block frame export.
+const MIME = { png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', jfif: 'image/jpeg', webp: 'image/webp', svg: 'image/svg+xml', gif: 'image/gif' };
+const dataUrl = (p) => `data:${MIME[p.split('.').pop().toLowerCase()] || 'image/png'};base64,${readFileSync(p).toString('base64')}`;
+
 // Full-frame opaque components are encoded as H.264 (no alpha needed, ~50x smaller than qtrle).
 export const isOpaque = (item) => item.component === 'paperBackground' || (item.component === 'endCard' && item.props?.bg) || !!item.props?.opaque;
 
@@ -146,7 +150,7 @@ export class OverlayRenderer {
     const out = join(this.cacheDir, `${item.id}_${key}.mov`);
     if (exists(out)) { debug(`overlay cache hit ${item.id}`); return { path: out, cached: true }; }
     await this.open();
-    const fresh = Object.fromEntries(Object.entries(images).filter(([k]) => !this.loadedImages.has(k)).map(([k, p]) => [k, pathToFileURL(p).href]));
+    const fresh = Object.fromEntries(Object.entries(images).filter(([k]) => !this.loadedImages.has(k)).map(([k, p]) => [k, dataUrl(p)]));
     if (Object.keys(fresh).length) { await this.page.evaluate((t) => window.DOMUS.loadImages(t), fresh); Object.keys(fresh).forEach((k) => this.loadedImages.add(k)); }
     const frames = toFrames(item.dur, this.fps);
     const opaque = isOpaque(item);
@@ -174,7 +178,7 @@ export class OverlayRenderer {
     await this.open();
     const all = {};
     for (const it of items) Object.assign(all, imageTable(this.brand, [it], this.root));
-    const fresh = Object.fromEntries(Object.entries(all).filter(([k]) => !this.loadedImages.has(k)).map(([k, p]) => [k, pathToFileURL(p).href]));
+    const fresh = Object.fromEntries(Object.entries(all).filter(([k]) => !this.loadedImages.has(k)).map(([k, p]) => [k, dataUrl(p)]));
     if (Object.keys(fresh).length) { await this.page.evaluate((x) => window.DOMUS.loadImages(x), fresh); Object.keys(fresh).forEach((k) => this.loadedImages.add(k)); }
     const plain = items.map((it) => ({ id: it.id, component: it.component, dur: it.dur, props: it.props || {}, _offset: it.start }));
     const b64 = await this.page.evaluate(([its, tt]) => { window.DOMUS.frame(its, tt, 1); return window.DOMUS.png(); }, [plain, t]);

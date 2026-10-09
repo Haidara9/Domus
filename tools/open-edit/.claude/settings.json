@@ -1,0 +1,12 @@
+{
+  "sandbox": {
+    "network": {
+      "allowedDomains": [
+        "*.veed.io",
+        "fonts.googleapis.com",
+        "fonts.gstatic.com",
+        "storage.googleapis.com"
+      ]
+    }
+  }
+}

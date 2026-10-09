@@ -17,7 +17,7 @@ Project
 
 Edit (every edit is snapshotted in versions/)
   add-clip <dir> <mediaId> [--in s] [--out s] [--at index] [--camera move[:amount]] [--focus x,y]
-           [--zoom z] [--grade preset] [--transition type[:dur]] [--speed x] [--stabilize] [--label txt]
+           [--zoom z] [--grade preset] [--transition type[:dur]] [--speed x] [--ramp s-curve|punch-in|punch-out|hero-slow|drone-glide] [--stabilize] [--label txt]
   add <dir> text|animation|vfx <component> --start s --dur s [--props JSON]
   add <dir> audio music|vo|ambience|source --path file --start s [--in s] [--dur s] [--gain dB] [--fade-in s] [--fade-out s]
   add <dir> audio sfx <type> --start s [--gain dB] [--params JSON]
@@ -159,6 +159,7 @@ async function main() {
       if (o.grade) extra.grade = o.grade;
       if (o.transition) { const [type, d] = String(o.transition).split(':'); extra.transition = { type, ...(d ? { dur: Number(d) } : {}) }; }
       if (o.speed) extra.speed = Number(o.speed);
+      if (o.ramp) extra.ramp = o.ramp;
       if (o.stabilize) extra.stabilize = {};
       if (o.label) extra.label = o.label;
       const { tl, id } = T.addClip(tl0, { media: pos[1], in: num(o.in) ?? 0, out: num(o.out), at: num(o.at), ...extra });

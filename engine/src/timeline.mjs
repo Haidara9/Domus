@@ -49,8 +49,16 @@ export function createTimeline({ title = 'Untitled', format = 'reel-9x16', fps }
 const smoothstep = (x) => x * x * (3 - 2 * x);
 
 // Speed at source fraction u in [0,1]. ramp: [{at, speed}] sorted by at.
+let rampPresets;
+export const resolveRamp = (r) => {
+  if (typeof r !== 'string') return r;
+  rampPresets ??= readJSON(join(LIBRARY_DIR, 'transitions', 'ramps.json'));
+  if (!rampPresets[r]) throw new Error(`Unknown ramp preset "${r}". Known: ${Object.keys(rampPresets).filter((k) => !k.startsWith('_')).join(', ')}`);
+  return rampPresets[r];
+};
+
 export function speedAt(clip, u) {
-  const r = clip.ramp;
+  const r = resolveRamp(clip.ramp);
   if (!r || !r.length) return clip.speed || 1;
   if (u <= r[0].at) return r[0].speed;
   for (let i = 1; i < r.length; i++) {
@@ -145,13 +153,14 @@ export function validate(tl, { root } = {}) {
     if (c.speed !== undefined && !(c.speed > 0)) E(`${c.id}: speed must be > 0`);
     if (c.ramp) {
       let last = -1;
-      for (const k of c.ramp) {
+      let ramp; try { ramp = resolveRamp(c.ramp); } catch (e) { E(`${c.id}: ${e.message}`); ramp = []; }
+      for (const k of ramp) {
         if (!(k.at >= 0 && k.at <= 1)) E(`${c.id}: ramp.at must be in [0,1]`);
         if (k.at < last) E(`${c.id}: ramp keys must be sorted`);
         if (!(k.speed > 0)) E(`${c.id}: ramp speed must be > 0`);
         last = k.at;
       }
-      const minS = Math.min(...c.ramp.map((k) => k.speed));
+      const minS = Math.min(...ramp.map((k) => k.speed), 99);
       const srcFps = m.fps || fps;
       if (minS < 1 && srcFps * minS < fps * 0.99 && !c.interpolate) {
         W(`${c.id}: slowed to ${minS}x but source is ${srcFps}fps, so frames will repeat (shoot 60/120fps or accept stutter)`);

@@ -1,9 +1,29 @@
 {
-  "_status": "PROVISIONAL. Colors sampled by eye from the owner's social posts (2026-10-09). Fonts are open-license PLACEHOLDERS until the official Arabic/English brand fonts are added to brand/fonts/arabic and brand/fonts/english. Logo files pending: no logo is drawn from imagination.",
-  "name": { "en": "DOMUS", "ar": "دوموس" },
-  "descriptor": { "en": "REAL ESTATE", "ar": "العقارية" },
-  "location": { "en": "Latakia", "ar": "اللاذقية" },
-  "values": { "ar": ["الثقة", "الوضوح", "الشفافية"], "en": ["Trust", "Clarity", "Transparency"] },
+  "_status": "Official fonts (Cairo, Playfair Display) and logo files from the owner's Drive (2026-10-09). Colors sampled from the posts and logo; confirm against guidelines when available.",
+  "name": {
+    "en": "DOMUS",
+    "ar": "دوموس"
+  },
+  "descriptor": {
+    "en": "REAL ESTATE",
+    "ar": "العقارية"
+  },
+  "location": {
+    "en": "Latakia",
+    "ar": "اللاذقية"
+  },
+  "values": {
+    "ar": [
+      "الثقة",
+      "الوضوح",
+      "الشفافية"
+    ],
+    "en": [
+      "Trust",
+      "Clarity",
+      "Transparency"
+    ]
+  },
   "voice": {
     "ar": "Calm, confident, clear. Short sentences. Formal-friendly Modern Standard Arabic (as in the posts: «نرافقكم في كل خطوة»). No hype words, no exaggeration of property facts.",
     "en": "Quiet luxury. Precise, warm, understated."
@@ -18,18 +38,57 @@
     "white": "#FFFFFF"
   },
   "fonts": {
-    "arabicDisplay": { "family": "DOMUS Arabic Display", "files": [{ "path": "brand/fonts/fallback/Alexandria-VF.ttf", "weight": "100 900" }], "placeholder": true, "note": "Replace with the official Arabic brand font." },
-    "arabicText":    { "family": "DOMUS Arabic Text", "files": [{ "path": "brand/fonts/fallback/Alexandria-VF.ttf", "weight": "100 900" }], "placeholder": true },
-    "latinDisplay":  { "family": "DOMUS Latin Display", "files": [{ "path": "brand/fonts/fallback/Cinzel-VF.ttf", "weight": "400 900" }], "placeholder": true, "note": "Classical Roman caps close to the wordmark; replace with the official English font." },
-    "latinText":     { "family": "DOMUS Latin Text", "files": [{ "path": "brand/fonts/fallback/Jost-VF.ttf", "weight": "100 900" }], "placeholder": true },
-    "latinLabel":    { "family": "DOMUS Latin Text", "files": [{ "path": "brand/fonts/fallback/Jost-VF.ttf", "weight": "100 900" }], "placeholder": true }
+    "arabicDisplay": {
+      "family": "Cairo",
+      "files": [
+        {
+          "path": "brand/fonts/arabic/Cairo/Cairo-VariableFont_slnt,wght.ttf",
+          "weight": "200 1000"
+        }
+      ]
+    },
+    "arabicText": {
+      "family": "Cairo",
+      "files": [
+        {
+          "path": "brand/fonts/arabic/Cairo/Cairo-VariableFont_slnt,wght.ttf",
+          "weight": "200 1000"
+        }
+      ]
+    },
+    "latinDisplay": {
+      "family": "Playfair Display",
+      "files": [
+        {
+          "path": "brand/fonts/english/PlayfairDisplay/PlayfairDisplay-VariableFont_wght.ttf",
+          "weight": "400 900"
+        }
+      ]
+    },
+    "latinText": {
+      "family": "Playfair Display",
+      "files": [
+        {
+          "path": "brand/fonts/english/PlayfairDisplay/PlayfairDisplay-VariableFont_wght.ttf",
+          "weight": "400 900"
+        }
+      ]
+    },
+    "latinLabel": {
+      "family": "Cairo",
+      "files": [
+        {
+          "path": "brand/fonts/arabic/Cairo/Cairo-VariableFont_slnt,wght.ttf",
+          "weight": "200 1000"
+        }
+      ],
+      "note": "spaced caps labels like REAL ESTATE"
+    }
   },
-  "logos": {},
-  "_logosExpected": {
-    "logo": "brand/logos/domus-en.png (or .svg) — English lockup, transparent background",
-    "logoAr": "brand/logos/domus-ar.png — Arabic lockup دوموس العقارية",
-    "logoWhite": "brand/logos/domus-en-white.png — for use over footage",
-    "emblem": "brand/logos/domus-emblem.png — the arch-in-O emblem alone"
+  "logos": {
+    "logo": "brand/logos/domus-en.png",
+    "logoEn": "brand/logos/domus-en.png",
+    "logoAr": "brand/logos/domus-ar.png"
   },
   "motifs": {
     "bracket": "Thin copper vertical bracket with end caps and a midpoint dot, on the outer side of right-aligned text.",
@@ -40,7 +99,20 @@
   },
   "motion": {
     "tempo": "Measured. Titles settle in 0.8-1.4s on the 'architectural' ease. Lines draw, they do not pop.",
-    "signature": ["archTitle", "brandStatement", "archLines", "logoReveal", "counter"],
-    "avoid": ["bouncy springs on brand text", "letter-by-letter Arabic", "glitch", "neon", "fast zoom-blur on the logo"]
-  }
+    "signature": [
+      "archTitle",
+      "brandStatement",
+      "archLines",
+      "logoReveal",
+      "counter"
+    ],
+    "avoid": [
+      "bouncy springs on brand text",
+      "letter-by-letter Arabic",
+      "glitch",
+      "neon",
+      "fast zoom-blur on the logo"
+    ]
+  },
+  "logoRules": "Use the files exactly. The O is a circle holding the domed arch with columns, with the copper roof chevron above. Never redraw, recolor, stretch or rebuild it from type. Arabic films use logoAr; English or mixed use logo."
 }

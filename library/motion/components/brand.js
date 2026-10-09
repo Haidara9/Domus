@@ -175,7 +175,7 @@
       g.globalAlpha *= clamp(mk * 1.5);
       g.drawImage(off, 0, 0);
       g.restore();
-      if (p.rules) {
+      if (p.rules && !img) { // real logo files already carry their own rules
         const rk = ease.architectural(range(t, 0.6, 1.6));
         const y = cy + bh / 2 + 34 * S, len = bw * 0.22;
         g.save(); g.strokeStyle = accent; g.lineWidth = 2 * S;

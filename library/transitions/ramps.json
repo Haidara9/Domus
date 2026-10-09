@@ -1,0 +1,8 @@
+{
+  "_doc": "Speed-ramp presets for V1 clips: clip.ramp = \"<name>\" or an explicit [{at, speed}] list. 'at' is the fraction of the source range. Shapes measured from the owner's reference reels (rems-bts-editing). Fast parts hide cuts; place cuts on beats.",
+  "s-curve":      [{"at": 0, "speed": 2.5}, {"at": 0.28, "speed": 1}, {"at": 0.78, "speed": 1}, {"at": 1, "speed": 2.5}],
+  "punch-in":     [{"at": 0, "speed": 3}, {"at": 0.35, "speed": 1}, {"at": 1, "speed": 1}],
+  "punch-out":    [{"at": 0, "speed": 1}, {"at": 0.65, "speed": 1}, {"at": 1, "speed": 3}],
+  "hero-slow":    [{"at": 0, "speed": 2}, {"at": 0.3, "speed": 0.6}, {"at": 0.75, "speed": 0.6}, {"at": 1, "speed": 2}],
+  "drone-glide":  [{"at": 0, "speed": 1.6}, {"at": 0.4, "speed": 1}, {"at": 1, "speed": 1}]
+}
