@@ -10,6 +10,8 @@ const HELP = `DOMUS Super Editor — timeline engine
 Project
   new <dir> [--title T] [--format reel-9x16|feed-4x5|square-1x1|wide-16x9|wide-4k|cinema-239] [--fps 30]
   import <dir> <files...> [--copy]          add media (probed); files outside <dir> are copied to <dir>/media
+  fetch <dir> <url> [--name file] [--import]  download a linked asset into <dir>/media, record url+sha256
+  fetch <dir>                               re-download every manifest entry whose file is missing
   analyze <dir> [mediaId...]                shots, exposure, sharpness, motion, best windows + shot sheets
   show <dir>                                timeline table          validate <dir>   check without rendering
 
@@ -114,6 +116,14 @@ async function main() {
         log(`  ${id.padEnd(18)} ${info.kind.padEnd(5)} ${info.width || ''}x${info.height || ''} ${info.duration ? info.duration.toFixed(2) + 's' : ''} ${info.fps ? info.fps.toFixed(2) + 'fps' : ''}${tl.media[id].hdr ? ' HDR(!)' : ''}`);
       }
       commit(dir, tl, `import ${pos.length - 1} file(s)`);
+      return;
+    }
+
+    case 'fetch': {
+      const { fetchAsset, restoreAssets } = await import('../src/assets.mjs');
+      if (!pos[1]) { await restoreAssets(dir); return; }
+      const r = await fetchAsset(dir, pos[1], { name: o.name });
+      if (o.import) { process.argv = [process.argv[0], process.argv[1], 'import', dir, r.path]; return main(); }
       return;
     }
 

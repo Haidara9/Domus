@@ -50,3 +50,4 @@ With Claude: ask for a production and the `domus-studio` skill runs the whole pi
 | `productions/` | one folder per film (`_template/`) |
 | `reference/` | reference videos and breakdowns |
 | `tools/` | environment check and optional external tools |
+| `docs/assets-storage.md` | where footage, links and large files go |
