@@ -198,7 +198,8 @@ async function main() {
 
     case 'beats': {
       const { detectBeats } = await import('../src/analyze.mjs');
-      const r = await detectBeats(resolve(pos[1] ? dir : '.', pos[1]), { bpm: num(o.bpm) });
+      const audioPath = exists(resolve(pos[1])) ? resolve(pos[1]) : resolve(dir, pos[1]);
+      const r = await detectBeats(audioPath, { bpm: num(o.bpm) });
       const out = join(ensureDir(join(dir, 'analysis')), `beats_${basename(pos[1]).replace(/\.[^.]+$/, '')}.json`);
       writeJSON(out, r);
       log(`${r.bpm} BPM, ${r.beats.length} beats, ${r.downbeats.length} downbeats, ${r.onsets.length} onsets -> ${relative(process.cwd(), out)}`);

@@ -1,0 +1,83 @@
+{
+  "file": "renders/Haydara_Domus_reel-9x16_v004.mp4",
+  "pass": true,
+  "probe": {
+    "path": "renders/Haydara_Domus_reel-9x16_v004.mp4",
+    "kind": "video",
+    "duration": 34.7,
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "vcodec": "h264",
+    "pixfmt": "yuv420p",
+    "hasAudio": true,
+    "acodec": "aac",
+    "sampleRate": 48000,
+    "channels": 2,
+    "colorTransfer": "bt709",
+    "rotation": 0
+  },
+  "checks": [
+    {
+      "id": "resolution",
+      "pass": true,
+      "severity": "ok",
+      "detail": "1080x1920 (expected 1080x1920)"
+    },
+    {
+      "id": "frame-rate",
+      "pass": true,
+      "severity": "ok",
+      "detail": "30.000 fps (expected 30)"
+    },
+    {
+      "id": "duration",
+      "pass": true,
+      "severity": "ok",
+      "detail": "34.700s (expected 34.700s)"
+    },
+    {
+      "id": "codec",
+      "pass": true,
+      "severity": "ok",
+      "detail": "h264 yuv420p"
+    },
+    {
+      "id": "audio-stream",
+      "pass": true,
+      "severity": "ok",
+      "detail": "aac 48000Hz 2ch"
+    },
+    {
+      "id": "loudness",
+      "pass": true,
+      "severity": "ok",
+      "detail": "-14 LUFS integrated (target -14 ±1)"
+    },
+    {
+      "id": "true-peak",
+      "pass": true,
+      "severity": "ok",
+      "detail": "-1.2 dBFS true peak (max -1.0)"
+    },
+    {
+      "id": "black-frames",
+      "pass": true,
+      "severity": "ok",
+      "detail": "none"
+    },
+    {
+      "id": "frozen-frames",
+      "pass": true,
+      "severity": "ok",
+      "detail": "none"
+    },
+    {
+      "id": "text-safe-zones",
+      "pass": true,
+      "severity": "ok",
+      "detail": "all text inside reel-9x16 safe zone"
+    }
+  ],
+  "contact": "renders/Haydara_Domus_reel-9x16_v004.contact.png"
+}

@@ -84,7 +84,7 @@ export async function render(dir, opts = {}) {
       }
     });
     await Promise.all(workers);
-    base = await joinSegments({ tl, segs, clips, cacheDir, W, H, brand, quality });
+    base = await joinSegments({ tl, segs, clips, cacheDir, W, H, brand, quality, totalFrames });
   } else {
     const col = (tl.background || brand?.colors?.paper || '#000000').replace('#', '0x');
     base = { path: join(cacheDir, `base_color_${sha({ col, W, H, fps, totalFrames })}.mp4`) };

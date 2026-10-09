@@ -1,0 +1,432 @@
+{
+  "schema": "domus.timeline/1",
+  "title": "Haydara Domus",
+  "format": "reel-9x16",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "brand": "brand/brand.json",
+  "grade": {
+    "global": "architectural-neutral"
+  },
+  "media": {
+    "haydara-domus-v1": {
+      "path": "media/haydara-domus-v1.mp4",
+      "kind": "video",
+      "duration": 53.010998,
+      "width": 2560,
+      "height": 1440,
+      "fps": 30,
+      "hasAudio": true
+    }
+  },
+  "tracks": {
+    "video": [
+      {
+        "id": "v1",
+        "media": "haydara-domus-v1",
+        "in": 1.4,
+        "out": 4.4,
+        "label": "street",
+        "ramp": "drone-glide"
+      },
+      {
+        "id": "v2",
+        "media": "haydara-domus-v1",
+        "in": 4.5,
+        "out": 6.333333333333333,
+        "label": "shopfront",
+        "ramp": "s-curve"
+      },
+      {
+        "id": "v3",
+        "media": "haydara-domus-v1",
+        "in": 6.866666666666666,
+        "out": 9.266666666666667,
+        "label": "desk",
+        "camera": {
+          "move": "push-in",
+          "amount": 0.05
+        }
+      },
+      {
+        "id": "v4",
+        "media": "haydara-domus-v1",
+        "in": 9.333333333333334,
+        "out": 12.333333333333334,
+        "label": "reception",
+        "ramp": "s-curve"
+      },
+      {
+        "id": "v5",
+        "media": "haydara-domus-v1",
+        "in": 13,
+        "out": 16,
+        "label": "library",
+        "ramp": "punch-in"
+      },
+      {
+        "id": "v6",
+        "media": "haydara-domus-v1",
+        "in": 18.5,
+        "out": 21,
+        "label": "to-bath",
+        "ramp": "s-curve"
+      },
+      {
+        "id": "v7",
+        "media": "haydara-domus-v1",
+        "in": 21.6,
+        "out": 23.9,
+        "label": "bath",
+        "camera": {
+          "move": "push-in",
+          "amount": 0.04
+        }
+      },
+      {
+        "id": "v8",
+        "media": "haydara-domus-v1",
+        "in": 24,
+        "out": 26.8,
+        "label": "office1",
+        "ramp": "punch-in"
+      },
+      {
+        "id": "v9",
+        "media": "haydara-domus-v1",
+        "in": 27,
+        "out": 28.4,
+        "label": "corridor",
+        "ramp": "s-curve"
+      },
+      {
+        "id": "v10",
+        "media": "haydara-domus-v1",
+        "in": 29.6,
+        "out": 32.2,
+        "label": "office2",
+        "camera": {
+          "move": "push-in",
+          "amount": 0.05
+        }
+      },
+      {
+        "id": "v11",
+        "media": "haydara-domus-v1",
+        "in": 33.4,
+        "out": 36,
+        "label": "buffet",
+        "ramp": "punch-in"
+      },
+      {
+        "id": "v12",
+        "media": "haydara-domus-v1",
+        "in": 37,
+        "out": 41,
+        "label": "garden",
+        "ramp": "s-curve"
+      },
+      {
+        "id": "v13",
+        "media": "haydara-domus-v1",
+        "in": 44.6,
+        "out": 47.6,
+        "label": "street-out",
+        "ramp": "punch-out"
+      }
+    ],
+    "text": [
+      {
+        "id": "t1",
+        "component": "archTitle",
+        "start": 0.3,
+        "dur": 2.3,
+        "props": {
+          "title": "مكتب للبيع",
+          "size": 120,
+          "at": [
+            0.5,
+            0.22
+          ],
+          "in": {
+            "dur": 0.9
+          },
+          "out": {
+            "dur": 0.4
+          }
+        }
+      },
+      {
+        "id": "t2",
+        "component": "lowerThird",
+        "start": 13.933333333333334,
+        "dur": 1.9,
+        "props": {
+          "title": "الحمام",
+          "subtitle": "",
+          "at": [
+            0.08,
+            0.74
+          ],
+          "size": 64
+        },
+        "byFormat": {
+          "wide-16x9": {
+            "hidden": true
+          }
+        }
+      },
+      {
+        "id": "t3",
+        "component": "lowerThird",
+        "start": 16.233333333333334,
+        "dur": 1.9666666666666666,
+        "props": {
+          "title": "مكتب 1",
+          "subtitle": "",
+          "at": [
+            0.08,
+            0.74
+          ],
+          "size": 64
+        },
+        "byFormat": {
+          "wide-16x9": {
+            "hidden": true
+          }
+        }
+      },
+      {
+        "id": "t4",
+        "component": "lowerThird",
+        "start": 19.733333333333334,
+        "dur": 2.2,
+        "props": {
+          "title": "مكتب 2",
+          "subtitle": "",
+          "at": [
+            0.08,
+            0.74
+          ],
+          "size": 64
+        },
+        "byFormat": {
+          "wide-16x9": {
+            "hidden": true
+          }
+        }
+      },
+      {
+        "id": "t5",
+        "component": "lowerThird",
+        "start": 22.333333333333332,
+        "dur": 1.8,
+        "props": {
+          "title": "بوفيه",
+          "subtitle": "",
+          "at": [
+            0.08,
+            0.74
+          ],
+          "size": 64
+        },
+        "byFormat": {
+          "wide-16x9": {
+            "hidden": true
+          }
+        }
+      },
+      {
+        "id": "t6",
+        "component": "lowerThird",
+        "start": 24.533333333333335,
+        "dur": 2.8666666666666667,
+        "props": {
+          "title": "حديقة خارجية",
+          "subtitle": "",
+          "at": [
+            0.08,
+            0.74
+          ],
+          "size": 64
+        },
+        "byFormat": {
+          "wide-16x9": {
+            "hidden": true
+          }
+        }
+      }
+    ],
+    "animation": [
+      {
+        "id": "g1",
+        "component": "paperBackground",
+        "start": 29.6,
+        "dur": 5.1,
+        "props": {
+          "seed": 11,
+          "in": {
+            "style": "fade",
+            "dur": 0.5
+          }
+        }
+      },
+      {
+        "id": "g2",
+        "component": "archLines",
+        "start": 30.1,
+        "dur": 4.6,
+        "props": {
+          "at": [
+            0.9,
+            1
+          ],
+          "scale": 0.95,
+          "arches": 2,
+          "column": false
+        }
+      },
+      {
+        "id": "g3",
+        "component": "endCard",
+        "start": 30.2,
+        "dur": 4.5,
+        "props": {
+          "logo": "logoAr",
+          "cta": "للاستفسار وحجز موعد",
+          "lines": [
+            "علي  0996 399 902",
+            "أحمد  0957 338 999"
+          ],
+          "location": "domussyria.com",
+          "at": [
+            0.5,
+            0.3
+          ]
+        }
+      }
+    ],
+    "vfx": [
+      {
+        "id": "x1",
+        "component": "lightSweep",
+        "start": 2.8,
+        "dur": 1.4,
+        "props": {
+          "strength": 0.28
+        }
+      },
+      {
+        "id": "x2",
+        "component": "filmGrain",
+        "start": 0,
+        "dur": 34.7,
+        "props": {
+          "strength": 0.03
+        }
+      },
+      {
+        "id": "x3",
+        "component": "vignette",
+        "start": 0,
+        "dur": 2.8,
+        "props": {
+          "strength": 0.45,
+          "radius": 0.7,
+          "in": {
+            "style": "none",
+            "dur": 0.01
+          }
+        }
+      }
+    ],
+    "audio": [
+      {
+        "id": "a1",
+        "kind": "source",
+        "path": "media/haydara-domus-v1.mp4",
+        "start": 0,
+        "in": 0,
+        "dur": 34.7,
+        "gain": -11,
+        "fadeIn": 0.2,
+        "fadeOut": 2.5
+      },
+      {
+        "id": "a2",
+        "kind": "sfx",
+        "type": "whoosh",
+        "start": 2.733,
+        "gain": -15
+      },
+      {
+        "id": "a3",
+        "kind": "sfx",
+        "type": "whoosh",
+        "start": 6.633,
+        "gain": -15
+      },
+      {
+        "id": "a4",
+        "kind": "sfx",
+        "type": "whoosh",
+        "start": 9.067,
+        "gain": -15
+      },
+      {
+        "id": "a5",
+        "kind": "sfx",
+        "type": "whoosh",
+        "start": 11.633,
+        "gain": -15
+      },
+      {
+        "id": "a6",
+        "kind": "sfx",
+        "type": "whoosh",
+        "start": 18.333,
+        "gain": -15
+      },
+      {
+        "id": "a7",
+        "kind": "sfx",
+        "type": "whoosh",
+        "start": 24.267,
+        "gain": -15
+      },
+      {
+        "id": "a8",
+        "kind": "sfx",
+        "type": "riser",
+        "start": 30.1,
+        "gain": -18,
+        "params": {
+          "dur": 1.6
+        }
+      },
+      {
+        "id": "a9",
+        "kind": "sfx",
+        "type": "impact",
+        "start": 30.150000000000002,
+        "gain": -20,
+        "params": {
+          "freq": 46
+        }
+      },
+      {
+        "id": "a10",
+        "kind": "sfx",
+        "type": "shimmer",
+        "start": 31.3,
+        "gain": -15
+      }
+    ]
+  },
+  "markers": [],
+  "meta": {
+    "created": "2026-10-09T19:54:49.826Z"
+  },
+  "duration": 34.7
+}

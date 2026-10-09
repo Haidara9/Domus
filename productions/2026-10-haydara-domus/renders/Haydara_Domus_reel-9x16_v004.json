@@ -1,0 +1,28 @@
+{
+  "file": "renders/Haydara_Domus_reel-9x16_v004.mp4",
+  "version": 4,
+  "format": "reel-9x16",
+  "W": 1080,
+  "H": 1920,
+  "fps": 30,
+  "duration": 34.7,
+  "quality": "final",
+  "renderedAt": "2026-10-09T20:07:28.316Z",
+  "seconds": 200.3,
+  "stats": {
+    "segments": {
+      "rendered": 3,
+      "cached": 10
+    },
+    "overlays": {
+      "rendered": 0,
+      "cached": 11
+    }
+  },
+  "warnings": [],
+  "qc": {
+    "pass": true,
+    "report": "/home/user/Domus/productions/2026-10-haydara-domus/renders/Haydara_Domus_reel-9x16_v004.qc.json",
+    "contact": "/home/user/Domus/productions/2026-10-haydara-domus/renders/Haydara_Domus_reel-9x16_v004.contact.png"
+  }
+}

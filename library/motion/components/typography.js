@@ -163,10 +163,11 @@
       const tw = Math.max(D.measure(g, p.title), 10);
       D.setFont(g, { role: 'text', weight: 400, size: sub, text: p.subtitle });
       const sw = D.measure(g, p.subtitle || '', 2 * S);
-      const boxW = Math.max(tw, sw) + 8 * S;
+      // generous box: Arabic finals (م ن ى) and descenders reach past the advance width
+      const boxW = Math.max(tw, sw) + size * 0.45;
       g.save();
-      if (rtl) D.clipRect(g, tx - boxW * wk, y - barH, boxW * wk, barH * 2);
-      else D.clipRect(g, tx, y - barH, boxW * wk, barH * 2);
+      if (rtl) D.clipRect(g, tx - boxW * wk, y - barH, boxW * wk, barH * 2.4);
+      else D.clipRect(g, tx, y - barH, boxW * wk, barH * 2.4);
       textShadow(g, ctx, p.shadow);
       const slide = (1 - wk) * 40 * S * (rtl ? 1 : -1);
       D.setFont(g, { role: 'display', weight: 600, size, text: p.title });

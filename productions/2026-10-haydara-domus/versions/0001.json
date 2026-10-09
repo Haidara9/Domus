@@ -1,0 +1,24 @@
+{
+  "schema": "domus.timeline/1",
+  "title": "Haydara Domus",
+  "format": "reel-9x16",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "brand": "brand/brand.json",
+  "grade": {
+    "global": null
+  },
+  "media": {},
+  "tracks": {
+    "video": [],
+    "text": [],
+    "animation": [],
+    "vfx": [],
+    "audio": []
+  },
+  "markers": [],
+  "meta": {
+    "created": "2026-10-09T19:54:49.826Z"
+  }
+}

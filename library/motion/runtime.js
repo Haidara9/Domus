@@ -111,8 +111,13 @@
 
   // Draw a single line of text with correct direction. Tracking (letter spacing) is ignored
   // for Arabic: spacing letters breaks the cursive joins. Use word-level motion instead.
+  // Numbers inside Arabic text (phones, prices, areas) must read left-to-right: isolate digit runs
+  // with LRI/PDI so the bidi algorithm never reverses their groups (0996 399 902 stays in order).
+  D.bidiNumbers = (str) => String(str).replace(/(\+?\d[\d\s.,/-]*\d)/g, '\u2066$1\u2069');
+
   D.text = (g, str, x, y, { align = 'start', tracking = 0, color, alpha } = {}) => {
     const rtl = D.isArabic(str);
+    if (rtl) str = D.bidiNumbers(str);
     g.save();
     g.direction = rtl ? 'rtl' : 'ltr';
     g.textAlign = align;

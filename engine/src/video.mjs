@@ -178,11 +178,12 @@ export async function renderSegment({ tl, clip, root, cacheDir, W, H, quality = 
 }
 
 // ---------- join ----------
-export async function joinSegments({ tl, segs, clips, cacheDir, W, H, brand, quality = 'final' }) {
+export async function joinSegments({ tl, segs, clips, cacheDir, W, H, brand, quality = 'final', totalFrames }) {
   const fps = tl.fps;
   const T = TRANSITIONS();
-  const total = clips.length ? toFrames(clips[clips.length - 1].end, fps) : 0;
-  const key = sha({ v: 2, segs: segs.map((s) => s.path), trans: clips.map((c) => c.transition || null), fps, W, H, paper: brand?.colors?.paper });
+  // the base runs to the film's full duration (end cards may extend past the last clip; it holds the last frame)
+  const total = Math.max(totalFrames || 0, clips.length ? toFrames(clips[clips.length - 1].end, fps) : 0);
+  const key = sha({ v: 3, total, segs: segs.map((s) => s.path), trans: clips.map((c) => c.transition || null), fps, W, H, paper: brand?.colors?.paper });
   const out = join(ensureDir(join(cacheDir, 'base')), `base_${key}${quality === 'draft' ? 'd' : ''}.mp4`);
   if (exists(out)) return { path: out, cached: true, frames: total };
   const inputs = segs.flatMap((s) => ['-i', s.path]);
@@ -216,7 +217,7 @@ export async function joinSegments({ tl, segs, clips, cacheDir, W, H, brand, qua
     const sz = (s) => (w.axis === 'y' ? `sizeX=1:sizeY=${s}` : `sizeX=${s}:sizeY=1`);
     return `avgblur=${sz(small)}:enable='between(t,${n(w.a - pad)},${n(w.b + pad)})',avgblur=${sz(big)}:enable='between(t,${n(w.a + (w.b - w.a) * 0.15)},${n(w.b - (w.b - w.a) * 0.15)})'`;
   }).join(',');
-  const finalChain = `${post ? post + ',' : ''}tpad=stop_mode=clone:stop_duration=1,trim=end_frame=${total},format=yuv420p`;
+  const finalChain = `${post ? post + ',' : ''}tpad=stop_mode=clone:stop_duration=${n(total / fps + 1)},trim=end_frame=${total},format=yuv420p`;
   if (segs.length === 1) graph.push(`[0:v]${finalChain}[v]`);
   else graph.push(`${acc}${finalChain}[v]`);
   const enc = quality === 'draft' ? ['-c:v', 'libx264', '-preset', 'veryfast', '-crf', '23'] : ['-c:v', 'libx264', '-preset', 'medium', '-crf', '14'];

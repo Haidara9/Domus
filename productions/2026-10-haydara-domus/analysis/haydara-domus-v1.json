@@ -1,0 +1,432 @@
+{
+  "path": "/home/user/Domus/productions/2026-10-haydara-domus/media/haydara-domus-v1.mp4",
+  "info": {
+    "path": "/home/user/Domus/productions/2026-10-haydara-domus/media/haydara-domus-v1.mp4",
+    "kind": "video",
+    "duration": 53.010998,
+    "width": 2560,
+    "height": 1440,
+    "fps": 30,
+    "vcodec": "hevc",
+    "pixfmt": "yuv420p10le",
+    "hasAudio": true,
+    "acodec": "aac",
+    "sampleRate": 44100,
+    "channels": 2,
+    "colorTransfer": "bt709",
+    "rotation": 0
+  },
+  "cuts": [
+    1.36667,
+    4.46667,
+    4.9,
+    5.3,
+    6.4,
+    6.83333,
+    9.3,
+    24,
+    25.5667,
+    26.8333,
+    28.4333,
+    34.4,
+    36.1,
+    36.7,
+    36.7333,
+    47.8333
+  ],
+  "shots": [
+    {
+      "index": 1,
+      "start": 0,
+      "end": 1.367,
+      "dur": 1.367,
+      "luma": 30.3,
+      "saturation": 2.5,
+      "cast": {
+        "u": -1.01,
+        "v": 1.1
+      },
+      "blur": 5.89,
+      "motion": 22.55,
+      "jitter": 31.97,
+      "movement": "fast-move",
+      "score": 0.42,
+      "bestWindow": [
+        0,
+        1.36667
+      ],
+      "flags": [
+        "underexposed",
+        "shaky"
+      ]
+    },
+    {
+      "index": 2,
+      "start": 1.367,
+      "end": 4.467,
+      "dur": 3.1,
+      "luma": 92.5,
+      "saturation": 14,
+      "cast": {
+        "u": -9.3,
+        "v": 6.59
+      },
+      "blur": 5.27,
+      "motion": 40.98,
+      "jitter": 7.52,
+      "movement": "fast-move",
+      "score": 0.615,
+      "bestWindow": [
+        1.36667,
+        4.36667
+      ],
+      "flags": [
+        "shaky",
+        "color-cast(yellow/red)"
+      ]
+    },
+    {
+      "index": 3,
+      "start": 4.467,
+      "end": 4.9,
+      "dur": 0.433,
+      "luma": 102.7,
+      "saturation": 11.8,
+      "cast": {
+        "u": -7.57,
+        "v": 4.17
+      },
+      "blur": 6.08,
+      "motion": 0,
+      "jitter": 0,
+      "movement": "static",
+      "score": 0.715,
+      "bestWindow": [
+        4.46667,
+        4.9
+      ],
+      "flags": [
+        "color-cast(yellow/red)"
+      ]
+    },
+    {
+      "index": 4,
+      "start": 4.9,
+      "end": 5.3,
+      "dur": 0.4,
+      "luma": 105.8,
+      "saturation": 8.5,
+      "cast": {
+        "u": -2.83,
+        "v": 0.94
+      },
+      "blur": 6.24,
+      "motion": 85.86,
+      "jitter": 0,
+      "movement": "fast-move",
+      "score": 0.817,
+      "bestWindow": [
+        4.9,
+        5.3
+      ],
+      "flags": []
+    },
+    {
+      "index": 5,
+      "start": 5.3,
+      "end": 6.4,
+      "dur": 1.1,
+      "luma": 113.7,
+      "saturation": 9.6,
+      "cast": {
+        "u": -5.29,
+        "v": 1.11
+      },
+      "blur": 5.93,
+      "motion": 43.46,
+      "jitter": 15.27,
+      "movement": "fast-move",
+      "score": 0.651,
+      "bestWindow": [
+        5.3,
+        6.4
+      ],
+      "flags": [
+        "shaky"
+      ]
+    },
+    {
+      "index": 6,
+      "start": 6.4,
+      "end": 6.833,
+      "dur": 0.433,
+      "luma": 104.2,
+      "saturation": 9,
+      "cast": {
+        "u": -6.52,
+        "v": 4.48
+      },
+      "blur": 9.41,
+      "motion": 67.49,
+      "jitter": 0,
+      "movement": "fast-move",
+      "score": 0.702,
+      "bestWindow": [
+        6.4,
+        6.83333
+      ],
+      "flags": [
+        "soft-focus",
+        "color-cast(yellow/red)"
+      ]
+    },
+    {
+      "index": 7,
+      "start": 6.833,
+      "end": 9.3,
+      "dur": 2.467,
+      "luma": 112,
+      "saturation": 13.5,
+      "cast": {
+        "u": -9.92,
+        "v": 5.06
+      },
+      "blur": 6.13,
+      "motion": 76.32,
+      "jitter": 29.2,
+      "movement": "fast-move",
+      "score": 0.639,
+      "bestWindow": [
+        6.83333,
+        9.3
+      ],
+      "flags": [
+        "shaky",
+        "color-cast(yellow/red)"
+      ]
+    },
+    {
+      "index": 8,
+      "start": 9.3,
+      "end": 24,
+      "dur": 14.7,
+      "luma": 109.8,
+      "saturation": 15.1,
+      "cast": {
+        "u": -10.35,
+        "v": 6.81
+      },
+      "blur": 6.37,
+      "motion": 46.91,
+      "jitter": 21.64,
+      "movement": "fast-move",
+      "score": 0.624,
+      "bestWindow": [
+        18.6,
+        21.6
+      ],
+      "flags": [
+        "shaky",
+        "color-cast(yellow/red)"
+      ]
+    },
+    {
+      "index": 9,
+      "start": 24,
+      "end": 25.567,
+      "dur": 1.567,
+      "luma": 111.4,
+      "saturation": 14.8,
+      "cast": {
+        "u": -11.04,
+        "v": 5.79
+      },
+      "blur": 5.04,
+      "motion": 34.96,
+      "jitter": 15.88,
+      "movement": "fast-move",
+      "score": 0.675,
+      "bestWindow": [
+        24,
+        25.5667
+      ],
+      "flags": [
+        "shaky",
+        "color-cast(yellow/red)"
+      ]
+    },
+    {
+      "index": 10,
+      "start": 25.567,
+      "end": 26.833,
+      "dur": 1.267,
+      "luma": 116.6,
+      "saturation": 16.7,
+      "cast": {
+        "u": -14.11,
+        "v": 7.61
+      },
+      "blur": 5.19,
+      "motion": 28.92,
+      "jitter": 13.08,
+      "movement": "fast-move",
+      "score": 0.684,
+      "bestWindow": [
+        25.5667,
+        26.8333
+      ],
+      "flags": [
+        "shaky",
+        "color-cast(yellow/red)"
+      ]
+    },
+    {
+      "index": 11,
+      "start": 26.833,
+      "end": 28.433,
+      "dur": 1.6,
+      "luma": 116.4,
+      "saturation": 10.4,
+      "cast": {
+        "u": -6.08,
+        "v": 1.55
+      },
+      "blur": 6.51,
+      "motion": 49.73,
+      "jitter": 22.26,
+      "movement": "fast-move",
+      "score": 0.638,
+      "bestWindow": [
+        26.8333,
+        28.4333
+      ],
+      "flags": [
+        "shaky",
+        "color-cast(yellow/red)"
+      ]
+    },
+    {
+      "index": 12,
+      "start": 28.433,
+      "end": 34.4,
+      "dur": 5.967,
+      "luma": 114.9,
+      "saturation": 12.8,
+      "cast": {
+        "u": -7.33,
+        "v": 1.82
+      },
+      "blur": 5.91,
+      "motion": 42.48,
+      "jitter": 27.52,
+      "movement": "fast-move",
+      "score": 0.655,
+      "bestWindow": [
+        28.4333,
+        31.4333
+      ],
+      "flags": [
+        "shaky",
+        "color-cast(yellow/red)"
+      ]
+    },
+    {
+      "index": 13,
+      "start": 34.4,
+      "end": 36.1,
+      "dur": 1.7,
+      "luma": 104.7,
+      "saturation": 6.1,
+      "cast": {
+        "u": -1.26,
+        "v": -2.44
+      },
+      "blur": 4.71,
+      "motion": 19.52,
+      "jitter": 18.24,
+      "movement": "fast-move",
+      "score": 0.668,
+      "bestWindow": [
+        34.4,
+        36.1
+      ],
+      "flags": [
+        "shaky"
+      ]
+    },
+    {
+      "index": 14,
+      "start": 36.1,
+      "end": 36.7,
+      "dur": 0.6,
+      "luma": 68.7,
+      "saturation": 10.9,
+      "cast": {
+        "u": -8.11,
+        "v": 6.89
+      },
+      "blur": 4.52,
+      "motion": 17.13,
+      "jitter": 0,
+      "movement": "fast-move",
+      "score": 0.775,
+      "bestWindow": [
+        36.1,
+        36.7
+      ],
+      "flags": [
+        "color-cast(yellow/red)"
+      ]
+    },
+    {
+      "index": 15,
+      "start": 36.733,
+      "end": 47.833,
+      "dur": 11.1,
+      "luma": 113.2,
+      "saturation": 9,
+      "cast": {
+        "u": -3.93,
+        "v": 1.91
+      },
+      "blur": 5.21,
+      "motion": 46.15,
+      "jitter": 22.09,
+      "movement": "fast-move",
+      "score": 0.674,
+      "bestWindow": [
+        37.53,
+        40.53
+      ],
+      "flags": [
+        "shaky"
+      ]
+    },
+    {
+      "index": 16,
+      "start": 47.833,
+      "end": 53.011,
+      "dur": 5.178,
+      "luma": 187.5,
+      "saturation": 11.4,
+      "cast": {
+        "u": -9.12,
+        "v": 7.2
+      },
+      "blur": null,
+      "motion": 13.84,
+      "jitter": 31.12,
+      "movement": "fast-move",
+      "score": null,
+      "bestWindow": [
+        49.13,
+        52.13
+      ],
+      "flags": [
+        "shaky",
+        "color-cast(yellow/red)"
+      ]
+    }
+  ],
+  "analyzedAt": "2026-10-09T19:55:34.767Z"
+}
