@@ -1,0 +1,113 @@
+{
+  "file": "renders/Haydara_Domus_v4_first_25s__wide-16x9_v005.mp4",
+  "pass": true,
+  "probe": {
+    "path": "renders/Haydara_Domus_v4_first_25s__wide-16x9_v005.mp4",
+    "kind": "video",
+    "duration": 25,
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "vcodec": "h264",
+    "pixfmt": "yuv420p",
+    "hasAudio": true,
+    "acodec": "aac",
+    "sampleRate": 48000,
+    "channels": 2,
+    "colorTransfer": "bt709",
+    "rotation": 0
+  },
+  "checks": [
+    {
+      "id": "resolution",
+      "pass": true,
+      "severity": "ok",
+      "detail": "1920x1080 (expected 1920x1080)"
+    },
+    {
+      "id": "frame-rate",
+      "pass": true,
+      "severity": "ok",
+      "detail": "30.000 fps (expected 30)"
+    },
+    {
+      "id": "duration",
+      "pass": true,
+      "severity": "ok",
+      "detail": "25.000s (expected 25.000s)"
+    },
+    {
+      "id": "codec",
+      "pass": true,
+      "severity": "ok",
+      "detail": "h264 yuv420p"
+    },
+    {
+      "id": "audio-stream",
+      "pass": true,
+      "severity": "ok",
+      "detail": "aac 48000Hz 2ch"
+    },
+    {
+      "id": "loudness",
+      "pass": true,
+      "severity": "ok",
+      "detail": "-14 LUFS integrated (target -14 ±1)"
+    },
+    {
+      "id": "true-peak",
+      "pass": true,
+      "severity": "ok",
+      "detail": "-1.5 dBFS true peak (max -1.0)"
+    },
+    {
+      "id": "black-frames",
+      "pass": true,
+      "severity": "ok",
+      "detail": "none"
+    },
+    {
+      "id": "frozen-frames",
+      "pass": true,
+      "severity": "ok",
+      "detail": "none"
+    },
+    {
+      "id": "text-safe-zones",
+      "pass": true,
+      "severity": "ok",
+      "detail": "all text inside wide-16x9 safe zone"
+    },
+    {
+      "id": "render-warning",
+      "pass": false,
+      "severity": "warning",
+      "detail": "v5: clip is only 0.43s; under 0.5s reads as a flash unless intentional"
+    },
+    {
+      "id": "render-warning",
+      "pass": false,
+      "severity": "warning",
+      "detail": "v6: clip is only 0.40s; under 0.5s reads as a flash unless intentional"
+    },
+    {
+      "id": "render-warning",
+      "pass": false,
+      "severity": "warning",
+      "detail": "v8: clip is only 0.43s; under 0.5s reads as a flash unless intentional"
+    },
+    {
+      "id": "render-warning",
+      "pass": false,
+      "severity": "warning",
+      "detail": "x10: start/dur not on frame grid (will snap)"
+    },
+    {
+      "id": "render-warning",
+      "pass": false,
+      "severity": "warning",
+      "detail": "x11: start/dur not on frame grid (will snap)"
+    }
+  ],
+  "contact": "renders/Haydara_Domus_v4_first_25s__wide-16x9_v005.contact.png"
+}
