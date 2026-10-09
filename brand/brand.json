@@ -35,7 +35,13 @@
     "copper": "#A86F3F",
     "copperLight": "#C08A5A",
     "line": "#C4A177",
-    "white": "#FFFFFF"
+    "white": "#FFFFFF",
+    "gold": "#E9C88F",
+    "goldHi": "#FFE6B8",
+    "ember": "#F2A65A",
+    "petrol": "#123A40",
+    "teal": "#2E6E73",
+    "tealHi": "#7FC1BC"
   },
   "fonts": {
     "arabicDisplay": {
@@ -114,5 +120,6 @@
       "fast zoom-blur on the logo"
     ]
   },
-  "logoRules": "Use the files exactly. The O is a circle holding the domed arch with columns, with the copper roof chevron above. Never redraw, recolor, stretch or rebuild it from type. Arabic films use logoAr; English or mixed use logo."
+  "logoRules": "Use the files exactly. The O is a circle holding the domed arch with columns, with the copper roof chevron above. Never redraw, recolor, stretch or rebuild it from type. Arabic films use logoAr; English or mixed use logo.",
+  "colorsNote": "Core: paper, ink, copper. Extended accents (owner, 2026-10-09: 'more colours'): gold/goldHi for metal light, ember for sparks, petrol/teal as the cool counterweight in plates, glows and light leaks. Copper stays the lead; teal never replaces it."
 }

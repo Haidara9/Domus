@@ -66,7 +66,7 @@ export async function exportHyperFrames(dir, { baked = false, format } = {}) {
   // ---- video ----
   for (const c of clips) {
     const m = tl.media[c.media];
-    const needsBake = baked || c.ramp || c.stabilize || c.interpolate || c.grade?.match || m.kind === 'image' || c.camera?.keys;
+    const needsBake = baked || c.ramp || c.stabilize || c.interpolate || c.grade?.match || m.kind === 'image' || c.camera?.keys || c.camera?.shake || c.fx?.length;
     const prevTr = c.index > 0 ? clips[c.index - 1].transition : null;
     const inDur = c.index > 0 ? transitionDur(clips[c.index - 1], fps) : 0;
     const wrap = `w-${c.id}`;

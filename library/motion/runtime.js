@@ -208,6 +208,116 @@
     return { w, h };
   };
 
+  // ---------- signature helpers: metal light, partial paths, sparks, brackets ----------
+  D.PAL = () => {
+    const c = (D.brand && D.brand.colors) || {};
+    return {
+      copper: c.copper || '#A86F3F', copperLight: c.copperLight || '#C08A5A', gold: c.gold || '#E9C88F', goldHi: c.goldHi || '#FFE6B8',
+      ember: c.ember || '#F2A65A', petrol: c.petrol || '#123A40', teal: c.teal || '#2E6E73', tealHi: c.tealHi || '#7FC1BC', ink: c.ink || '#151412',
+    };
+  };
+  D.rgba = (hex, a = 1) => { const h = hex.replace('#', ''); const v = parseInt(h.length === 3 ? h.split('').map((x) => x + x).join('') : h, 16); return `rgba(${(v >> 16) & 255},${(v >> 8) & 255},${v & 255},${a})`; };
+  // Copper base with a gold-to-hot sheen band centred at s (0..1 along x0,y0 -> x1,y1). Animate s for a moving glint.
+  D.metal = (g, x0, y0, x1, y1, s = 0.5, width = 0.22) => {
+    const P = D.PAL(), gr = g.createLinearGradient(x0, y0, x1, y1);
+    const band = [[s - width, P.gold], [s - width * 0.35, P.goldHi], [s, '#FFF7EA'], [s + width * 0.35, P.goldHi], [s + width, P.gold]];
+    const base = [[0, P.copper], [0.3, P.copperLight], [0.62, P.gold], [1, P.copper]].filter(([o]) => o < s - width || o > s + width);
+    for (const [o, col] of [...base, ...band]) if (o >= 0 && o <= 1) gr.addColorStop(o, col);
+    return gr;
+  };
+  D.pathInfo = (pts) => { const segs = []; let total = 0; for (let i = 1; i < pts.length; i++) { const l = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); segs.push(l); total += l; } return { segs, total }; };
+  // Point at fraction u of the path length, with its direction angle.
+  D.pathPoint = (pts, u) => {
+    const { segs, total } = D.pathInfo(pts);
+    let d = clamp(u) * total, i = 0;
+    while (i < segs.length - 1 && d > segs[i]) { d -= segs[i]; i++; }
+    const k = segs[i] ? d / segs[i] : 0, a = pts[i], b = pts[i + 1] || a;
+    return [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, Math.atan2(b[1] - a[1], b[0] - a[0])];
+  };
+  // Stroke the portion [a, b] (fractions of length) of a path.
+  D.polylineRange = (g, pts, a, b, { width = 2, color, cap = 'round', join = 'round', dash } = {}) => {
+    a = clamp(a); b = clamp(b); if (b <= a || pts.length < 2) return;
+    const { segs, total } = D.pathInfo(pts);
+    const da = a * total, db = b * total;
+    g.save(); g.lineWidth = width; g.lineCap = cap; g.lineJoin = join; if (color) g.strokeStyle = color; if (dash) { g.setLineDash(dash[0]); g.lineDashOffset = dash[1] || 0; }
+    g.beginPath();
+    let acc = 0, started = false;
+    for (let i = 0; i < segs.length; i++) {
+      const s0 = acc, s1 = acc + segs[i]; acc = s1;
+      if (s1 < da || s0 > db || !segs[i]) continue;
+      const p = pts[i], q = pts[i + 1];
+      const u0 = Math.max(0, (da - s0) / segs[i]), u1 = Math.min(1, (db - s0) / segs[i]);
+      const x0 = p[0] + (q[0] - p[0]) * u0, y0 = p[1] + (q[1] - p[1]) * u0;
+      if (!started) { g.moveTo(x0, y0); started = true; }
+      g.lineTo(p[0] + (q[0] - p[0]) * u1, p[1] + (q[1] - p[1]) * u1);
+    }
+    g.stroke(); g.restore();
+  };
+  // Hot point of light: white core, gold halo, ember fringe, and a thin four-point flare.
+  D.spark = (g, x, y, r, a = 1, { flare = 1, color } = {}) => {
+    if (a <= 0 || r <= 0) return;
+    const P = D.PAL();
+    g.save(); g.globalAlpha *= a;
+    const gr = g.createRadialGradient(x, y, 0, x, y, r);
+    gr.addColorStop(0, 'rgba(255,252,244,1)'); gr.addColorStop(0.18, D.rgba(color || P.goldHi, 0.9)); gr.addColorStop(0.45, D.rgba(P.ember, 0.35)); gr.addColorStop(1, D.rgba(P.ember, 0));
+    g.fillStyle = gr; g.fillRect(x - r, y - r, r * 2, r * 2);
+    if (flare) {
+      const L = r * 2.6 * flare;
+      for (const [dx, dy, w] of [[1, 0, 1], [0, 0.4, 0.55]]) {
+        const lg = g.createLinearGradient(x - dx * L, y - dy * L, x + dx * L, y + dy * L);
+        lg.addColorStop(0, 'rgba(255,230,190,0)'); lg.addColorStop(0.5, 'rgba(255,248,236,0.85)'); lg.addColorStop(1, 'rgba(255,230,190,0)');
+        g.strokeStyle = lg; g.lineWidth = Math.max(1, r * 0.06) * w; g.beginPath(); g.moveTo(x - dx * L, y - dy * L); g.lineTo(x + dx * L, y + dy * L); g.stroke();
+      }
+    }
+    g.restore();
+  };
+  // L-shaped corner bracket at (x, y) opening towards (dx, dy) = (+-1, +-1), drawn with progress k.
+  D.bracket = (g, x, y, len, dx, dy, k, { width = 2, color } = {}) => {
+    if (k <= 0) return;
+    D.polyline(g, [[x + dx * len, y], [x, y], [x, y + dy * len]], k, { width, color, cap: 'square', join: 'miter' });
+  };
+  // Deterministic spark burst: tt = seconds since emission. Particles fly out with drag and fade.
+  D.sparks = (g, { seed = 1, n = 40, x, y, tt, life = 1.2, speed = 600, spread = Math.PI * 2, angle = -Math.PI / 2, drag = 3.2, gravity = 0, size = 3, S = 1, area = [0, 0] }) => {
+    if (tt < 0 || tt > life * 1.6) return;
+    const P = D.PAL(), r = D.rng(seed);
+    g.save(); g.globalCompositeOperation = 'lighter';
+    for (let i = 0; i < n; i++) {
+      const a = angle + (r() - 0.5) * spread, v = speed * (0.35 + r() * 0.9) * S, lf = life * (0.5 + r() * 0.8), sz = size * (0.4 + r() * 1.1) * S;
+      const ox = (r() - 0.5) * area[0], oy = (r() - 0.5) * area[1];
+      if (tt > lf) continue;
+      const dist = (v / drag) * (1 - Math.exp(-drag * tt));
+      const px = x + ox + Math.cos(a) * dist, py = y + oy + Math.sin(a) * dist + 0.5 * gravity * S * tt * tt;
+      const fade = (1 - tt / lf) ** 1.5;
+      const vx = Math.cos(a) * v * Math.exp(-drag * tt), vy = Math.sin(a) * v * Math.exp(-drag * tt) + gravity * S * tt;
+      const tail = 0.018;
+      g.strokeStyle = i % 3 ? D.rgba(P.goldHi, 0.9 * fade) : D.rgba(P.ember, 0.9 * fade);
+      g.lineWidth = sz; g.lineCap = 'round';
+      g.beginPath(); g.moveTo(px - vx * tail, py - vy * tail); g.lineTo(px, py); g.stroke();
+    }
+    g.restore();
+  };
+  // Light pass masked to shapes drawn by paint(ctx) (text, numerals): no box edges.
+  D.sheenMasked = (g, x, y, w, h, t, t0, t1, a, paint) => {
+    const k = D.range(t, t0, t1); if (k <= 0 || k >= 1 || w < 1 || h < 1) return;
+    const [c, o] = D.offscreen('sheen', Math.ceil(w), Math.ceil(h));
+    o.translate(-x, -y); paint(o); o.setTransform(1, 0, 0, 1, 0, 0);
+    o.globalCompositeOperation = 'source-in';
+    const bx = -w * 0.4 + w * 1.8 * D.ease.inOutSine(k);
+    const gr = o.createLinearGradient(bx - h * 0.6, 0, bx + h * 0.6, h);
+    gr.addColorStop(0, 'rgba(255,240,220,0)'); gr.addColorStop(0.5, `rgba(255,244,228,${a})`); gr.addColorStop(1, 'rgba(255,240,220,0)');
+    o.fillStyle = gr; o.fillRect(0, 0, w, h);
+    g.save(); g.globalCompositeOperation = 'lighter'; g.drawImage(c, x, y); g.restore();
+  };
+  // Offscreen canvas cache keyed by name (reused between frames; contents are redrawn every frame).
+  const _off = {};
+  D.offscreen = (key, w, h) => {
+    let c = _off[key];
+    if (!c) { c = _off[key] = document.createElement('canvas'); }
+    if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
+    const x = c.getContext('2d'); x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, w, h); x.globalAlpha = 1; x.globalCompositeOperation = 'source-over'; x.filter = 'none';
+    return [c, x];
+  };
+
   // ---------- envelope: generic IN / OUT / LOOP for any component ----------
   // ctx.pin: 0->1 during the intro, ctx.pout: 0->1 during the outro (0 before it).
   D.envelope = (t, dur, p) => {
@@ -257,25 +367,29 @@
     // Camera tracking: p.track = { frames: [[localT, h0..h8], ...] } homographies mapping normalized
     // reference-frame coordinates to the current frame (from engine/tools/track.py).
     const Ht = p.track ? D.trackAt(p.track, t) : null;
+    // p._cam (attached by the engine): the shot's own camera move, so tracked graphics stay on the picture
+    const cam = p._cam ? D.camAt(p._cam, t) : null;
     const mapH = (x, y) => {
-      if (!Ht) return [x * env.W, y * env.H];
-      const w = Ht[6] * x + Ht[7] * y + Ht[8];
-      return [((Ht[0] * x + Ht[1] * y + Ht[2]) / w) * env.W, ((Ht[3] * x + Ht[4] * y + Ht[5]) / w) * env.H];
+      let nx = x, ny = y;
+      if (Ht) { const w = Ht[6] * x + Ht[7] * y + Ht[8]; nx = (Ht[0] * x + Ht[1] * y + Ht[2]) / w; ny = (Ht[3] * x + Ht[4] * y + Ht[5]) / w; }
+      if (cam) { nx = nx * cam[0] + cam[1]; ny = ny * cam[0] + cam[2]; }
+      return [nx * env.W, ny * env.H];
     };
     const ctx = {
-      mapH, tracked: !!Ht,
+      mapH, tracked: !!(Ht || cam), camZ: cam ? cam[0] : 1,
       W: env.W, H: env.H, S: Math.min(env.W, env.H) / 1080, dur, p, t,
       pin: e.pin, pout: e.pout, inD: e.inD, outD: e.outD,
       brand: D.brand || {}, C: (D.brand && D.brand.colors) || {},
       img: (k) => env.images[k], seed: env.seed || 1, rtl: D.isArabic(p.title || p.text || p.label || ''),
     };
     g.save();
-    if (Ht && p.trackMode === 'position') {
+    const Hl = Ht || cam;
+    if (Hl && p.trackMode === 'position') {
       // follow the point only: constant size and angle (best for labels you must read)
       const a = p.trackAnchor || p.anchor || p.at || [0.5, 0.5];
       const P0 = mapH(a[0], a[1]);
       g.translate(P0[0] - a[0] * env.W, P0[1] - a[1] * env.H);
-    } else if (Ht && (p.trackMode || 'affine') === 'affine') {
+    } else if (Hl && (p.trackMode || 'affine') === 'affine') {
       // pin the whole component: local affine approximation of the homography at the anchor
       const a = p.trackAnchor || p.anchor || p.at || [0.5, 0.5], e = 0.01;
       const P0 = mapH(a[0], a[1]), Px = mapH(a[0] + e, a[1]), Py = mapH(a[0], a[1] + e);
@@ -309,6 +423,13 @@
     while (hi - lo > 1) { const m = (lo + hi) >> 1; if (f[m][0] <= t) lo = m; else hi = m; }
     const k = (t - f[lo][0]) / Math.max(1e-6, f[hi][0] - f[lo][0]);
     return f[lo].slice(1).map((v, i) => v + (f[hi][i + 1] - v) * k);
+  };
+
+  // Camera samples {fps, f: [[Z, ox, oy], ...]} at local time t (linear between frames).
+  D.camAt = (cam, t) => {
+    const f = cam.f; if (!f || !f.length) return null;
+    const x = Math.max(0, Math.min(f.length - 1, t * cam.fps)), i = Math.floor(x), j = Math.min(f.length - 1, i + 1), k = x - i;
+    return f[i].map((v, m) => v + (f[j][m] - v) * k);
   };
 
   // Normalized anchor -> pixels. Accepts [x,y] in 0..1 of the frame.

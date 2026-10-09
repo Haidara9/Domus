@@ -98,39 +98,93 @@
 
 // Architectural line drawing locked to a real surface (glass frame, facade, doorway) through a
 // tracked homography. The lines trace edges that exist in the shot; they never add structure.
+// v2: metal (copper -> gold sheen) main line with bloom, a spark head while drawing, a second
+// inset line that follows, corner brackets and diamond nodes, a flowing dash and a comet glint.
+// Exit: the line retracts along its own path instead of fading.
 (function () {
   const D = window.DOMUS;
   const { ease, range } = D;
+  function inset(pts, d) {
+    // move each vertex towards the centroid by d px (works for convex outlines in perspective)
+    const cx = pts.reduce((a, p) => a + p[0], 0) / pts.length, cy = pts.reduce((a, p) => a + p[1], 0) / pts.length;
+    return pts.map(([x, y]) => { const l = Math.hypot(cx - x, cy - y) || 1; return [x + ((cx - x) / l) * d, y + ((cy - y) / l) * d]; });
+  }
   D.register('perspectiveOutline', {
-    description: 'Copper/gold lines that draw along real edges (points in reference-frame coords) and stay locked to the surface via props.track (perspective).',
-    defaults: { points: [], closed: true, glint: 0.9, color: '#F2B878', width: 5, glow: true, drawDur: 0.9, ticks: true, trackMode: 'perspective', in: { dur: 0.01, style: 'none' }, out: { dur: 0.35, style: 'fade' } },
+    description: 'Copper/gold metal lines that draw along real edges (points in reference-frame coords) with spark head, inset second line, corner brackets, flowing dash and glint; stays locked via props.track (perspective).',
+    defaults: { points: [], closed: true, glint: 0.9, width: 5, glow: true, drawDur: 0.9, inset: 14, brackets: true, dash: true, ticks: true, trackMode: 'perspective', in: { dur: 0.01, style: 'none' }, out: { dur: 0.45, style: 'none' } },
     draw(g, t, ctx) {
-      const { p, S } = ctx;
+      const { p, S, dur } = ctx;
       if (!p.points.length) return;
-      const col = p.color || ctx.C.copperLight || '#C08A5A';
-      const pts = p.points.map(([x, y]) => ctx.mapH(x, y));
-      if (p.closed) pts.push(pts[0]);
+      const P = D.PAL();
+      const base = p.points.map(([x, y]) => ctx.mapH(x, y));
+      const pts = p.closed ? [...base, base[0]] : base;
       const k = ease.glide(range(t, 0, p.drawDur));
+      const ko = ease.inOutCubic(range(t, dur - ctx.outD, dur)); // retract
+      const a0 = ko, a1 = k;
+      if (a1 <= a0) return;
+      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+      for (const [x, y] of base) { minX = Math.min(minX, x); minY = Math.min(minY, y); maxX = Math.max(maxX, x); maxY = Math.max(maxY, y); }
+      const sheen = ((t * 0.55) % 1.6) - 0.3;
+      const metal = D.metal(g, minX, minY, maxX, maxY, sheen, 0.25);
       g.save();
-      if (p.glow) { g.shadowColor = 'rgba(255,170,90,0.95)'; g.shadowBlur = 22 * S; }
-      D.polyline(g, pts, k, { width: p.width * 2.4 * S, color: 'rgba(168,111,63,0.35)', cap: 'round', join: 'miter' });
-      D.polyline(g, pts, k, { width: p.width * S, color: col, cap: 'round', join: 'miter' });
-      if (p.glint && k >= 1) {
-        // a point of light travelling along the drawn edges
-        const segs = []; let total = 0;
-        for (let i = 1; i < pts.length; i++) { const l = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); segs.push(l); total += l; }
-        let d = (((t - p.drawDur) * p.glint) % 1) * total, i = 0;
-        while (i < segs.length - 1 && d > segs[i]) { d -= segs[i]; i++; }
-        const u = segs[i] ? d / segs[i] : 0;
-        const gx = pts[i][0] + (pts[i + 1][0] - pts[i][0]) * u, gy = pts[i][1] + (pts[i + 1][1] - pts[i][1]) * u;
-        const gr = g.createRadialGradient(gx, gy, 0, gx, gy, 46 * S);
-        gr.addColorStop(0, 'rgba(255,248,235,0.95)'); gr.addColorStop(0.25, 'rgba(255,200,140,0.55)'); gr.addColorStop(1, 'rgba(255,170,90,0)');
-        g.fillStyle = gr; g.fillRect(gx - 46 * S, gy - 46 * S, 92 * S, 92 * S);
+      // 1) bloom under-stroke (additive)
+      if (p.glow) {
+        g.save(); g.globalCompositeOperation = 'lighter';
+        g.shadowColor = D.rgba(P.ember, 0.9); g.shadowBlur = 30 * S;
+        D.polylineRange(g, pts, a0, a1, { width: p.width * 3.2 * S, color: D.rgba(P.copper, 0.28), join: 'miter' });
+        g.restore();
       }
-      if (p.ticks) {
-        const tk = ease.architectural(range(t, p.drawDur * 0.8, p.drawDur + 0.4));
-        const L = 34 * S * tk;
-        pts.slice(0, p.closed ? -1 : undefined).forEach(([x, y]) => { D.dot(g, x, y, 4.5 * S * tk, col); g.strokeStyle = col; g.lineWidth = 1.5 * S; g.beginPath(); g.moveTo(x - L, y); g.lineTo(x + L, y); g.moveTo(x, y - L); g.lineTo(x, y + L); g.stroke(); });
+      // 2) dark keyline so the metal reads on bright glass
+      D.polylineRange(g, pts, a0, a1, { width: (p.width + 3) * S, color: 'rgba(20,12,6,0.35)', join: 'miter' });
+      // 3) metal line
+      g.save(); g.shadowColor = D.rgba(P.ember, 0.75); g.shadowBlur = 12 * S;
+      D.polylineRange(g, pts, a0, a1, { width: p.width * S, color: metal, join: 'miter' });
+      g.restore();
+      // 4) inset second line (follows 0.18 s later), thin gold with a flowing dash
+      if (p.inset && base.length > 2) {
+        const ib = inset(base, p.inset * S), ip = p.closed ? [...ib, ib[0]] : ib;
+        const k2 = ease.glide(range(t, 0.18, p.drawDur + 0.18));
+        D.polylineRange(g, ip, a0, Math.min(k2, 1), { width: 1.4 * S, color: D.rgba(P.goldHi, 0.75), join: 'miter' });
+        if (p.dash && k2 >= 1) {
+          const dk = ease.outCubic(range(t, p.drawDur + 0.18, p.drawDur + 0.6)) * (1 - ko);
+          D.polylineRange(g, ip, a0, 1, { width: 2.6 * S, color: D.rgba(P.goldHi, 0.85 * dk), dash: [[10 * S, 22 * S], -t * 90 * S], cap: 'butt' });
+        }
+      }
+      // 5) spark head on the drawing tip
+      if (k > 0 && k < 1) {
+        const [hx, hy] = D.pathPoint(pts, k);
+        D.spark(g, hx, hy, 34 * S, 1, { flare: 1.2 });
+        D.sparks(g, { seed: 7, n: 10, x: hx, y: hy, tt: (t * 6) % 0.4, life: 0.35, speed: 160, S, size: 2 });
+      }
+      // 6) nodes + corner brackets once drawn
+      const nk = ease.architectural(range(t, p.drawDur * 0.85, p.drawDur + 0.45)) * (1 - ko);
+      if (nk > 0) {
+        base.forEach(([x, y], i) => {
+          const q = p.closed ? base[(i + 1) % base.length] : base[i + 1] || base[i - 1];
+          const r = p.closed ? base[(i - 1 + base.length) % base.length] : base[i - 1] || base[i + 1];
+          if (p.brackets) {
+            const L = 30 * S * nk;
+            for (const o of [q, r]) {
+              const l = Math.hypot(o[0] - x, o[1] - y) || 1, ux = (o[0] - x) / l, uy = (o[1] - y) / l;
+              g.save(); g.strokeStyle = D.rgba(P.goldHi, 0.95); g.lineWidth = 2.2 * S; g.lineCap = 'square';
+              g.beginPath(); g.moveTo(x - ux * 10 * S, y - uy * 10 * S); g.lineTo(x - ux * (10 * S + L), y - uy * (10 * S + L)); g.stroke(); g.restore();
+            }
+          }
+          // diamond node
+          g.save(); g.translate(x, y); g.rotate(Math.PI / 4); const d = 7 * S * nk;
+          g.fillStyle = D.rgba(P.goldHi, 1); g.shadowColor = D.rgba(P.ember, 0.9); g.shadowBlur = 14 * S; g.fillRect(-d, -d, d * 2, d * 2);
+          g.strokeStyle = D.rgba(P.copper, 1); g.lineWidth = 1.5 * S; g.strokeRect(-d, -d, d * 2, d * 2); g.restore();
+        });
+      }
+      // 7) comet glint travelling the drawn path
+      if (p.glint && k >= 1 && ko <= 0) {
+        const u = ((t - p.drawDur) * p.glint * 0.7) % 1;
+        const tailU = 0.12;
+        g.save(); g.globalCompositeOperation = 'lighter';
+        for (let j = 0; j < 6; j++) D.polylineRange(g, pts, Math.max(0, u - tailU * (1 - j / 6)), u, { width: (p.width + 2 * j / 6) * S, color: `rgba(255,240,215,${(0.08 + j * 0.05).toFixed(3)})`, join: 'miter' });
+        g.restore();
+        const [gx, gy] = D.pathPoint(pts, u);
+        D.spark(g, gx, gy, 40 * S, 0.95, { flare: 1 });
       }
       g.restore();
     },

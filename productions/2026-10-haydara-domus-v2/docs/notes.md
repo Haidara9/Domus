@@ -16,3 +16,20 @@ Dropped after review: a second shopfront outline (5.3-6.4) and a desk label: the
 through glass), and inaccurate lines are worse than none.
 
 Engine bug found and fixed here: ffmpeg crop freezes iw/ih at the first frame, so animated push-ins never moved their framing.
+
+## v4 (owner feedback on v3: graphics/animation need more, copper lines more, more colour, shots have no effects, add 130 m²)
+- The owner's clip is split at the owner's own cuts (1.367, 4.467, 4.9, 5.3, 6.4, 6.833, 9.3, 21, 24): same frames, same
+  timing, nothing removed. Each shot now carries a camera move and light FX (engine `fx`):
+  punch-ins settling on every cut, exposure flash + 2-frame lens fringe, shake on the hardest hits, warm bloom
+  (strong on the night street, pulsing when graphics land), a slow breathing zoom on the long walkthrough.
+- Tracked graphics follow those camera moves automatically (`props._cam`), so labels stay on the real features.
+- Copper lines v2: metal copper-to-gold sheen, spark head while drawing, inset second line with a flowing dash,
+  corner brackets and diamond nodes, comet glint, retract on exit.
+- Graphics v2: tag cards (diamond anchor, rotating ring, petrol glass, border that traces itself, reverse exit),
+  chapters (backdrop, light pass, metal rule, progress segments), intro (double arch rising to an apex flash, petrol glow,
+  dust, streak), stroke word (metal outline, sparks).
+- Colour: extended accents in brand.json (gold, ember, petrol/teal) + light leaks on four transitions + saturation +7%.
+- 22.0-25.0: **130 m²** hero (fact from the owner): footage defocuses and darkens, a floor line draws out, the extruded gold
+  numeral rises from depth while its digits roll, the last digit lands on the beat at 23.03 with flash, sparks, streak,
+  footage bloom flash and shake, riser + impact + hit; dimension line, brackets, «المساحة · AREA», reflection.
+  Chapter 04 (office 1) was removed: the area figure is the ending of this 25 s cut.

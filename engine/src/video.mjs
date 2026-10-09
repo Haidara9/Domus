@@ -51,6 +51,63 @@ const EASE_EXPR = {
   glide: (u) => `((1-cos(PI*(${u})))/2)`,
 };
 
+// Camera shake: damped oscillation in output pixels, added to the crop window (needs zoom > 1 for margin).
+// camera.shake: [{ at, dur, amp (px), freq (Hz) }], times local to the clip.
+export function shakeExprs(clip) {
+  const sh = clip.camera?.shake || [];
+  if (!sh.length) return { SX: '0', SY: '0' };
+  const term = (s, axis) => {
+    const f = s.freq ?? 9, a = s.amp ?? 10, d = Math.max(0.05, s.dur ?? 0.5);
+    const u = `(t-${n(s.at)})`;
+    const wave = axis === 'x' ? `sin(2*PI*${n(f)}*${u})` : `cos(2*PI*${n(f * 0.77)}*${u}+0.6)`;
+    return `if(between(t,${n(s.at)},${n(s.at + d)}),${n(axis === 'x' ? a : a * 0.7)}*exp(-5*${u}/${n(d)})*${wave},0)`;
+  };
+  return { SX: sh.map((s) => term(s, 'x')).join('+'), SY: sh.map((s) => term(s, 'y')).join('+') };
+}
+
+// JS mirror of the camera (zoom, focus, shake) at clip-local time t. Overlays tracked on the source
+// footage use it to stay locked to the picture when the shot itself is pushed, punched or shaken:
+// source-normalized (x, y) -> output-normalized (x*Z + ox, y*Z + oy).
+const EASE_JS = {
+  linear: (u) => u, inOutSine: (u) => (1 - Math.cos(Math.PI * u)) / 2, glide: (u) => (1 - Math.cos(Math.PI * u)) / 2,
+  outCubic: (u) => 1 - (1 - u) ** 3, inCubic: (u) => u ** 3, outQuart: (u) => 1 - (1 - u) ** 4, architectural: (u) => 1 - (1 - u) ** 4,
+};
+export function cameraAt(clip, t, W = 1920, H = 1080) {
+  const cam = clip.camera || {};
+  const base = clip.reframe?.zoom || 1;
+  const [fx0, fy0] = clip.reframe?.focus || cam.focus || [0.5, 0.5];
+  const amt = cam.amount ?? 0.08, span = cam.span ?? 0.6;
+  const cl = (x) => Math.min(1, Math.max(0, x));
+  const e = (EASE_JS[cam.ease] || EASE_JS.inOutSine)(cl(t / Math.max(clip.dur, 1e-3)));
+  let Z = base, FX = fx0, FY = fy0;
+  if (cam.keys?.length) {
+    const K = cam.keys;
+    const comp = (j) => {
+      if (t < K[0][0]) return K[0][j];
+      for (let i = 1; i < K.length; i++) if (t < K[i][0]) return K[i - 1][j] + (K[i][j] - K[i - 1][j]) * EASE_JS.inOutSine(cl((t - K[i - 1][0]) / Math.max(1e-3, K[i][0] - K[i - 1][0])));
+      return K[K.length - 1][j];
+    };
+    Z = base * comp(1); FX = comp(2); FY = comp(3);
+  } else {
+    const move = cam.move || 'static';
+    if (move === 'push-in') Z = base * (1 + amt * e);
+    else if (move === 'pull-out') Z = base * (1 + amt * (1 - e));
+    else if (move === 'pan-left' || move === 'pan-right') { Z = base * (1 + amt); FX = cl(fx0 + (move === 'pan-left' ? -1 : 1) * span * (e - 0.5)); }
+    else if (move === 'tilt-up' || move === 'tilt-down') { Z = base * (1 + amt); FY = cl(fy0 + (move === 'tilt-up' ? -1 : 1) * span * (e - 0.5)); }
+    else if (move === 'drift') { Z = base * (1 + amt * 0.5 * e); FX = cl(fx0 + 0.15 * (e - 0.5)); }
+  }
+  let sx = 0, sy = 0;
+  for (const s of cam.shake || []) {
+    const d = Math.max(0.05, s.dur ?? 0.5), u = t - s.at, f = s.freq ?? 9, a = s.amp ?? 10;
+    if (u < 0 || u > d) continue;
+    const env = Math.exp((-5 * u) / d);
+    sx += a * env * Math.sin(2 * Math.PI * f * u); sy += a * 0.7 * env * Math.cos(2 * Math.PI * f * 0.77 * u + 0.6);
+  }
+  // crop window x = (W*Z - W)*FX + sx, clamped to the scaled frame
+  const cx = Math.min(Math.max(0, (W * Z - W) * FX + sx), W * Z - W), cy = Math.min(Math.max(0, (H * Z - H) * FY + sy), H * Z - H);
+  return { Z, ox: -cx / W, oy: -cy / H };
+}
+
 // Returns expressions (in ffmpeg syntax, variable t) for zoom Z(t) >= 1, focus fx(t), fy(t).
 export function cameraExprs(clip, dur) {
   const cam = clip.camera || {};
@@ -108,22 +165,107 @@ export function frameChain({ clip, media, W, H, dur, globalGrade, trf }) {
   f.push(`scale=${PW}:${PH}:flags=lanczos`);
   // 2) per-frame zoom relative to that size, 3) crop the output window around the focus point
   const static_ = !/t/.test(Z);
+  const { SX, SY } = shakeExprs(clip);
+  const shk = SX !== '0';
   const sw_ = `max(${W},trunc(${PW}*(${Z})/${n(zmax)}/2)*2)`, sh_ = `max(${H},trunc(${PH}*(${Z})/${n(zmax)}/2)*2)`;
   if (static_ && Math.abs(Number(Z) - zmax) < 1e-9) {
-    f.push(`crop=${W}:${H}:x='(iw-${W})*(${FX})':y='(ih-${H})*(${FY})'`);
+    const x = shk ? `clip((iw-${W})*(${FX})+${SX},0,iw-${W})` : `(iw-${W})*(${FX})`, y = shk ? `clip((ih-${H})*(${FY})+${SY},0,ih-${H})` : `(ih-${H})*(${FY})`;
+    f.push(`crop=${W}:${H}:x='${x}':y='${y}'`);
   } else {
     f.push(`scale=w='${sw_}':h='${sh_}':eval=frame:flags=bicubic`);
     // crop's iw/ih are frozen at the first frame, so the per-frame size is recomputed here
-    f.push(`crop=${W}:${H}:x='(${sw_}-${W})*(${FX})':y='(${sh_}-${H})*(${FY})'`);
+    const x = `(${sw_}-${W})*(${FX})`, y = `(${sh_}-${H})*(${FY})`;
+    f.push(`crop=${W}:${H}:x='${shk ? `clip(${x}+${SX},0,${sw_}-${W})` : x}':y='${shk ? `clip(${y}+${SY},0,${sh_}-${H})` : y}'`);
   }
   f.push(...gradeFilters(clip.grade, globalGrade));
   f.push('setsar=1');
   return f;
 }
 
+// ---------- footage FX ----------
+// clip.fx: light and optics on the picture itself, never geometry. Times are local to the clip.
+//   { type: 'exposure' | 'saturation' | 'contrast', at, dur, amount, shape }   animated eq pulses
+//   { type: 'bloom', amount, threshold, radius, tint, at?, dur?, shape? }    highlight glow (constant, or a pulse)
+//   { type: 'defocus', amount (0..1), radius, at?, dur?, shape? }           lens defocus (rack, or hold)
+//   { type: 'fringe', at, dur, px }                                          lens colour fringe on impact cuts
+// shape: 'bell' (in and out), 'flash' (fast attack, smooth decay), 'hold' (rises over `rise` s and stays), 'fall' (starts full, fades out).
+export function fxShape(v, f) {
+  if (f.at === undefined) return '1';
+  const at = n(f.at), d = n(Math.max(0.02, f.dur ?? 0.4)), u = `clip((${v}-${at})/${d},0,1)`;
+  switch (f.shape || 'bell') {
+    case 'flash': return `(clip((${v}-${at})/0.05,0,1)*pow(1-${u},2))`;
+    case 'hold': { const r = n(Math.max(0.02, f.rise ?? f.dur ?? 0.4)); return `((1-cos(PI*clip((${v}-${at})/${r},0,1)))/2)`; }
+    case 'fall': return `pow(1-${u},2)*gte(${v},${at})+lt(${v},${at})`;
+    case 'bell': default: return `pow(sin(PI*${u}),2)`;
+  }
+}
+
+// Same shapes in JS (per-frame values for blend opacity, sent with sendcmd: per-pixel expressions are far too slow).
+export function fxShapeJS(t, f) {
+  if (f.at === undefined) return 1;
+  const d = Math.max(0.02, f.dur ?? 0.4), u = Math.min(1, Math.max(0, (t - f.at) / d));
+  switch (f.shape || 'bell') {
+    case 'flash': return Math.min(1, Math.max(0, (t - f.at) / 0.05)) * (1 - u) ** 2;
+    case 'hold': { const r = Math.max(0.02, f.rise ?? f.dur ?? 0.4); return (1 - Math.cos(Math.PI * Math.min(1, Math.max(0, (t - f.at) / r)))) / 2; }
+    case 'fall': return t < f.at ? 1 : (1 - u) ** 2;
+    case 'bell': default: return Math.sin(Math.PI * u) ** 2;
+  }
+}
+
+// Returns { graph, cmds }: graph from inL to outL; cmds is a sendcmd script to write at cmdPath.
+export function fxGraph(fx, inL, outL, { fps = 30, frames = 0, cmdPath = '' } = {}) {
+  const list = (fx || []).filter((f) => !f.off);
+  if (!list.length) return { graph: `${inL}null${outL}`, cmds: '' };
+  const parts = [];
+  let cur = inL, k = 0;
+  const lab = () => `[fx${k++}]`;
+  const sum = (type, v) => list.filter((f) => f.type === type).map((f) => `${n(f.amount ?? 0)}*${fxShape(v, f)}`).join('+');
+  const ex = sum('exposure', 't'), sa = sum('saturation', 't'), co = sum('contrast', 't');
+  if (ex || sa || co) {
+    const o = lab();
+    parts.push(`${cur}eq=brightness='${ex || 0}':saturation='1+(${sa || 0})':contrast='1+(${co || 0})':eval=frame${o}`); cur = o;
+  }
+  const blooms = list.filter((f) => f.type === 'bloom'), defs = list.filter((f) => f.type === 'defocus');
+  // per-frame opacities
+  const series = (arr, cap) => Array.from({ length: frames }, (_, i) => Math.min(cap, arr.reduce((acc, f) => acc + (f.amount ?? 0.5) * fxShapeJS(i / fps, f), 0)));
+  const lines = [];
+  const anim = (name, vals) => {
+    let last = null;
+    vals.forEach((v, i) => { const q = Number(v.toFixed(3)); if (q !== last) { lines.push(`${n(i / fps)} ${name} all_opacity ${q};`); last = q; } });
+  };
+  const rgb = lab(); parts.push(`${cur}format=gbrp${cmdPath && (blooms.length || defs.length) ? `,sendcmd=f='${cmdPath.replace(/'/g, "\\'")}'` : ''}${rgb}`); cur = rgb;
+  if (blooms.length) {
+    const b0 = blooms[0], thr = b0.threshold ?? 0.62, rad = b0.radius ?? 22;
+    const [tr, tg, tb] = b0.tint || [1, 0.8, 0.55];
+    const vals = series(blooms, 1);
+    anim('blend@bloom', vals);
+    const a = lab(), b = lab(), c = lab(), o = lab();
+    parts.push(`${cur}split${a}${b}`);
+    parts.push(`${b}colorlevels=rimin=${n(thr)}:gimin=${n(thr)}:bimin=${n(thr)},colorchannelmixer=rr=${n(tr)}:gg=${n(tg)}:bb=${n(tb)},gblur=sigma=${n(rad)}:steps=2${c}`);
+    parts.push(`${a}${c}blend@bloom=all_mode=screen:all_opacity=${n(vals[0] ?? 0)}${o}`); cur = o;
+  }
+  if (defs.length) {
+    const rad = defs[0].radius ?? 14;
+    const vals = series(defs, 1);
+    anim('blend@defocus', vals);
+    const a = lab(), b = lab(), c = lab(), o = lab();
+    parts.push(`${cur}split${a}${b}`);
+    parts.push(`${b}gblur=sigma=${n(rad)}:steps=3${c}`);
+    // normal mode: top*opacity + bottom*(1-opacity), so the blurred copy goes on top
+    parts.push(`${c}${a}blend@defocus=all_mode=normal:all_opacity=${n(vals[0] ?? 0)}${o}`); cur = o;
+  }
+  const fr = list.filter((f) => f.type === 'fringe');
+  if (fr.length) {
+    const o = lab();
+    parts.push(`${cur}${fr.map((f) => { const p = Math.round(f.px ?? 6); return `rgbashift=rh=${-p}:bh=${p}:rv=${Math.round(p / 3)}:enable='between(t,${n(f.at)},${n(f.at + (f.dur ?? 0.1))})'`; }).join(',')}${o}`); cur = o;
+  }
+  parts.push(`${cur}format=yuv420p${outL}`);
+  return { graph: parts.join(';'), cmds: lines.join('\n') };
+}
+
 // ---------- segments ----------
 export function segmentKey(tl, clip, media, root, W, H) {
-  return sha({ v: 4, clip: { ...clip, transition: undefined, label: undefined, notes: undefined }, src: fileSig(resolve(root, media.path)), W, H, fps: tl.fps, global: tl.grade?.global, grades: clip.grade || tl.grade?.global ? GRADES() : null });
+  return sha({ v: 5, clip: { ...clip, transition: undefined, label: undefined, notes: undefined }, src: fileSig(resolve(root, media.path)), W, H, fps: tl.fps, global: tl.grade?.global, grades: clip.grade || tl.grade?.global ? GRADES() : null });
 }
 
 async function stabilizeTrf(clip, media, root, cacheDir) {
@@ -157,7 +299,10 @@ export async function renderSegment({ tl, clip, root, cacheDir, W, H, quality = 
   let graph;
   const chain = frameChain({ clip, media, W, H, dur: clip.dur, globalGrade: tl.grade?.global, trf }).join(',');
   // fps -> look (reframe/camera/grade) -> pad/trim to the exact frame count
-  const finish = `fps=${fps},${chain},tpad=stop_mode=clone:stop_duration=2,trim=end_frame=${frames},format=yuv420p`;
+  const cmdPath = out + '.cmd';
+  const fxg = fxGraph(clip.fx, '[pre]', '', { fps, frames, cmdPath });
+  if (fxg.cmds) writeFileSync(cmdPath, fxg.cmds + '\n');
+  const finish = `fps=${fps},${chain},tpad=stop_mode=clone:stop_duration=2,trim=end_frame=${frames},format=yuv420p[pre];${fxg.graph}`;
   if (media.kind === 'video') {
     const chunks = speedChunks(clip);
     const interp = clip.interpolate ? `minterpolate=fps=${fps}:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1,` : '';

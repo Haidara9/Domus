@@ -4,7 +4,7 @@ import { copyFileSync, renameSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { ensureDir, exists, ffmpeg, log, sha, snap, toFrames, writeJSON } from './util.mjs';
 import { FORMATS, layout, save, validate } from './timeline.mjs';
-import { joinSegments, renderSegment } from './video.mjs';
+import { cameraAt, joinSegments, renderSegment } from './video.mjs';
 import { OverlayRenderer } from './overlays.mjs';
 import { mixAudio } from './audio.mjs';
 import { qc } from './qc.mjs';
@@ -18,9 +18,28 @@ export const FFMPEG_VFX = {
   sharpen: (p = {}) => `cas=strength=${p.strength ?? 0.4}`,
 };
 
+// Tracked overlays follow the source footage; when the shot itself moves (camera keys, punch-ins, shake),
+// the clip's camera at each frame is attached as props._cam so the graphic stays locked to the picture.
+function attachCamera(tl, it) {
+  if (!it.props?.track || it.props.camera === false) return it;
+  const { clips } = layout(tl);
+  const fps = tl.fps, n = Math.max(1, toFrames(it.dur, fps));
+  const f = [];
+  let moved = false;
+  for (let i = 0; i <= n; i++) {
+    const g = it.start + i / fps;
+    const c = clips.find((x) => g >= x.start && g < x.end) || clips[clips.length - 1];
+    if (!c) return it;
+    const { Z, ox, oy } = cameraAt(c, g - c.start, tl.width, tl.height);
+    if (Math.abs(Z - 1) > 1e-6 || Math.abs(ox) > 1e-6 || Math.abs(oy) > 1e-6) moved = true;
+    f.push([Number(Z.toFixed(5)), Number(ox.toFixed(5)), Number(oy.toFixed(5))]);
+  }
+  return moved ? { ...it, props: { ...it.props, _cam: { fps, f } } } : it;
+}
+
 export function overlayItems(tl) {
   const all = [];
-  for (const tr of ['animation', 'vfx', 'text']) for (const it of tl.tracks[tr]) all.push({ ...it, track: tr });
+  for (const tr of ['animation', 'vfx', 'text']) for (const it of tl.tracks[tr]) all.push({ ...attachCamera(tl, it), track: tr });
   return all
     .filter((it) => !it.hidden)
     .sort((a, b) => (a.layer ?? LAYER_ORDER[a.track] * 100) - (b.layer ?? LAYER_ORDER[b.track] * 100) || a.start - b.start);

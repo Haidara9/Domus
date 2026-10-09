@@ -24,6 +24,16 @@ List them live with `node engine/bin/domus.mjs library components|transitions|gr
 | `lightDust` | vfx | `area:[x,y,w,h]`, `count`, `wind` |
 | `vignette` | vfx | `strength`, `radius` |
 | `flash` | vfx | `peak`, `color` |
+| `perspectiveOutline` | animation | `points` (reference-frame coords on real edges), `track`, `closed`, `drawDur`, `inset` (second line), `brackets`, `dash`, `glint`, `width`. Metal line with spark head; retracts on exit |
+| `tagCard` | text | `anchor`, `offset`, `title`, `sub`, `track` (position). Diamond anchor, metal leader with spark, petrol glass card whose border traces itself, reverse exit |
+| `chapter` | text | `index`, `total`, `title`, `sub`, `at`. Backdrop, rolling number with a light pass, metal rule, progress segments |
+| `strokeWord` | animation | `text`, `at`, `size`, `fill`, `width`. Metal outline wipe with sparks on the edge |
+| `introTitle` | animation | `title`, `sub`, `at`, `size`. Double arch rising from both bases, apex flash, petrol glow, dust, streak |
+| `areaReveal` | animation | `value`, `unit`, `sup`, `label`, `sub`, `at` (baseline), `size`, `land` (beat time), `depth`. Extruded gold numeral, odometer digits, landing burst, dimension line, brackets, reflection. Pair with clip `fx` defocus + darken |
+| `lightLeak` | vfx | `colors` (palette names or hex), `dir`, `strength`, `seed`. 0.4-0.8 s on a cut |
+
+Shared helpers in the runtime: `D.PAL()` (brand + extended accents), `D.metal` (copper/gold sheen gradient),
+`D.polylineRange`, `D.pathPoint`, `D.spark`, `D.sparks` (deterministic bursts), `D.bracket`, `D.sheenMasked`, `D.offscreen`.
 
 Icons for `specCard`: `area, bed, bath, parking, floors, view, garden, pool, elevator`.
 
@@ -39,6 +49,20 @@ Icons for `specCard`: `area, bed, bath, parking, floors, view, garden, pool, ele
 `span` (pan travel), `ease`, plus `keys: [[t, zoom, fx, fy], …]` for custom moves. `reframe: {focus:[x,y], zoom}`
 positions the crop when the source aspect differs from the canvas. `stabilize: {smoothing, zoom}` (vid.stab two-pass).
 `speed` or `ramp: [{at, speed}]` (smooth ramps; `interpolate: true` enables motion interpolation, test before use).
+`camera.shake: [{at, dur, amp (px), freq}]` adds a damped shake (needs zoom > 1 for margin; use on impact cuts only).
+Tracked overlays automatically follow the clip's camera (keys, moves, shake): the engine attaches the move as `props._cam`.
+
+## Footage FX (V1 clips: `fx`)
+Light and optics on the picture itself; geometry never changes. Times are local to the clip.
+| type | what | props |
+|---|---|---|
+| `exposure`, `saturation`, `contrast` | animated `eq` pulses (or constant without `at`) | `at`, `dur`, `amount`, `shape` |
+| `bloom` | warm highlight glow (screen blend) | `amount`, `threshold`, `radius`, `tint:[r,g,b]`, optional pulse `at/dur/shape` |
+| `defocus` | lens defocus (rack or hold), e.g. behind a hero number | `amount` 0..1, `radius`, `at`, `dur`, `shape: hold` |
+| `fringe` | lens colour fringe for 2-3 frames on an impact cut | `at`, `dur`, `px` |
+
+Shapes: `bell`, `flash` (fast attack), `hold` (rises over `rise`/`dur` and stays), `fall`. Bloom/defocus opacities are
+sent per frame with `sendcmd` (per-pixel blend expressions are ~6x slower).
 
 ## Transitions (`library/transitions/transitions.json`)
 `cut, dissolve, dip-black, dip-white, dip-paper, whip-left/right/up/down, push-left/right, zoom-through,

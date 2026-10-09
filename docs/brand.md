@@ -19,6 +19,9 @@ Source: the owner's social posts and logo (seen 2026-10-09). Tokens live in `bra
 | Bracket | Vertical copper line with end caps and a midpoint dot, on the outer side of the text | `brandStatement` |
 | Rule | Short copper rule under the headline | `archTitle`, `brandStatement` |
 | Counter | "01 / 03" bottom-left with a rule above | `counter` |
+| Metal light | Copper to gold gradient (`gold #E9C88F`, `goldHi #FFE6B8`) on lines and display numerals, with a travelling glint | `D.metal`, `perspectiveOutline`, `areaReveal` |
+| Cool counterweight | Petrol/teal (`petrol #123A40`, `teal #2E6E73`, `tealHi #7FC1BC`) in glass plates, glows and light leaks; never on architecture lines alone | `tagCard`, `lightLeak` |
+| Sparks | Ember `#F2A65A` points and particles where a line draws or a number lands | `D.spark`, `areaReveal` |
 | Wordmark | Classical serif DOMUS whose O is an arch emblem under a roof chevron; "REAL ESTATE" spaced, between rules | `logoReveal` (real file only) |
 
 ## Motion rules
