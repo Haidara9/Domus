@@ -42,3 +42,17 @@ test('cameraAt mirrors keys and maps source to output', () => {
   const s = cameraAt({ dur: 1, camera: { keys: [[0, 1.1, 0.5, 0.5]], shake: [{ at: 0, dur: 0.5, amp: 20, freq: 10 }] } }, 0.03, 1920, 1080);
   assert.ok(s.ox <= 0 && s.ox >= -(s.Z - 1));
 });
+
+test('ramp redesign keeps the cut points and lands the peak near the beat', async () => {
+  const { designRemap } = await import('../src/remap.mjs');
+  const { timemapPts } = await import('../src/video.mjs');
+  // synthetic edit: calm, a sharp burst at 1.4 s, calm again; 30 fps over 3 s
+  const frames = Array.from({ length: 91 }, (_, i) => { const t = i / 30; return { t, speed: 4 + 120 * Math.exp(-((t - 1.4) ** 2) / 0.005) }; });
+  const r = designRemap({ fps: 30, frames }, { a: 0, b: 3, beat: 1.6, fastAbove: 25 });
+  const P = r.points;
+  assert.equal(P[0][1], 0); assert.ok(Math.abs(P[P.length - 1][1] - 3) < 1e-9); assert.ok(Math.abs(P[P.length - 1][0] - 3) < 1e-9);
+  for (let i = 1; i < P.length; i++) assert.ok(P[i][1] >= P[i - 1][1] - 1e-9, 'monotone');
+  assert.ok(Math.abs(r.report.peakActual - 1.6) < 0.12, `peak ${r.report.peakActual}`);
+  assert.ok(r.report.rateMin > 0.3);
+  assert.match(timemapPts([[0, 0], [1, 2], [2, 2.5]]), /^0\+0\.5\*clip\(T-0,0,2\)\+2\*clip\(T-2,0,0\.5\)$/);
+});

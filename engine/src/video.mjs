@@ -1,6 +1,7 @@
 // V1 rendering: per-clip segments (trim, speed/ramp, stabilize, reframe, camera move, grade)
 // cached by content hash, then joined with transitions into one base video.
-import { join, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { renameSync, writeFileSync } from 'node:fs';
 import { LIBRARY_DIR, debug, ensureDir, exists, ffmpeg, fileSig, log, readJSON, sha, toFrames } from './util.mjs';
 import { layout, speedChunks, transitionDur } from './timeline.mjs';
@@ -8,6 +9,7 @@ import { layout, speedChunks, transitionDur } from './timeline.mjs';
 export const GRADES = () => readJSON(join(LIBRARY_DIR, 'color', 'grades.json'));
 export const TRANSITIONS = () => readJSON(join(LIBRARY_DIR, 'transitions', 'transitions.json'));
 
+const TOOLS_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'tools');
 const n = (x) => Number(x).toFixed(6).replace(/\.?0+$/, '') || '0';
 
 // ---------- grade ----------
@@ -106,6 +108,29 @@ export function cameraAt(clip, t, W = 1920, H = 1080) {
   // crop window x = (W*Z - W)*FX + sx, clamped to the scaled frame
   const cx = Math.min(Math.max(0, (W * Z - W) * FX + sx), W * Z - W), cy = Math.min(Math.max(0, (H * Z - H) * FY + sy), H * Z - H);
   return { Z, ox: -cx / W, oy: -cy / H };
+}
+
+// ---------- time remap ----------
+// clip.timemap: [[outLocal, srcLocal], ...] monotone, from (0,0) to (dur, out-in): a free-form speed curve that
+// keeps the clip's duration (so cuts stay on the music) while redistributing speed inside it.
+// Rendered by interpolating the source to 120 fps (motion-compensated) and re-timing with setpts.
+export function sourceTimeAt(clip, t) {
+  const P = clip.timemap;
+  if (!P?.length) return t * (clip.speed || 1);
+  if (t <= P[0][0]) return P[0][1];
+  for (let i = 1; i < P.length; i++) if (t <= P[i][0]) { const k = (t - P[i - 1][0]) / Math.max(1e-9, P[i][0] - P[i - 1][0]); return P[i - 1][1] + (P[i][1] - P[i - 1][1]) * k; }
+  return P[P.length - 1][1];
+}
+
+// setpts expression: source local time T -> output local time, as a flat sum of clipped ramps (no nesting).
+export function timemapPts(P) {
+  const terms = [n(P[0][0])];
+  for (let i = 1; i < P.length; i++) {
+    const ds = P[i][1] - P[i - 1][1], dout = P[i][0] - P[i - 1][0];
+    if (ds <= 1e-6) continue;
+    terms.push(`${n(dout / ds)}*clip(T-${n(P[i - 1][1])},0,${n(ds)})`);
+  }
+  return terms.join('+');
 }
 
 // Returns expressions (in ffmpeg syntax, variable t) for zoom Z(t) >= 1, focus fx(t), fy(t).
@@ -265,7 +290,28 @@ export function fxGraph(fx, inL, outL, { fps = 30, frames = 0, cmdPath = '' } = 
 
 // ---------- segments ----------
 export function segmentKey(tl, clip, media, root, W, H) {
-  return sha({ v: 5, clip: { ...clip, transition: undefined, label: undefined, notes: undefined }, src: fileSig(resolve(root, media.path)), W, H, fps: tl.fps, global: tl.grade?.global, grades: clip.grade || tl.grade?.global ? GRADES() : null });
+  return sha({ v: 8, clip: { ...clip, transition: undefined, label: undefined, notes: undefined }, src: fileSig(resolve(root, media.path)), W, H, fps: tl.fps, global: tl.grade?.global, grades: clip.grade || tl.grade?.global ? GRADES() : null });
+}
+
+async function retimeSource({ clip, media, src, W, H, fps, frames, cacheDir, quality }) {
+  const zm = cameraExprs(clip, clip.dur).zmax;
+  const ww = Math.min(media.width, Math.ceil((W * zm) / 2) * 2), wh = Math.min(media.height, Math.ceil((H * zm) / 2) * 2);
+  const S = Array.from({ length: frames }, (_, i) => Number(sourceTimeAt(clip, i / fps).toFixed(5)));
+  const key = sha({ v: 1, s: fileSig(src), in: clip.in, out: clip.out, S, ww, wh, fps, draft: quality === 'draft' });
+  const dir = ensureDir(join(cacheDir, 'retime'));
+  const out = join(dir, `${clip.id}_${key}.mp4`);
+  if (exists(out)) return out;
+  const mapPath = out + '.map.json';
+  writeFileSync(mapPath, JSON.stringify({ frames, src: S }));
+  log(`  retime ${clip.id} (${frames}f)`);
+  const { spawn } = await import('node:child_process');
+  await new Promise((res, rej) => {
+    const p = spawn('python3', [join(TOOLS_DIR, 'retime.py'), src, String(clip.in), String(clip.out), mapPath, out + '.part.mp4', '--size', `${ww}x${wh}`, '--fps', String(fps), ...(quality === 'draft' ? ['--draft'] : [])], { stdio: ['ignore', 'pipe', 'inherit'] });
+    let o = ''; p.stdout.on('data', (d) => (o += d));
+    p.on('close', (c) => (c === 0 ? (debug(`retime ${clip.id} ${o.trim()}`), res()) : rej(new Error(`retime failed for ${clip.id}`))));
+  });
+  renameSync(out + '.part.mp4', out);
+  return out;
 }
 
 async function stabilizeTrf(clip, media, root, cacheDir) {
@@ -306,7 +352,12 @@ export async function renderSegment({ tl, clip, root, cacheDir, W, H, quality = 
   if (media.kind === 'video') {
     const chunks = speedChunks(clip);
     const interp = clip.interpolate ? `minterpolate=fps=${fps}:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1,` : '';
-    if (chunks.length === 1) {
+    if (clip.timemap?.length) {
+      // frame-accurate retime (engine/tools/retime.py): real frames where the remap lands on them, interpolated in-betweens elsewhere
+      const inter = await retimeSource({ clip, media, src, W, H, fps, frames, cacheDir, quality });
+      args.length = 0; args.push('-i', inter);
+      graph = `[0:v]setpts=PTS-STARTPTS,${finish}[v]`;
+    } else if (chunks.length === 1) {
       graph = `[0:v]trim=start=0:end=${n(clip.out - clip.in)},setpts=(PTS-STARTPTS)/${n(chunks[0].speed)},${interp}${finish}[v]`;
     } else {
       const parts = chunks.map((c, i) => `[s${i}]trim=start=${n(c.a - clip.in)}:end=${n(c.b - clip.in)},setpts=(PTS-STARTPTS)/${n(c.speed)}[c${i}]`);

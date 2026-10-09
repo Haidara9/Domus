@@ -366,9 +366,11 @@
     const e = D.envelope(t, dur, p);
     // Camera tracking: p.track = { frames: [[localT, h0..h8], ...] } homographies mapping normalized
     // reference-frame coordinates to the current frame (from engine/tools/track.py).
-    const Ht = p.track ? D.trackAt(p.track, t) : null;
-    // p._cam (attached by the engine): the shot's own camera move, so tracked graphics stay on the picture
+    // p._cam (attached by the engine): the shot's own camera move, so tracked graphics stay on the picture;
+    // its 4th value (when present) is the track time of the frame on screen (time-remapped clips)
     const cam = p._cam ? D.camAt(p._cam, t) : null;
+    const tt = cam && cam.length > 3 && Number.isFinite(cam[3]) ? cam[3] : t;
+    const Ht = p.track ? D.trackAt(p.track, tt) : null;
     const mapH = (x, y) => {
       let nx = x, ny = y;
       if (Ht) { const w = Ht[6] * x + Ht[7] * y + Ht[8]; nx = (Ht[0] * x + Ht[1] * y + Ht[2]) / w; ny = (Ht[3] * x + Ht[4] * y + Ht[5]) / w; }
@@ -429,7 +431,7 @@
   D.camAt = (cam, t) => {
     const f = cam.f; if (!f || !f.length) return null;
     const x = Math.max(0, Math.min(f.length - 1, t * cam.fps)), i = Math.floor(x), j = Math.min(f.length - 1, i + 1), k = x - i;
-    return f[i].map((v, m) => v + (f[j][m] - v) * k);
+    return f[i].map((v, m) => (v === null || f[j][m] === null ? v : v + (f[j][m] - v) * k));
   };
 
   // Normalized anchor -> pixels. Accepts [x,y] in 0..1 of the frame.

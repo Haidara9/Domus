@@ -4,7 +4,7 @@ import { copyFileSync, renameSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { ensureDir, exists, ffmpeg, log, sha, snap, toFrames, writeJSON } from './util.mjs';
 import { FORMATS, layout, save, validate } from './timeline.mjs';
-import { cameraAt, joinSegments, renderSegment } from './video.mjs';
+import { cameraAt, joinSegments, renderSegment, sourceTimeAt } from './video.mjs';
 import { OverlayRenderer } from './overlays.mjs';
 import { mixAudio } from './audio.mjs';
 import { qc } from './qc.mjs';
@@ -20,21 +20,28 @@ export const FFMPEG_VFX = {
 
 // Tracked overlays follow the source footage; when the shot itself moves (camera keys, punch-ins, shake),
 // the clip's camera at each frame is attached as props._cam so the graphic stays locked to the picture.
+// When the clip is time-remapped, a 4th value carries the track time (source time - props.trackOrigin), so the
+// track (measured on the source) is read at the frame actually on screen.
 function attachCamera(tl, it) {
   if (!it.props?.track || it.props.camera === false) return it;
   const { clips } = layout(tl);
   const fps = tl.fps, n = Math.max(1, toFrames(it.dur, fps));
   const f = [];
-  let moved = false;
+  let moved = false, remapped = false;
+  const c0 = clips.find((x) => it.start >= x.start && it.start < x.end);
+  const origin = it.props.trackOrigin ?? (c0 ? it.start - c0.start + c0.in : it.start);
   for (let i = 0; i <= n; i++) {
     const g = it.start + i / fps;
     const c = clips.find((x) => g >= x.start && g < x.end) || clips[clips.length - 1];
     if (!c) return it;
     const { Z, ox, oy } = cameraAt(c, g - c.start, tl.width, tl.height);
     if (Math.abs(Z - 1) > 1e-6 || Math.abs(ox) > 1e-6 || Math.abs(oy) > 1e-6) moved = true;
-    f.push([Number(Z.toFixed(5)), Number(ox.toFixed(5)), Number(oy.toFixed(5))]);
+    const row = [Number(Z.toFixed(5)), Number(ox.toFixed(5)), Number(oy.toFixed(5))];
+    if (c.timemap?.length || it.props.trackOrigin !== undefined) { remapped = true; row.push(Number((c.in + sourceTimeAt(c, g - c.start) - origin).toFixed(4))); }
+    f.push(row);
   }
-  return moved ? { ...it, props: { ...it.props, _cam: { fps, f } } } : it;
+  if (remapped) f.forEach((r) => { if (r.length < 4) r.push(null); });
+  return moved || remapped ? { ...it, props: { ...it.props, _cam: { fps, f } } } : it;
 }
 
 export function overlayItems(tl) {

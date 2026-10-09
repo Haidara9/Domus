@@ -93,7 +93,8 @@
       const [Hi] = tint('area_hi', (x) => { x.fillStyle = '#FFF7EA'; });
       const [Gd, gx] = tint('area_gold', (x) => {
         const gr = x.createLinearGradient(0, pad - asc * 0.05, 0, pad + asc);
-        gr.addColorStop(0, '#FFF6E2'); gr.addColorStop(0.3, '#FFE2AE'); gr.addColorStop(0.58, '#E7B46C'); gr.addColorStop(0.8, '#C68B52'); gr.addColorStop(1, '#9C6233');
+        // brand copper face (copperLight -> copper) with a warm highlight at the top
+        gr.addColorStop(0, '#FBE3CB'); gr.addColorStop(0.28, '#E7B98C'); gr.addColorStop(0.55, '#C08A5A'); gr.addColorStop(0.8, '#A86F3F'); gr.addColorStop(1, '#7E4F2A');
         x.fillStyle = gr;
       });
       // sheen on the gold face: a pass after landing, then every 2.4 s
@@ -141,6 +142,9 @@
         g.globalAlpha *= vis;
         if (blur > 0.3) g.filter = `blur(${blur.toFixed(1)}px)`;
         g.save(); g.globalAlpha *= 0.55; g.drawImage(R, ox, cy + 14 * S - (fh - pad - asc)); g.restore();
+        // copper glow around the figure (breathes after the landing)
+        g.save(); g.globalCompositeOperation = 'lighter'; g.filter = `blur(${(26 * S).toFixed(1)}px)`;
+        g.globalAlpha *= 0.42 + 0.25 * lp + 0.08 * Math.sin(t * 2.4); g.drawImage(Gd, ox, oy); g.restore();
         g.shadowColor = 'rgba(0,0,0,0.6)'; g.shadowBlur = 40 * S; g.shadowOffsetY = 18 * S;
         g.drawImage(N, ox, oy);
         g.restore();

@@ -7,7 +7,7 @@
   function words(str) { return String(str || '').split(/\s+/).filter(Boolean); }
 
   // Draw a line of text word by word, each word rising out of its own mask (RTL-aware layout).
-  function maskedWords(g, str, x, y, { size, role = 'display', weight = 700, color, t0 = 0, stagger = 0.07, dur = 0.5, t, align = 'right', lang } = {}) {
+  function maskedWords(g, str, x, y, { size, role = 'display', weight = 700, color, t0 = 0, stagger = 0.09, dur = 0.75, t, align = 'right', lang } = {}) {
     const ws = words(str); if (!ws.length) return 0;
     const rtl = D.isArabic(str);
     D.setFont(g, { role, weight, size, text: str, lang });
@@ -30,6 +30,8 @@
       g.save();
       D.clipRect(g, o.x - size * 0.3, y - size * 1.15, o.wd + size * 0.6, size * 1.55);
       g.fillStyle = color;
+      g.globalAlpha *= Math.min(1, k * 1.6);
+      if (k < 0.98) g.filter = `blur(${((1 - k) * size * 0.05).toFixed(2)}px)`;
       D.setFont(g, { role, weight, size, text: o.w, lang });
       D.text(g, o.w, o.x, y + (1 - k) * size * 1.1, { align: 'left' });
       g.restore();
@@ -54,8 +56,8 @@
   D.register('tagCard', {
     description: 'Architectural tag v2: diamond anchor with rotating dashed ring and copper/teal pulses, metal leader with spark head, petrol-glass card whose metal border traces itself, masked Arabic title + Playfair italic sub, light sweep; exits by reversing. Pair with props.track (trackMode position).',
     defaults: {
-      anchor: [0.5, 0.5], offset: [0.14, -0.16], title: 'واجهة زجاجية', sub: 'Glass Frontage', size: 48, subSize: 24,
-      trackMode: 'position', in: { dur: 1.1, style: 'none' }, out: { dur: 0.6, style: 'none' },
+      anchor: [0.5, 0.5], offset: [0.14, -0.16], title: 'واجهة زجاجية', sub: 'Glass Frontage', size: 52, subSize: 27,
+      trackMode: 'position', in: { dur: 1.8, style: 'none' }, out: { dur: 0.85, style: 'none' },
     },
     draw(g, t, ctx) {
       const { p, S, W, H, dur } = ctx;
@@ -66,7 +68,7 @@
       const o = ease.inOutCubic(range(t, dur - ctx.outD, dur));
       const oText = range(o, 0, 0.35), oPlate = ease.inOutCubic(range(o, 0.15, 0.7)), oLead = range(o, 0.45, 0.9), oAnchor = range(o, 0.7, 1);
       // ---- anchor
-      const dk = D.springP(t, 'snappy') * (1 - ease.inCubic(oAnchor));
+      const dk = D.springP(t, 'default') * (1 - ease.inCubic(oAnchor));
       if (dk > 0.001) {
         g.save();
         for (let r = 0; r < 2; r++) {
@@ -85,7 +87,7 @@
       }
       // ---- leader
       const lead = [[ax, ay], [ex, ey], [ex + dir * 22 * S, ey]];
-      const lk = ease.glide(range(t, 0.12, 0.55));
+      const lk = ease.inOutCubic(range(t, 0.2, 0.95));
       const lEnd = lk * (1 - oLead);
       if (lEnd > 0) {
         D.polylineRange(g, lead, 0, lEnd, { width: 5 * S, color: 'rgba(10,8,6,0.35)' });
@@ -93,7 +95,7 @@
         D.polylineRange(g, lead, 0, lEnd, { width: 2.4 * S, color: D.metal(g, ax, ay, ex, ey, ((t * 0.7) % 1.6) - 0.3) });
         g.restore();
         if (lk < 1) { const [hx, hy] = D.pathPoint(lead, lk); D.spark(g, hx, hy, 26 * S, 1); }
-        else if (o <= 0) { const u = ((t - 0.55) % 1.8) / 1.8; if (u < 0.6) { const [gx, gy] = D.pathPoint(lead, u / 0.6); D.spark(g, gx, gy, 20 * S, 0.8, { flare: 0.7 }); } }
+        else if (o <= 0) { const u = ((t - 0.95) % 1.8) / 1.8; if (u < 0.6) { const [gx, gy] = D.pathPoint(lead, u / 0.6); D.spark(g, gx, gy, 20 * S, 0.8, { flare: 0.7 }); } }
       }
       // ---- card geometry
       D.setFont(g, { role: 'display', weight: 800, size: p.size * S, text: p.title });
@@ -102,7 +104,7 @@
       const sw = p.sub ? D.measure(g, p.sub) + 2 * S * p.sub.length * 0.5 : 0;
       const padX = 30 * S, cw = Math.max(tw, sw) + padX * 2 + 8 * S, ch = (p.size + (p.sub ? p.subSize + 26 : 12)) * S + 38 * S;
       const cx0 = right ? ex + 22 * S : ex - 22 * S - cw, cy0 = ey - ch / 2;
-      const wk = ease.glide(range(t, 0.42, 0.88)) * (1 - oPlate);
+      const wk = ease.glide(range(t, 0.75, 1.4)) * (1 - oPlate);
       if (wk > 0) {
         g.save();
         const wpx = cw * wk;
@@ -122,12 +124,12 @@
         g.restore();
       }
       // border traces itself from the leader joint around the card
-      const bk = ease.inOutCubic(range(t, 0.5, 1.15)) * (1 - ease.inOutCubic(range(o, 0.05, 0.55)));
+      const bk = ease.inOutCubic(range(t, 0.85, 1.8)) * (1 - ease.inOutCubic(range(o, 0.05, 0.55)));
       if (bk > 0) {
         const jx = right ? cx0 : cx0 + cw, my = cy0 + ch / 2, fx = right ? cx0 + cw : cx0;
         const half1 = [[jx, my], [jx, cy0], [fx, cy0], [fx, my]], half2 = [[jx, my], [jx, cy0 + ch], [fx, cy0 + ch], [fx, my]];
         for (const h of [half1, half2]) D.polyline(g, h, bk, { width: 1.5 * S, color: D.metal(g, cx0, cy0, cx0 + cw, cy0 + ch, ((t * 0.4) % 1.6) - 0.3), cap: 'square', join: 'miter' });
-        const ck = ease.architectural(range(t, 0.95, 1.35)) * (1 - oText);
+        const ck = ease.architectural(range(t, 1.5, 2.0)) * (1 - oText);
         const L = 14 * S, m = 7 * S;
         D.bracket(g, fx + (right ? m : -m), cy0 - m, L, right ? -1 : 1, 1, ck, { width: 2 * S, color: P.goldHi });
         D.bracket(g, fx + (right ? m : -m), cy0 + ch + m, L, right ? -1 : 1, -1, ck, { width: 2 * S, color: P.goldHi });
@@ -139,9 +141,9 @@
         const tx = right ? cx0 + cw - padX : cx0 + cw - padX - 8 * S;
         const ty = cy0 + 20 * S + p.size * S * 0.92 + oText * 20 * S;
         g.shadowColor = 'rgba(0,0,0,0.35)'; g.shadowBlur = 8 * S;
-        maskedWords(g, p.title, tx, ty, { size: p.size * S, weight: 800, color: '#FFFFFF', t, t0: 0.6, align: 'right' });
+        maskedWords(g, p.title, tx, ty, { size: p.size * S, weight: 800, color: '#FFFFFF', t, t0: 1.0, align: 'right' });
         if (p.sub) {
-          const sk = ease.architectural(range(t, 0.88, 1.3));
+          const sk = ease.architectural(range(t, 1.35, 1.95));
           // divider: copper rule + teal dot
           const dw = 34 * S * sk;
           g.fillStyle = P.copperLight; g.fillRect(tx - dw, ty + 12 * S, dw, 2 * S);
@@ -151,7 +153,7 @@
           D.text(g, p.sub, tx, ty + (p.subSize + 22) * S + (1 - sk) * 10 * S, { align: 'right', tracking: 1 * S });
         }
         g.restore();
-        sheenPass(g, cx0, cy0, cw, ch, t, 1.05, 1.75, 0.2);
+        sheenPass(g, cx0, cy0, cw, ch, t, 1.9, 2.7, 0.2);
       }
     },
   });
@@ -159,22 +161,22 @@
   // ---------------------------------------------------------------------------
   D.register('chapter', {
     description: 'Chapter marker v2: soft dark backdrop, big Playfair number rolls up with a light pass, metal rule draws up with a spark, Arabic title words rise, English small caps settle, chapter progress segments fill.',
-    defaults: { index: 1, total: 4, title: 'الواجهة', sub: 'THE FRONTAGE', at: [0.055, 0.86], size: 116, in: { dur: 1.0, style: 'none' }, out: { dur: 0.5, style: 'none' } },
+    defaults: { index: 1, total: 4, title: 'الواجهة', sub: 'THE FRONTAGE', at: [0.055, 0.86], size: 116, in: { dur: 1.6, style: 'none' }, out: { dur: 0.8, style: 'none' } },
     draw(g, t, ctx) {
       const { p, S, dur, W, H } = ctx;
       const P = D.PAL();
       const [x, y] = D.at(ctx, p.at);
-      const outK = ease.exit(range(t, dur - ctx.outD, dur));
+      const outK = ease.inOutCubic(range(t, dur - ctx.outD, dur));
       const n = String(p.index).padStart(2, '0');
       // backdrop for legibility
-      const bk = ease.outCubic(range(t, 0, 0.6)) * (1 - outK);
+      const bk = ease.outCubic(range(t, 0, 0.9)) * (1 - outK);
       g.save(); g.globalAlpha *= bk;
       const rg = g.createRadialGradient(x + 200 * S, y - 40 * S, 10 * S, x + 200 * S, y - 40 * S, 520 * S);
       rg.addColorStop(0, 'rgba(6,14,16,0.55)'); rg.addColorStop(1, 'rgba(6,14,16,0)');
       g.fillStyle = rg; g.fillRect(0, y - 520 * S, Math.min(W, x + 760 * S), H - (y - 520 * S));
       g.restore();
       // number (white -> gold) rolling up out of its mask
-      const nk = ease.architectural(range(t, 0, 0.7));
+      const nk = ease.architectural(range(t, 0.1, 1.2));
       g.save(); g.shadowColor = 'rgba(0,0,0,0.45)'; g.shadowBlur = 18 * S;
       g.font = `500 ${Math.round(p.size * S)}px ${D.fontFamily('display', 'a', 'en')}`;
       const nw = D.measure(g, n);
@@ -184,11 +186,11 @@
       g.fillStyle = ng;
       D.text(g, n, x, y + (1 - nk) * p.size * S + outK * p.size * S, { align: 'left' });
       g.restore();
-      D.sheenMasked(g, x - 10 * S, y - p.size * S * 0.95, nw + 20 * S, p.size * S * 1.12, t, 0.75, 1.35, 0.6, (o) => {
+      D.sheenMasked(g, x - 10 * S, y - p.size * S * 0.95, nw + 20 * S, p.size * S * 1.12, t, 1.3, 2.0, 0.6, (o) => {
         o.fillStyle = '#fff'; o.font = `500 ${Math.round(p.size * S)}px ${D.fontFamily('display', 'a', 'en')}`; o.textAlign = 'left'; o.direction = 'ltr'; o.fillText(n, x, y);
       });
       // total
-      g.save(); g.globalAlpha *= ease.outCubic(range(t, 0.3, 0.8)) * (1 - outK); g.fillStyle = 'rgba(255,255,255,0.78)';
+      g.save(); g.globalAlpha *= ease.outCubic(range(t, 0.5, 1.2)) * (1 - outK); g.fillStyle = 'rgba(255,255,255,0.78)';
       g.font = `italic 400 ${Math.round(p.size * 0.28 * S)}px ${D.fontFamily('display', 'a', 'en')}`;
       const tot = `/ ${String(p.total).padStart(2, '0')}`;
       D.text(g, tot, x + nw + 10 * S, y, { align: 'left' });
@@ -196,7 +198,7 @@
       g.restore();
       // metal rule drawing upwards with a spark
       const rx = x + nw + 10 * S + totW + 28 * S;
-      const rk = ease.glide(range(t, 0.25, 0.75)) * (1 - ease.glide(outK));
+      const rk = ease.inOutCubic(range(t, 0.4, 1.2)) * (1 - ease.glide(outK));
       const rp = [[rx, y + 6 * S], [rx, y + 6 * S - p.size * S * 0.9]];
       if (rk > 0) {
         g.save(); g.shadowColor = D.rgba(P.ember, 0.8); g.shadowBlur = 10 * S;
@@ -210,21 +212,21 @@
       D.setFont(g, { role: 'display', weight: 800, size: p.size * 0.44 * S, text: p.title });
       const tw = D.measure(g, p.title);
       g.globalAlpha *= 1 - outK;
-      maskedWords(g, p.title, tx + tw, y - p.size * 0.38 * S, { size: p.size * 0.44 * S, weight: 800, color: '#FFFFFF', t, t0: 0.45, align: 'right' });
-      const sk = ease.architectural(range(t, 0.7, 1.1));
+      maskedWords(g, p.title, tx + tw, y - p.size * 0.38 * S, { size: p.size * 0.44 * S, weight: 800, color: '#FFFFFF', t, t0: 0.75, align: 'right' });
+      const sk = ease.architectural(range(t, 1.0, 1.6));
       g.globalAlpha *= sk; g.fillStyle = P.gold;
-      g.font = `600 ${Math.round(p.size * 0.16 * S)}px ${D.fontFamily('display', 'a', 'en')}`;
+      g.font = `600 ${Math.round(p.size * 0.19 * S)}px ${D.fontFamily('display', 'a', 'en')}`;
       D.text(g, p.sub, tx, y + (1 - sk) * 6 * S, { align: 'left', tracking: 5 * S });
       g.restore();
       // progress segments under the number
       const segW = 30 * S, gap = 7 * S, sy = y + 22 * S;
       for (let i = 0; i < p.total; i++) {
-        const k = ease.architectural(range(t, 0.5 + i * 0.06, 0.9 + i * 0.06)) * (1 - outK);
+        const k = ease.architectural(range(t, 0.9 + i * 0.08, 1.5 + i * 0.08)) * (1 - outK);
         if (k <= 0) continue;
         const sx = x + i * (segW + gap);
         g.fillStyle = 'rgba(255,255,255,0.22)'; g.fillRect(sx, sy, segW * k, 3 * S);
         if (i + 1 < p.index) { g.fillStyle = P.copperLight; g.fillRect(sx, sy, segW * k, 3 * S); }
-        if (i + 1 === p.index) { const f = ease.glide(range(t, 0.8, 1.4)) * (1 - outK); g.fillStyle = D.metal(g, sx, 0, sx + segW, 0, 0.5); g.fillRect(sx, sy, segW * f, 3 * S); if (f > 0 && f < 1) D.spark(g, sx + segW * f, sy + 1.5 * S, 12 * S, 1, { flare: 0.6 }); }
+        if (i + 1 === p.index) { const f = ease.inOutCubic(range(t, 1.4, 2.2)) * (1 - outK); g.fillStyle = D.metal(g, sx, 0, sx + segW, 0, 0.5); g.fillRect(sx, sy, segW * f, 3 * S); if (f > 0 && f < 1) D.spark(g, sx + segW * f, sy + 1.5 * S, 12 * S, 1, { flare: 0.6 }); }
       }
     },
   });
@@ -241,7 +243,7 @@
       D.setFont(g, { role: 'display', weight: 900, size: p.size * S, text: p.text });
       const w = D.measure(g, p.text);
       const x0 = p.align === 'center' ? x - w / 2 : p.align === 'right' ? x - w : x;
-      const k = ease.glide(range(t, 0, 1.0));
+      const k = ease.inOutCubic(range(t, 0, 1.5));
       const pad = p.size * 0.3 * S;
       const edge = rtl ? x0 + w * (1 - k) : x0 + w * k;
       g.save();
@@ -253,7 +255,7 @@
       g.shadowColor = D.rgba(P.ember, 0.6); g.shadowBlur = 14 * S;
       g.strokeText(p.text, x0, y);
       g.shadowColor = 'transparent';
-      g.globalAlpha *= p.fill * ease.inOutSine(range(t, 0.8, 1.6));
+      g.globalAlpha *= p.fill * ease.inOutSine(range(t, 1.3, 2.2));
       const fg = g.createLinearGradient(0, y - p.size * S, 0, y);
       fg.addColorStop(0, '#FFF1DC'); fg.addColorStop(1, P.gold);
       g.fillStyle = fg; g.fillText(p.text, x0, y);

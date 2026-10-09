@@ -52,6 +52,16 @@ positions the crop when the source aspect differs from the canvas. `stabilize: {
 `camera.shake: [{at, dur, amp (px), freq}]` adds a damped shake (needs zoom > 1 for margin; use on impact cuts only).
 Tracked overlays automatically follow the clip's camera (keys, moves, shake): the engine attaches the move as `props._cam`.
 
+## Speed-ramp redesign (V1 clips: `timemap`)
+`timemap: [[outLocal, srcLocal], …]` is a free speed curve that keeps the clip's duration (cuts stay on the music).
+Rendered by `engine/tools/retime.py`: a frame whose remapped time lands on a real source frame is that exact frame;
+only in-betweens come from motion-compensated 120 fps interpolation, so fast moves keep their original pixels.
+Design it from the footage, not by hand:
+`domus motion <dir> <mediaId> <t0> <t1>` (per-frame camera-speed profile; `engine/tools/plot_profile.py` draws it with
+cuts and beats), then `domus ramp-redesign <dir> <clipId> --profile … --beat <downbeat> [--end t]`
+(smooth curve, same content, fastest moment on the beat, never slows a fast move, removes repeated-frame stutter).
+Tracked overlays read their track at the remapped source time automatically (`props.trackOrigin` = source time of track t=0).
+
 ## Footage FX (V1 clips: `fx`)
 Light and optics on the picture itself; geometry never changes. Times are local to the clip.
 | type | what | props |

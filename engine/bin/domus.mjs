@@ -25,6 +25,9 @@ Edit (every edit is snapshotted in versions/)
   split <dir> <clipId> <timelineTime>       move <dir> <id> <index|time>      rm <dir> <id>
   set <dir> <id|timeline> key.path=<json> [...]   e.g. set p v3 camera='{"move":"push-in","amount":0.06}'
   beats <dir> <audio> [--snap] [--tolerance 0.25] [--bpm N]   detect beats; --snap moves cuts onto beats
+  motion <dir> <mediaId> <t0> <t1>          per-frame camera-speed profile of a finished edit (reads its ramps)
+  ramp-redesign <dir> <clipId> --profile f.json [--beat t] [--end t] [--fast 25] [--gamma 1] [--sigma 0.08]
+                                            smooth speed-ramp remap: same cuts, same content, peak on the beat
   match <dir> [--ref clipId] [--apply]      shot-match exposure/cast between clips
   history <dir>    revert <dir> <v>    diff <dir> <vA> [vB]
 
@@ -208,6 +211,31 @@ async function main() {
         changes.forEach((c) => log(`  ${c.id}: cut ${c.from}s -> ${c.to}s`));
         if (changes.length) commit(dir, tl, `snap ${changes.length} cut(s) to beats`); else log('no cuts within tolerance');
       }
+      return;
+    }
+
+    case 'motion': {
+      const tl = T.load(dir), m = tl.media[pos[1]];
+      if (!m) throw new Error(`unknown media ${pos[1]}`);
+      const out = join(ensureDir(join(dir, 'analysis')), `motion_${pos[1]}_${pos[2]}-${pos[3]}.json`);
+      const { spawnSync } = await import('node:child_process');
+      const r = spawnSync('python3', [join(LIBRARY_DIR, '..', 'engine', 'tools', 'motion_profile.py'), resolve(dir, m.path), pos[2], pos[3], '--out', out], { stdio: 'inherit' });
+      if (r.status !== 0) throw new Error('motion profile failed');
+      return;
+    }
+
+    case 'ramp-redesign': {
+      const { designRemap, thinPoints } = await import('../src/remap.mjs');
+      const tl = T.load(dir), c = tl.tracks.video.find((x) => x.id === pos[1]);
+      if (!c) throw new Error(`unknown clip ${pos[1]}`);
+      const prof = readJSON(resolve(dir, o.profile));
+      const end = num(o.end) ?? c.out;
+      const r = designRemap(prof, { a: c.in, b: end, beat: num(o.beat), gamma: num(o.gamma) ?? 1, sigma: num(o.sigma) ?? 0.08, fastAbove: num(o.fast) ?? 25 });
+      const pts = r.points.slice();
+      if (end < c.out - 1e-6) pts.push([c.out - c.in, c.out - c.in]);
+      const tl2 = T.setProp(tl, c.id, 'timemap', thinPoints(pts, 0.0004));
+      log(JSON.stringify(r.report));
+      commit(dir, tl2, `ramp-redesign ${c.id}${o.beat ? ` peak -> ${o.beat}s` : ''}`);
       return;
     }
 

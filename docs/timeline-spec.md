@@ -18,6 +18,7 @@ modified. All times are seconds, snapped to the `1/fps` grid on every edit.
     "video": [            // V1, magnetic: each clip starts where the previous ends, minus the transition
       { "id": "v1", "media": "ext-drone", "in": 4.0, "out": 8.5,
         "camera": { "move": "push-in", "amount": 0.06, "ease": "inOutSine" },   // or keys: [[t, zoom, fx, fy], …], shake: [{at, dur, amp, freq}]
+        "timemap": [[0, 0], [1.2, 0.9], [2.4, 2.4]],   // optional speed curve (keeps duration); see motion-library.md
         "fx": [ { "type": "bloom", "amount": 0.3 }, { "type": "exposure", "at": 0, "dur": 0.4, "amount": 0.15, "shape": "flash" } ],
         "reframe": { "focus": [0.55, 0.6] },
         "speed": 1, "ramp": null, "stabilize": null,

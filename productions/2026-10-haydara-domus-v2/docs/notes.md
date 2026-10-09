@@ -33,3 +33,12 @@ Engine bug found and fixed here: ffmpeg crop freezes iw/ih at the first frame, s
   numeral rises from depth while its digits roll, the last digit lands on the beat at 23.03 with flash, sparks, streak,
   footage bloom flash and shake, riser + impact + hit; dimension line, brackets, «المساحة · AREA», reflection.
   Chapter 04 (office 1) was removed: the area figure is the ending of this 25 s cut.
+
+## v5 (owner feedback on v4) - first 15 s only
+- Owner: 130 m² + closing go at the end of the full film, when we return to the frontage (areaReveal now brand copper
+  with glow, kept in the library for that moment). Graphics stayed too briefly: each one now holds >= 2 s, with slower,
+  smoother entrances (soft-focus word rise, longer leaders/borders, eased exits); the intro title stays locked to its SFX hit.
+- Speed ramps analysed per frame (analysis/motion_0-16.json/.png): bursts at 8.45 s and 11.2 s, steep edges, stutter at
+  9.4-9.7 s. Redesigned (v9 and the first 3.3 s of v10): same cuts and content, smooth curve, peaks on the downbeats
+  8.38 / 11.05 (+-1 frame), fast moves never slowed, stutter removed. Rendered frame-accurately with retime.py.
+- Re-tracked for the longer holds: street (to 3.9 s), shopfront (back to 2.37 s), wood column (to 13.7 s).
