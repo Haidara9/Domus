@@ -1,0 +1,9 @@
+node_modules/
+# render cache is reproducible from the timeline
+**/cache/
+**/*.part.mp4
+**/*.part.mov
+**/*.part.wav
+.DS_Store
+Thumbs.db
+.env

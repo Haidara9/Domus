@@ -1,0 +1,39 @@
+{
+  "_doc": "Grade presets: ordered FFmpeg filter chains applied per clip after reframing. Keep them conservative. A grade may set mood but must never change the real color of walls, stone, wood or fabric beyond what a viewer would accept as the same material. Per-clip overrides: grade: {preset, exposure (stops), temperature (K), saturation, contrast, vibrance, vignette}.",
+  "architectural-neutral": {
+    "description": "True-to-life default for interiors. Clean whites, gentle S-curve, no tint. Use when accuracy matters most.",
+    "filters": ["curves=all='0/0.02 0.25/0.235 0.5/0.5 0.75/0.765 1/0.985'", "eq=saturation=1.03"]
+  },
+  "domus-warm-paper": {
+    "description": "Brand house look: warm parchment highlights, lifted soft blacks, copper-friendly midtones. For brand films, exteriors in sun, lifestyle.",
+    "filters": ["colortemperature=temperature=5900:mix=0.55", "curves=r='0/0.035 0.5/0.515 1/0.99':g='0/0.03 0.5/0.5 1/0.975':b='0/0.03 0.5/0.47 1/0.93'", "eq=contrast=0.97:saturation=0.94"]
+  },
+  "golden-hour": {
+    "description": "Late-sun exterior. Warm and glowing, but skies stay believable.",
+    "filters": ["colortemperature=temperature=5200:mix=0.6", "colorbalance=rs=0.03:bs=-0.03:rh=0.04:bh=-0.04", "eq=contrast=1.03:saturation=1.06"]
+  },
+  "twilight-blue-hour": {
+    "description": "Dusk exteriors: cool shadows, warm practicals in windows. The classic luxury listing exterior.",
+    "filters": ["colorbalance=bs=0.06:gs=0.01:rh=0.05:gh=0.02:bh=-0.04", "eq=contrast=1.05:saturation=1.04"]
+  },
+  "apple-minimal": {
+    "description": "Bright, airy, slightly cool-neutral, low saturation. Product-like calm for modern interiors.",
+    "filters": ["exposure=exposure=0.12", "curves=all='0/0.04 0.5/0.53 1/0.99'", "colortemperature=temperature=6800:mix=0.35", "eq=saturation=0.9"]
+  },
+  "editorial-soft": {
+    "description": "Magazine look: muted palette, creamy highlights, matte blacks.",
+    "filters": ["curves=all='0/0.07 0.3/0.3 0.7/0.72 1/0.95'", "eq=saturation=0.82", "colortemperature=temperature=6100:mix=0.4"]
+  },
+  "commercial-crisp": {
+    "description": "High-energy social ads: crisp contrast, vibrant but controlled.",
+    "filters": ["curves=all='0/0 0.25/0.22 0.5/0.5 0.75/0.79 1/1'", "vibrance=intensity=0.18", "cas=strength=0.35"]
+  },
+  "documentary-natural": {
+    "description": "Lifestyle and documentary. Minimal intervention, slight warmth.",
+    "filters": ["colortemperature=temperature=6200:mix=0.3", "eq=contrast=1.01:saturation=0.98"]
+  },
+  "mono-architectural": {
+    "description": "Black and white for experimental or editorial beats (line, form, shadow). Use sparingly. Never for the hero shot of a listing.",
+    "filters": ["hue=s=0", "curves=all='0/0.03 0.3/0.26 0.7/0.75 1/0.98'"]
+  }
+}

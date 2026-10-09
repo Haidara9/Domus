@@ -1,0 +1,18 @@
+{
+  "_doc": "Transition catalog for V1 joins. engine: xfade = ffmpeg xfade built-in (fast). dip = fade both sides through a color. whip = slide + directional blur window. cut = hard cut. 'when' is editorial guidance; every transition must be motivated. Default to cut.",
+  "cut":          { "engine": "cut", "dur": 0, "when": "Default. Action continuity, match cuts, rhythm on the beat. 80%+ of joins in a good edit are cuts." },
+  "dissolve":     { "engine": "xfade", "xfade": "fade", "dur": 0.6, "when": "Passage of time, soft lifestyle moments, interior to interior with similar light." },
+  "dip-black":    { "engine": "xfade", "xfade": "fadeblack", "dur": 0.8, "when": "Chapter change, day to night, before the logo." },
+  "dip-white":    { "engine": "xfade", "xfade": "fadewhite", "dur": 0.5, "when": "Light-motivated moments (window flare, stepping outside)." },
+  "dip-paper":    { "engine": "dip", "color": "paper", "dur": 0.8, "when": "Brand chapter: footage to a DOMUS paper card and back." },
+  "whip-left":    { "engine": "whip", "xfade": "slideleft", "dur": 0.28, "blur": 64, "sfx": "whoosh", "when": "Energetic reels. Needs camera motion in the same direction on both sides (pan right-to-left)." },
+  "whip-right":   { "engine": "whip", "xfade": "slideright", "dur": 0.28, "blur": 64, "sfx": "whoosh", "when": "Mirror of whip-left. For RTL storytelling, rightward whips read as moving forward." },
+  "whip-up":      { "engine": "whip", "xfade": "slideup", "dur": 0.28, "blur": 64, "sfx": "whoosh", "axis": "y", "when": "Tilt-up continuations: facade to sky, floor to ceiling." },
+  "whip-down":    { "engine": "whip", "xfade": "slidedown", "dur": 0.28, "blur": 64, "sfx": "whoosh", "axis": "y", "when": "Tilt-down: aerial to entrance, ceiling to living area." },
+  "push-left":    { "engine": "xfade", "xfade": "smoothleft", "dur": 0.5, "sfx": "swish", "when": "Clean graphic push between spec scenes; commercial and editorial." },
+  "push-right":   { "engine": "xfade", "xfade": "smoothright", "dur": 0.5, "sfx": "swish", "when": "Mirror of push-left." },
+  "zoom-through": { "engine": "xfade", "xfade": "zoomin", "dur": 0.4, "sfx": "whoosh", "when": "Doorway or window entry: outgoing shot pushes in, then cut inside. Only when the camera physically moves forward." },
+  "focus-blur":   { "engine": "xfade", "xfade": "hblur", "dur": 0.5, "when": "Soft rack-focus feel between detail shots." },
+  "iris":         { "engine": "xfade", "xfade": "circleopen", "dur": 0.6, "when": "Experimental/editorial only (reveal from an arch or round window). Rare." },
+  "wipe-arch":    { "engine": "xfade", "xfade": "vertopen", "dur": 0.6, "when": "Graphic opening like doors parting; brand intros." }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "domus-engine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "DOMUS Super Editor timeline engine: JSON timeline -> frame-accurate render (FFmpeg + headless Chromium).",
+  "type": "module",
+  "bin": { "domus": "bin/domus.mjs" },
+  "scripts": {
+    "test": "node --test test/",
+    "domus": "node bin/domus.mjs"
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "playwright": "1.56.1"
+  }
+}
