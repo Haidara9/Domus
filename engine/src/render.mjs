@@ -11,6 +11,13 @@ import { qc } from './qc.mjs';
 
 const LAYER_ORDER = { animation: 0, vfx: 1, text: 2 };
 
+// VFX that FFmpeg does better than a canvas overlay (incompressible per-frame noise etc.).
+// Applied in the composite chain at the item's layer position, limited to its time window.
+export const FFMPEG_VFX = {
+  filmGrain: (p = {}) => `noise=alls=${Math.round((p.strength ?? 0.05) * 160)}:allf=t`,
+  sharpen: (p = {}) => `cas=strength=${p.strength ?? 0.4}`,
+};
+
 export function overlayItems(tl) {
   const all = [];
   for (const tr of ['animation', 'vfx', 'text']) for (const it of tl.tracks[tr]) all.push({ ...it, track: tr });
@@ -19,11 +26,25 @@ export function overlayItems(tl) {
     .sort((a, b) => (a.layer ?? LAYER_ORDER[a.track] * 100) - (b.layer ?? LAYER_ORDER[b.track] * 100) || a.start - b.start);
 }
 
+const isObj = (x) => x && typeof x === 'object' && !Array.isArray(x);
+const deepMerge = (a, b) => {
+  const o = { ...a };
+  for (const [k, v] of Object.entries(b || {})) o[k] = isObj(v) && isObj(a?.[k]) ? deepMerge(a[k], v) : v;
+  return o;
+};
+
+// Switch canvas to another format and apply per-format overrides: any clip or item may carry
+// byFormat: { "feed-4x5": { props: { at: [0.5, 0.3] } }, "wide-16x9": { reframe: { focus: [0.4, 0.5] } } }
 export function withFormat(tl, format) {
-  if (!format || format === tl.format) return tl;
-  const f = FORMATS[format];
-  if (!f) throw new Error(`Unknown format ${format}`);
-  return { ...tl, format, width: f.width, height: f.height };
+  let out = tl;
+  if (format && format !== tl.format) {
+    const f = FORMATS[format];
+    if (!f) throw new Error(`Unknown format ${format}`);
+    out = { ...tl, format, width: f.width, height: f.height };
+  }
+  const fmt = out.format;
+  const apply = (x) => (x.byFormat?.[fmt] ? deepMerge(x, x.byFormat[fmt]) : x);
+  return { ...out, tracks: Object.fromEntries(Object.entries(out.tracks).map(([k, arr]) => [k, arr.map(apply)])) };
 }
 
 const ENC = {
@@ -76,6 +97,7 @@ export async function render(dir, opts = {}) {
   const ovl = [];
   try {
     for (const it of items) {
+      if (FFMPEG_VFX[it.component]) { ovl.push({ filter: FFMPEG_VFX[it.component](it.props), start: snap(it.start, fps), end: snap(it.start + it.dur, fps), id: it.id }); continue; }
       const r = await ovr.render(it);
       stats.overlays[r.cached ? 'cached' : 'rendered']++;
       ovl.push({ ...r, start: snap(it.start, fps), id: it.id });
@@ -90,18 +112,24 @@ export async function render(dir, opts = {}) {
   const outDir = ensureDir(join(dir, 'renders'));
   const name = `${(tl.title || 'film').replace(/[^\p{L}\p{N}_-]+/gu, '_')}_${tl.format}_v${String(version).padStart(3, '0')}${quality === 'draft' ? '_draft' : ''}${label ? '_' + label : ''}`;
   const out = join(outDir, `${name}.mp4`);
-  const inputs = ['-i', base.path, ...ovl.flatMap((o) => ['-i', o.path])];
+  const files = ovl.filter((o) => o.path);
+  const inputs = ['-i', base.path, ...files.flatMap((o) => ['-i', o.path])];
   if (mix) inputs.push('-i', mix.path);
   const g = [];
-  let acc = '[0:v]';
-  ovl.forEach((o, k) => {
-    g.push(`[${k + 1}:v]setpts=PTS-STARTPTS+${o.start}/TB[o${k}]`);
-    g.push(`${acc}[o${k}]overlay=eof_action=pass:format=auto[c${k}]`);
-    acc = `[c${k}]`;
+  let acc = '[0:v]', k = 0;
+  ovl.forEach((o, j) => {
+    if (o.filter) {
+      g.push(`${acc}${o.filter}:enable='between(t,${o.start},${o.end})'[f${j}]`);
+      acc = `[f${j}]`; return;
+    }
+    k++;
+    g.push(`[${k}:v]setpts=PTS-STARTPTS+${o.start}/TB[o${j}]`);
+    g.push(`${acc}[o${j}]overlay=eof_action=pass:format=auto[c${j}]`);
+    acc = `[c${j}]`;
   });
   g.push(`${acc}format=yuv420p,setsar=1[vout]`);
   const map = ['-map', '[vout]'];
-  if (mix) map.push('-map', `${ovl.length + 1}:a`);
+  if (mix) map.push('-map', `${files.length + 1}:a`);
   const range = [];
   if (from !== undefined || to !== undefined) range.push('-ss', String(from || 0), ...(to !== undefined ? ['-to', String(to)] : []));
   const tmp = out + '.part.mp4';

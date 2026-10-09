@@ -20,7 +20,7 @@ List them live with `node engine/bin/domus.mjs library components|transitions|gr
 | `endCard` | animation | `cta`, `lines:[…]`, `location`, `bg` |
 | `lightSweep` | vfx | `angle`, `width`, `strength`, `color` |
 | `letterbox` | vfx | `aspect` |
-| `filmGrain` | vfx | `strength`, `size` |
+| `filmGrain` | vfx | `strength` (rendered by FFmpeg `noise` in the composite; canvas version is used in HyperFrames exports) |
 | `lightDust` | vfx | `area:[x,y,w,h]`, `count`, `wind` |
 | `vignette` | vfx | `strength`, `radius` |
 | `flash` | vfx | `peak`, `color` |

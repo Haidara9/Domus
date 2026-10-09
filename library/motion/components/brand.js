@@ -153,10 +153,11 @@
       } else {
         const ink = p.color || ctx.C.ink || '#151412';
         D.setFont(o, { role: 'display', weight: 500, size: 150 * S, text: p.placeholderText });
+        const mainW = D.measure(o, p.placeholderText, 6 * S);
         o.fillStyle = ink; D.text(o, p.placeholderText, cx, cy, { align: 'center', tracking: 6 * S });
         D.setFont(o, { role: 'label', weight: 500, size: 34 * S, text: p.placeholderSub });
         o.fillStyle = accent; D.text(o, p.placeholderSub, cx, cy + 70 * S, { align: 'center', tracking: 14 * S });
-        bw = D.measure(o, p.placeholderText, 6 * S) * 1.1; bh = 230 * S;
+        bw = mainW * 1.1; bh = 230 * S;
       }
       if (p.sweep) {
         const sk = ease.inOutSine(range(t, 1.0, 2.2));

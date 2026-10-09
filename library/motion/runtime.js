@@ -139,6 +139,14 @@
       if (g.measureText(test).width > maxWidth && line) { lines.push(line); line = w; } else line = test;
     }
     if (line) lines.push(line);
+    // no orphans: pull a word down when the last line would hold a single word
+    if (lines.length > 1) {
+      const last = lines[lines.length - 1].split(' '), prev = lines[lines.length - 2].split(' ');
+      if (last.length === 1 && prev.length >= 3) {
+        const moved = [prev.pop(), ...last].join(' ');
+        if (g.measureText(moved).width <= maxWidth) { lines[lines.length - 2] = prev.join(' '); lines[lines.length - 1] = moved; }
+      }
+    }
     return lines;
   };
   // Resolve "start"/"end"/"auto" alignment to a canvas x anchor for the text's direction.

@@ -82,6 +82,23 @@ export const SFX = {
     const nz = rng(seed), bp = biquad();
     return { len: dur, fn: (i, t) => { const u = t / dur; const v = bp(nz(), 'bp', 300 + 2500 * u, 0.8) * Math.pow(u, 3) * 1.6; return [v, v]; } };
   },
+  // Warm sustained chord bed for brand films (no music license needed). notes in Hz.
+  pad: ({ dur = 12, notes = [146.83, 220, 329.63, 369.99, 554.37], attack = 1.6, release = 2.4, level = 0.22, seed = 51 } = {}) => {
+    const r = rng(seed);
+    const voices = notes.flatMap((f, k) => [0.997, 1.003].map((d) => ({ f: f * d, ph: (r() + 1) * Math.PI, a: 1 / (k + 1.6), pan: (k % 2 ? 0.35 : 0.65) + (d > 1 ? 0.1 : -0.1) })));
+    const lpL = biquad(), lpR = biquad();
+    return { len: dur, fn: (i, t) => {
+      const env = smooth(t / attack) * smooth((dur - t) / release);
+      let l = 0, rr = 0;
+      for (const v of voices) {
+        const s = Math.sin(2 * Math.PI * v.f * t + v.ph) + 0.25 * Math.sin(4 * Math.PI * v.f * t + v.ph) ;
+        const trem = 0.85 + 0.15 * Math.sin(2 * Math.PI * 0.11 * t + v.ph);
+        l += s * v.a * (1 - v.pan) * trem; rr += s * v.a * v.pan * trem;
+      }
+      const cut = 900 + 500 * Math.sin(2 * Math.PI * 0.05 * t);
+      return [lpL(l, 'lp', cut) * env * level, lpR(rr, 'lp', cut) * env * level];
+    } };
+  },
   roomtone: ({ dur = 10, seed = 31, level = 0.35 } = {}) => {
     const nz = rng(seed), lpL = biquad(), lpR = biquad(); let pl = 0, pr = 0;
     return { len: dur, fn: (i, t) => {
@@ -123,6 +140,7 @@ export function synthToWav(type, params, outPath) {
 export function sfxOffset(item) {
   if (item.type === 'riser') return -(item.params?.dur ?? 2.0);
   if (item.type === 'swell') return -(item.params?.dur ?? 1.2);
+  if (item.anchor === 'start' || ['pad', 'roomtone', 'air'].includes(item.type)) return 0;
   if (item.type === 'whoosh' || item.type === 'swish') return -((item.params?.dur ?? (item.type === 'swish' ? 0.32 : 0.6)) / 2);
   return 0;
 }
@@ -141,7 +159,7 @@ export async function mixAudio({ tl, root, cacheDir, duration, loudness = -14, t
     let src, start = a.start;
     if (a.kind === 'sfx' && a.type) {
       const p = { ...(a.params || {}) };
-      if (['roomtone', 'air'].includes(a.type) && a.dur) p.dur = a.dur;
+      if (['roomtone', 'air', 'pad'].includes(a.type) && a.dur) p.dur = a.dur;
       const f = join(dir, `sfx_${a.type}_${sha({ p, v: 1 })}.wav`);
       if (!exists(f)) synthToWav(a.type, p, f);
       src = f; start = Math.max(0, a.start + (a.anchor === 'start' ? 0 : sfxOffset(a)));

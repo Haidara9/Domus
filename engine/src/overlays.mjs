@@ -9,6 +9,9 @@ import { BRAND_DIR, FFMPEG, LIBRARY_DIR, REPO_DIR, debug, ensureDir, exists, fil
 
 const MOTION_DIR = join(LIBRARY_DIR, 'motion');
 
+// Full-frame opaque components are encoded as H.264 (no alpha needed, ~50x smaller than qtrle).
+export const isOpaque = (item) => item.component === 'paperBackground' || (item.component === 'endCard' && item.props?.bg) || !!item.props?.opaque;
+
 export function loadBrand(tl, root) {
   const candidates = [tl.brand && resolve(REPO_DIR, tl.brand), tl.brand && resolve(root || '.', tl.brand), join(BRAND_DIR, 'brand.json')];
   for (const c of candidates) if (c && exists(c)) return { brand: readJSON(c), path: c };
@@ -95,11 +98,23 @@ export class OverlayRenderer {
     this.warnings = [];
   }
 
+  // Cache key depends on the runtime + the file that defines this component (not on every component),
+  // so editing one component only re-renders items that use it.
+  componentSource(name) {
+    if (!this._srcMap) {
+      this._srcMap = {};
+      const all = motionSources();
+      this._runtime = all[0].code;
+      for (const f of all.slice(1)) for (const m of f.code.matchAll(/D\.register\('(\w+)'/g)) this._srcMap[m[1]] = f.code;
+    }
+    return this._runtime + (this._srcMap[name] || '');
+  }
+
   itemKey(item, images) {
-    const src = motionSources().map((s) => s.code).join('');
+    const src = this.componentSource(item.component) + (item.component === 'endCard' ? this.componentSource('logoReveal') + this.componentSource('paperBackground') : '');
     const imgSig = Object.values(images).map(fileSig).join('|');
     const fontSig = Object.values(this.brand.fonts || {}).flatMap((f) => (f?.files || (f?.file ? [{ path: f.file }] : [])).map((x) => fileSig(resolve(REPO_DIR, x.path)))).join('|');
-    return sha({ v: 2, src: sha(src), item: { component: item.component, dur: item.dur, props: item.props }, W: this.W, H: this.H, fps: this.fps, colors: this.brand.colors, fonts: this.brand.fonts, imgSig, fontSig });
+    return sha({ v: 3, opaque: isOpaque(item), src: sha(src), item: { component: item.component, dur: item.dur, props: item.props }, W: this.W, H: this.H, fps: this.fps, colors: this.brand.colors, fonts: this.brand.fonts, imgSig, fontSig });
   }
 
   async open() {
@@ -134,9 +149,11 @@ export class OverlayRenderer {
     const fresh = Object.fromEntries(Object.entries(images).filter(([k]) => !this.loadedImages.has(k)).map(([k, p]) => [k, pathToFileURL(p).href]));
     if (Object.keys(fresh).length) { await this.page.evaluate((t) => window.DOMUS.loadImages(t), fresh); Object.keys(fresh).forEach((k) => this.loadedImages.add(k)); }
     const frames = toFrames(item.dur, this.fps);
+    const opaque = isOpaque(item);
     const tmp = out + '.part.mov';
+    const codec = opaque ? ['-c:v', 'libx264', '-preset', 'medium', '-crf', '12', '-pix_fmt', 'yuv420p'] : ['-c:v', 'qtrle', '-pix_fmt', 'argb'];
     const ff = spawn(FFMPEG, ['-hide_banner', '-loglevel', 'error', '-y', '-f', 'image2pipe', '-framerate', String(this.fps), '-c:v', 'png', '-i', '-',
-      '-c:v', 'qtrle', '-pix_fmt', 'argb', tmp], { stdio: ['pipe', 'inherit', 'pipe'] });
+      ...codec, tmp], { stdio: ['pipe', 'inherit', 'pipe'] });
     let ferr = ''; ff.stderr.on('data', (d) => (ferr += d));
     const plain = { id: item.id, component: item.component, dur: item.dur, props: item.props || {} };
     for (let f = 0; f < frames; f++) {

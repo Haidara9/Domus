@@ -46,5 +46,5 @@ modified. All times are seconds, snapped to the `1/fps` grid on every edit.
 - **Caching:** `cache/segments` (per clip: hash of clip + source + canvas + grade presets), `cache/overlays`
   (hash of component source + props + fonts + images), `cache/base`, `cache/audio`. Delete `cache/` to force
   a clean render; it is never committed.
-- **Formats:** `render --format <f>` swaps the canvas. Clips re-crop around `reframe.focus` and overlay
+- **Formats:** `render --format <f>` swaps the canvas. Per-format overrides: any clip or item may carry `byFormat: {"feed-4x5": {props: {...}}, "wide-16x9": {reframe: {...}}}`, deep-merged for that format only. Clips re-crop around `reframe.focus` and overlay
   positions are normalized, so one timeline drives every ratio.

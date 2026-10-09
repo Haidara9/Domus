@@ -51,8 +51,9 @@ function cameraKeys(clip, dur, W, H, media) {
   return { keys, cover };
 }
 
-export async function exportHyperFrames(dir, { baked = false } = {}) {
-  const tl = load(dir);
+export async function exportHyperFrames(dir, { baked = false, format } = {}) {
+  const { withFormat } = await import('./render.mjs');
+  const tl = withFormat(load(dir), format);
   const W = tl.width, H = tl.height, fps = tl.fps;
   const out = ensureDir(join(dir, 'hyperframes'));
   const assets = ensureDir(join(out, 'assets'));
