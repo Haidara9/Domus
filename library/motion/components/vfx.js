@@ -95,3 +95,32 @@
     },
   });
 })();
+
+// Architectural line drawing locked to a real surface (glass frame, facade, doorway) through a
+// tracked homography. The lines trace edges that exist in the shot; they never add structure.
+(function () {
+  const D = window.DOMUS;
+  const { ease, range } = D;
+  D.register('perspectiveOutline', {
+    description: 'Copper/gold lines that draw along real edges (points in reference-frame coords) and stay locked to the surface via props.track (perspective).',
+    defaults: { points: [], closed: true, color: '#F2B878', width: 5, glow: true, drawDur: 0.9, ticks: true, trackMode: 'perspective', in: { dur: 0.01, style: 'none' }, out: { dur: 0.35, style: 'fade' } },
+    draw(g, t, ctx) {
+      const { p, S } = ctx;
+      if (!p.points.length) return;
+      const col = p.color || ctx.C.copperLight || '#C08A5A';
+      const pts = p.points.map(([x, y]) => ctx.mapH(x, y));
+      if (p.closed) pts.push(pts[0]);
+      const k = ease.glide(range(t, 0, p.drawDur));
+      g.save();
+      if (p.glow) { g.shadowColor = 'rgba(255,170,90,0.95)'; g.shadowBlur = 22 * S; }
+      D.polyline(g, pts, k, { width: p.width * 2.4 * S, color: 'rgba(168,111,63,0.35)', cap: 'round', join: 'miter' });
+      D.polyline(g, pts, k, { width: p.width * S, color: col, cap: 'round', join: 'miter' });
+      if (p.ticks) {
+        const tk = ease.architectural(range(t, p.drawDur * 0.8, p.drawDur + 0.4));
+        const L = 34 * S * tk;
+        pts.slice(0, p.closed ? -1 : undefined).forEach(([x, y]) => { D.dot(g, x, y, 4.5 * S * tk, col); g.strokeStyle = col; g.lineWidth = 1.5 * S; g.beginPath(); g.moveTo(x - L, y); g.lineTo(x + L, y); g.moveTo(x, y - L); g.lineTo(x, y + L); g.stroke(); });
+      }
+      g.restore();
+    },
+  });
+})();

@@ -254,13 +254,36 @@
     const p = D.resolveProps(merged, t);
     const dur = item.dur;
     const e = D.envelope(t, dur, p);
+    // Camera tracking: p.track = { frames: [[localT, h0..h8], ...] } homographies mapping normalized
+    // reference-frame coordinates to the current frame (from engine/tools/track.py).
+    const Ht = p.track ? D.trackAt(p.track, t) : null;
+    const mapH = (x, y) => {
+      if (!Ht) return [x * env.W, y * env.H];
+      const w = Ht[6] * x + Ht[7] * y + Ht[8];
+      return [((Ht[0] * x + Ht[1] * y + Ht[2]) / w) * env.W, ((Ht[3] * x + Ht[4] * y + Ht[5]) / w) * env.H];
+    };
     const ctx = {
+      mapH, tracked: !!Ht,
       W: env.W, H: env.H, S: Math.min(env.W, env.H) / 1080, dur, p, t,
       pin: e.pin, pout: e.pout, inD: e.inD, outD: e.outD,
       brand: D.brand || {}, C: (D.brand && D.brand.colors) || {},
       img: (k) => env.images[k], seed: env.seed || 1, rtl: D.isArabic(p.title || p.text || p.label || ''),
     };
     g.save();
+    if (Ht && p.trackMode === 'position') {
+      // follow the point only: constant size and angle (best for labels you must read)
+      const a = p.trackAnchor || p.anchor || p.at || [0.5, 0.5];
+      const P0 = mapH(a[0], a[1]);
+      g.translate(P0[0] - a[0] * env.W, P0[1] - a[1] * env.H);
+    } else if (Ht && (p.trackMode || 'affine') === 'affine') {
+      // pin the whole component: local affine approximation of the homography at the anchor
+      const a = p.trackAnchor || p.anchor || p.at || [0.5, 0.5], e = 0.01;
+      const P0 = mapH(a[0], a[1]), Px = mapH(a[0] + e, a[1]), Py = mapH(a[0], a[1] + e);
+      const m11 = (Px[0] - P0[0]) / (e * env.W), m21 = (Px[1] - P0[1]) / (e * env.W);
+      const m12 = (Py[0] - P0[0]) / (e * env.H), m22 = (Py[1] - P0[1]) / (e * env.H);
+      const ax = a[0] * env.W, ay = a[1] * env.H;
+      g.transform(m11, m21, m12, m22, P0[0] - (m11 * ax + m12 * ay), P0[1] - (m21 * ax + m22 * ay));
+    }
     const inStyle = p.in.style || 'none', outStyle = p.out.style || 'none';
     const ein = D.easeFn(p.in.ease || 'architectural')(e.pin);
     const eout = 1 - D.easeFn(p.out.ease || 'exit')(e.pout);
@@ -275,6 +298,17 @@
     }
     def.draw(g, t, ctx);
     g.restore();
+  };
+
+  // Homography for local time t (nearest tracked frame; clamps at both ends).
+  D.trackAt = (track, t) => {
+    const f = track.frames; if (!f || !f.length) return null;
+    if (t <= f[0][0]) return f[0].slice(1);
+    if (t >= f[f.length - 1][0]) return f[f.length - 1].slice(1);
+    let lo = 0, hi = f.length - 1;
+    while (hi - lo > 1) { const m = (lo + hi) >> 1; if (f[m][0] <= t) lo = m; else hi = m; }
+    const k = (t - f[lo][0]) / Math.max(1e-6, f[hi][0] - f[lo][0]);
+    return f[lo].slice(1).map((v, i) => v + (f[hi][i + 1] - v) * k);
   };
 
   // Normalized anchor -> pixels. Accepts [x,y] in 0..1 of the frame.

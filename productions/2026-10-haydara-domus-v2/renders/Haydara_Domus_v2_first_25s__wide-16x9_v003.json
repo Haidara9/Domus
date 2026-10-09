@@ -1,0 +1,28 @@
+{
+  "file": "renders/Haydara_Domus_v2_first_25s__wide-16x9_v003.mp4",
+  "version": 3,
+  "format": "wide-16x9",
+  "W": 1920,
+  "H": 1080,
+  "fps": 30,
+  "duration": 25,
+  "quality": "final",
+  "renderedAt": "2026-10-09T20:45:57.406Z",
+  "seconds": 197.3,
+  "stats": {
+    "segments": {
+      "rendered": 4,
+      "cached": 0
+    },
+    "overlays": {
+      "rendered": 10,
+      "cached": 0
+    }
+  },
+  "warnings": [],
+  "qc": {
+    "pass": true,
+    "report": "/home/user/Domus/productions/2026-10-haydara-domus-v2/renders/Haydara_Domus_v2_first_25s__wide-16x9_v003.qc.json",
+    "contact": "/home/user/Domus/productions/2026-10-haydara-domus-v2/renders/Haydara_Domus_v2_first_25s__wide-16x9_v003.contact.png"
+  }
+}

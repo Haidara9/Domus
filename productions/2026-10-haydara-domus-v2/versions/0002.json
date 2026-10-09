@@ -1,0 +1,43 @@
+{
+  "schema": "domus.timeline/1",
+  "title": "Haydara Domus v2 (first 25s)",
+  "format": "wide-16x9",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "brand": "brand/brand.json",
+  "grade": {
+    "global": null
+  },
+  "media": {
+    "haydara-domus-v1": {
+      "path": "media/haydara-domus-v1.mp4",
+      "kind": "video",
+      "duration": 53.010998,
+      "width": 2560,
+      "height": 1440,
+      "fps": 30,
+      "hasAudio": true
+    },
+    "black": {
+      "path": "media/black.mp4",
+      "kind": "video",
+      "duration": 1.4,
+      "width": 2560,
+      "height": 1440,
+      "fps": 30,
+      "hasAudio": false
+    }
+  },
+  "tracks": {
+    "video": [],
+    "text": [],
+    "animation": [],
+    "vfx": [],
+    "audio": []
+  },
+  "markers": [],
+  "meta": {
+    "created": "2026-10-09T20:37:22.752Z"
+  }
+}

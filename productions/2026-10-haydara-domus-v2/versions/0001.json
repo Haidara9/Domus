@@ -1,0 +1,24 @@
+{
+  "schema": "domus.timeline/1",
+  "title": "Haydara Domus v2 (first 25s)",
+  "format": "wide-16x9",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "brand": "brand/brand.json",
+  "grade": {
+    "global": null
+  },
+  "media": {},
+  "tracks": {
+    "video": [],
+    "text": [],
+    "animation": [],
+    "vfx": [],
+    "audio": []
+  },
+  "markers": [],
+  "meta": {
+    "created": "2026-10-09T20:37:22.752Z"
+  }
+}

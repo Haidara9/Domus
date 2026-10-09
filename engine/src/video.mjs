@@ -108,12 +108,14 @@ export function frameChain({ clip, media, W, H, dur, globalGrade, trf }) {
   f.push(`scale=${PW}:${PH}:flags=lanczos`);
   // 2) per-frame zoom relative to that size, 3) crop the output window around the focus point
   const static_ = !/t/.test(Z);
+  const sw_ = `max(${W},trunc(${PW}*(${Z})/${n(zmax)}/2)*2)`, sh_ = `max(${H},trunc(${PH}*(${Z})/${n(zmax)}/2)*2)`;
   if (static_ && Math.abs(Number(Z) - zmax) < 1e-9) {
-    // no animated zoom
+    f.push(`crop=${W}:${H}:x='(iw-${W})*(${FX})':y='(ih-${H})*(${FY})'`);
   } else {
-    f.push(`scale=w='max(${W},trunc(${PW}*(${Z})/${n(zmax)}/2)*2)':h='max(${H},trunc(${PH}*(${Z})/${n(zmax)}/2)*2)':eval=frame:flags=bicubic`);
+    f.push(`scale=w='${sw_}':h='${sh_}':eval=frame:flags=bicubic`);
+    // crop's iw/ih are frozen at the first frame, so the per-frame size is recomputed here
+    f.push(`crop=${W}:${H}:x='(${sw_}-${W})*(${FX})':y='(${sh_}-${H})*(${FY})'`);
   }
-  f.push(`crop=${W}:${H}:x='(iw-${W})*(${FX})':y='(ih-${H})*(${FY})'`);
   f.push(...gradeFilters(clip.grade, globalGrade));
   f.push('setsar=1');
   return f;
@@ -121,7 +123,7 @@ export function frameChain({ clip, media, W, H, dur, globalGrade, trf }) {
 
 // ---------- segments ----------
 export function segmentKey(tl, clip, media, root, W, H) {
-  return sha({ v: 3, clip: { ...clip, transition: undefined, label: undefined, notes: undefined }, src: fileSig(resolve(root, media.path)), W, H, fps: tl.fps, global: tl.grade?.global, grades: clip.grade || tl.grade?.global ? GRADES() : null });
+  return sha({ v: 4, clip: { ...clip, transition: undefined, label: undefined, notes: undefined }, src: fileSig(resolve(root, media.path)), W, H, fps: tl.fps, global: tl.grade?.global, grades: clip.grade || tl.grade?.global ? GRADES() : null });
 }
 
 async function stabilizeTrf(clip, media, root, cacheDir) {
