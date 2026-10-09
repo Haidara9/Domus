@@ -8,3 +8,6 @@ node_modules/
 Thumbs.db
 .env
 tools/vendor/
+# preview stills and "latest" copies are regenerated on demand
+**/renders/still_*
+**/renders/latest_*

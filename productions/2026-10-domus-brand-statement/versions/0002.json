@@ -1,0 +1,274 @@
+{
+  "schema": "domus.timeline/1",
+  "title": "DOMUS Brand Statement",
+  "format": "reel-9x16",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "brand": "brand/brand.json",
+  "grade": {
+    "global": null
+  },
+  "media": {},
+  "tracks": {
+    "video": [],
+    "text": [
+      {
+        "id": "t1",
+        "component": "brandStatement",
+        "start": 0.2,
+        "dur": 4.4,
+        "props": {
+          "title": "من نحن؟",
+          "body": "دوموس شركة عقارية تنطلق من اللاذقية،\nبرؤية تجمع بين الخبرة المهنية وفهم السوق المحلي،\nلتقديم تجربة عقارية أكثر وضوحًا وثقة.",
+          "at": [
+            0.87,
+            0.25
+          ],
+          "width": 0.82,
+          "size": 100,
+          "bodySize": 37
+        }
+      },
+      {
+        "id": "t2",
+        "component": "counter",
+        "start": 0.6,
+        "dur": 4,
+        "props": {
+          "index": 1,
+          "total": 3
+        }
+      },
+      {
+        "id": "t3",
+        "component": "brandStatement",
+        "start": 4.8,
+        "dur": 4.4,
+        "props": {
+          "title": "شريككم العقاري",
+          "body": "نساعدكم على فهم السوق، وتقييم الخيارات،\nواتخاذ القرار العقاري بثقة.",
+          "at": [
+            0.87,
+            0.25
+          ],
+          "width": 0.82,
+          "size": 100,
+          "bodySize": 37
+        }
+      },
+      {
+        "id": "t4",
+        "component": "counter",
+        "start": 5.2,
+        "dur": 4,
+        "props": {
+          "index": 2,
+          "total": 3
+        }
+      },
+      {
+        "id": "t5",
+        "component": "brandStatement",
+        "start": 9.4,
+        "dur": 4.4,
+        "props": {
+          "title": "ما نؤمن به",
+          "body": "الثقة • الوضوح • الشفافية\nقيم نلتزم بها في كل خطوة.",
+          "at": [
+            0.87,
+            0.25
+          ],
+          "width": 0.82,
+          "size": 100,
+          "bodySize": 37
+        }
+      },
+      {
+        "id": "t6",
+        "component": "counter",
+        "start": 9.8,
+        "dur": 4,
+        "props": {
+          "index": 3,
+          "total": 3
+        }
+      }
+    ],
+    "animation": [
+      {
+        "id": "g1",
+        "component": "paperBackground",
+        "start": 0,
+        "dur": 18,
+        "props": {
+          "seed": 11
+        }
+      },
+      {
+        "id": "g2",
+        "component": "archLines",
+        "start": 0,
+        "dur": 4.6,
+        "props": {
+          "at": [
+            0.66,
+            0.985
+          ],
+          "scale": 1.35,
+          "out": {
+            "dur": 0.7,
+            "style": "fade"
+          }
+        }
+      },
+      {
+        "id": "g3",
+        "component": "archLines",
+        "start": 4.6,
+        "dur": 4.6,
+        "props": {
+          "at": [
+            0.6,
+            0.985
+          ],
+          "scale": 1.35,
+          "arches": 3,
+          "out": {
+            "dur": 0.7,
+            "style": "fade"
+          }
+        }
+      },
+      {
+        "id": "g4",
+        "component": "archLines",
+        "start": 9.2,
+        "dur": 4.6,
+        "props": {
+          "at": [
+            0.66,
+            0.985
+          ],
+          "scale": 1.35,
+          "column": false,
+          "arches": 3,
+          "out": {
+            "dur": 0.7,
+            "style": "fade"
+          }
+        }
+      },
+      {
+        "id": "g5",
+        "component": "endCard",
+        "start": 13.8,
+        "dur": 4.2,
+        "props": {
+          "cta": "حلول وخدمات عقارية متكاملة",
+          "location": "اللاذقية",
+          "at": [
+            0.5,
+            0.4
+          ]
+        }
+      }
+    ],
+    "vfx": [
+      {
+        "id": "x1",
+        "component": "filmGrain",
+        "start": 0,
+        "dur": 18,
+        "props": {
+          "strength": 0.03
+        }
+      }
+    ],
+    "audio": [
+      {
+        "id": "a1",
+        "kind": "sfx",
+        "type": "pad",
+        "start": 0,
+        "dur": 18,
+        "gain": -4,
+        "params": {
+          "level": 0.22
+        }
+      },
+      {
+        "id": "a2",
+        "kind": "sfx",
+        "type": "air",
+        "start": 0,
+        "dur": 18,
+        "gain": -10
+      },
+      {
+        "id": "a3",
+        "kind": "sfx",
+        "type": "swell",
+        "start": 4.8,
+        "gain": -16
+      },
+      {
+        "id": "a4",
+        "kind": "sfx",
+        "type": "swell",
+        "start": 9.4,
+        "gain": -16
+      },
+      {
+        "id": "a5",
+        "kind": "sfx",
+        "type": "swell",
+        "start": 13.8,
+        "gain": -14
+      },
+      {
+        "id": "a6",
+        "kind": "sfx",
+        "type": "impact",
+        "start": 13.85,
+        "gain": -20,
+        "params": {
+          "freq": 46
+        }
+      },
+      {
+        "id": "a7",
+        "kind": "sfx",
+        "type": "shimmer",
+        "start": 14.8,
+        "gain": -14
+      },
+      {
+        "id": "a8",
+        "kind": "sfx",
+        "type": "click",
+        "start": 0.75,
+        "gain": -22
+      },
+      {
+        "id": "a9",
+        "kind": "sfx",
+        "type": "click",
+        "start": 5.35,
+        "gain": -22
+      },
+      {
+        "id": "a10",
+        "kind": "sfx",
+        "type": "click",
+        "start": 9.95,
+        "gain": -22
+      }
+    ]
+  },
+  "markers": [],
+  "meta": {
+    "created": "2026-10-09T01:26:59.077Z"
+  },
+  "duration": 18
+}

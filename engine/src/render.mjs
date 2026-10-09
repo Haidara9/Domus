@@ -1,7 +1,7 @@
 // Render orchestration: validate -> segments -> join -> overlays -> audio -> composite -> QC.
 // Every stage is cached by content hash, so a revision re-renders only what changed.
 import { copyFileSync, renameSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, relative } from 'node:path';
 import { ensureDir, exists, ffmpeg, log, sha, snap, toFrames, writeJSON } from './util.mjs';
 import { FORMATS, layout, save, validate } from './timeline.mjs';
 import { joinSegments, renderSegment } from './video.mjs';
@@ -139,7 +139,7 @@ export async function render(dir, opts = {}) {
   const secs = ((Date.now() - t0) / 1000).toFixed(1);
   log(`  -> ${out} (${secs}s; segments ${stats.segments.rendered} new/${stats.segments.cached} cached, overlays ${stats.overlays.rendered} new/${stats.overlays.cached} cached)`);
 
-  const manifest = { file: out, version, format: tl.format, W, H, fps, duration, quality, renderedAt: new Date().toISOString(), seconds: Number(secs), stats, warnings: [...v.warnings, ...ovr.warnings] };
+  const manifest = { file: relative(dir, out), version, format: tl.format, W, H, fps, duration, quality, renderedAt: new Date().toISOString(), seconds: Number(secs), stats, warnings: [...v.warnings, ...ovr.warnings] };
   let report = null;
   if (!noQc && !range.length) {
     report = await qc(out, { tl, expect: { width: W, height: H, fps, duration, loudness: opts.loudness ?? tl.audioTarget?.lufs ?? -14, hasAudio: !!mix }, outDir, name, extraWarnings: manifest.warnings });

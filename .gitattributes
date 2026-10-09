@@ -1,21 +1,10 @@
-# Large media go through Git LFS (footage, renders, music, VO)
-*.mp4 filter=lfs diff=lfs merge=lfs -text
-*.MP4 filter=lfs diff=lfs merge=lfs -text
-*.mov filter=lfs diff=lfs merge=lfs -text
-*.MOV filter=lfs diff=lfs merge=lfs -text
-*.mkv filter=lfs diff=lfs merge=lfs -text
-*.webm filter=lfs diff=lfs merge=lfs -text
-*.wav filter=lfs diff=lfs merge=lfs -text
-*.mp3 filter=lfs diff=lfs merge=lfs -text
-*.m4a filter=lfs diff=lfs merge=lfs -text
-*.aif filter=lfs diff=lfs merge=lfs -text
-*.psd filter=lfs diff=lfs merge=lfs -text
-*.ai filter=lfs diff=lfs merge=lfs -text
-*.zip filter=lfs diff=lfs merge=lfs -text
-*.dng filter=lfs diff=lfs merge=lfs -text
-*.tif filter=lfs diff=lfs merge=lfs -text
-*.tiff filter=lfs diff=lfs merge=lfs -text
-# fonts and source text stay in plain git
+# Git LFS is NOT used from cloud sessions (the session proxy rejects LFS uploads).
+# Keep committed media under 100 MB per file (GitHub limit); keep raw footage outside git
+# (see docs/assets-storage.md). On a local machine with LFS available you can enable, e.g.:
+#   *.mp4 filter=lfs diff=lfs merge=lfs -text
+*.mp4 binary
+*.mov binary
+*.wav binary
 *.ttf binary
 *.otf binary
 *.woff2 binary

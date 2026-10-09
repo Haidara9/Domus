@@ -1,6 +1,6 @@
 // Quality Supervisor checks on a rendered file: technical spec, loudness, black/frozen frames,
 // text safe zones, contact sheet. Writes <name>.qc.json and <name>.contact.png.
-import { join } from 'node:path';
+import { join, relative } from 'node:path';
 import { ffmpeg, log, probe, run, FFMPEG, writeJSON } from './util.mjs';
 
 // Where platform UI covers the frame (normalized). Text must stay inside the safe box.
@@ -80,10 +80,11 @@ export async function qc(file, { tl, expect = {}, outDir, name, extraWarnings = 
   extraWarnings.forEach((w) => add('render-warning', false, w, 'warning'));
   const contact = outDir ? await contactSheet(file, join(outDir, `${name}.contact.png`), { duration: p.duration }) : null;
   const pass = checks.every((c) => c.pass || c.severity !== 'error');
-  const report = { file, pass, probe: p, checks, contact };
+  const rel = (x) => (x && outDir ? relative(join(outDir, '..'), x) : x);
+  const report = { file: rel(file), pass, probe: { ...p, path: rel(p.path) }, checks, contact: rel(contact) };
   const reportPath = outDir ? join(outDir, `${name}.qc.json`) : null;
   if (reportPath) writeJSON(reportPath, report);
   log(`  QC ${pass ? 'PASS' : 'FAIL'}: ` + checks.map((c) => `${c.pass ? '✓' : c.severity === 'error' ? '✗' : '!'} ${c.id}`).join('  '));
   for (const c of checks) if (!c.pass) log(`     ${c.severity === 'error' ? '✗' : '!'} ${c.id}: ${c.detail}`);
-  return { ...report, reportPath };
+  return { ...report, contact, reportPath };
 }
