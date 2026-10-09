@@ -1,4 +1,6 @@
-# DOMUS Super Editor — Handoff (cloud session → Windows desktop)
+# DOMUS Super Editor — project history and handoff notes
+
+> **Status 2026-10-09:** the work continued in the cloud session; sections 5-6 below are now implemented. See `README.md`, `CLAUDE.md` and `docs/`. This file is kept as the record of the original brief and decisions.
 
 Written 2026-10-09 by the cloud session that started this project. The work moves to the owner's
 Windows desktop. Read this file first: the conversation that produced it is not available to you.
