@@ -103,7 +103,7 @@
   const { ease, range } = D;
   D.register('perspectiveOutline', {
     description: 'Copper/gold lines that draw along real edges (points in reference-frame coords) and stay locked to the surface via props.track (perspective).',
-    defaults: { points: [], closed: true, color: '#F2B878', width: 5, glow: true, drawDur: 0.9, ticks: true, trackMode: 'perspective', in: { dur: 0.01, style: 'none' }, out: { dur: 0.35, style: 'fade' } },
+    defaults: { points: [], closed: true, glint: 0.9, color: '#F2B878', width: 5, glow: true, drawDur: 0.9, ticks: true, trackMode: 'perspective', in: { dur: 0.01, style: 'none' }, out: { dur: 0.35, style: 'fade' } },
     draw(g, t, ctx) {
       const { p, S } = ctx;
       if (!p.points.length) return;
@@ -115,6 +115,18 @@
       if (p.glow) { g.shadowColor = 'rgba(255,170,90,0.95)'; g.shadowBlur = 22 * S; }
       D.polyline(g, pts, k, { width: p.width * 2.4 * S, color: 'rgba(168,111,63,0.35)', cap: 'round', join: 'miter' });
       D.polyline(g, pts, k, { width: p.width * S, color: col, cap: 'round', join: 'miter' });
+      if (p.glint && k >= 1) {
+        // a point of light travelling along the drawn edges
+        const segs = []; let total = 0;
+        for (let i = 1; i < pts.length; i++) { const l = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); segs.push(l); total += l; }
+        let d = (((t - p.drawDur) * p.glint) % 1) * total, i = 0;
+        while (i < segs.length - 1 && d > segs[i]) { d -= segs[i]; i++; }
+        const u = segs[i] ? d / segs[i] : 0;
+        const gx = pts[i][0] + (pts[i + 1][0] - pts[i][0]) * u, gy = pts[i][1] + (pts[i + 1][1] - pts[i][1]) * u;
+        const gr = g.createRadialGradient(gx, gy, 0, gx, gy, 46 * S);
+        gr.addColorStop(0, 'rgba(255,248,235,0.95)'); gr.addColorStop(0.25, 'rgba(255,200,140,0.55)'); gr.addColorStop(1, 'rgba(255,170,90,0)');
+        g.fillStyle = gr; g.fillRect(gx - 46 * S, gy - 46 * S, 92 * S, 92 * S);
+      }
       if (p.ticks) {
         const tk = ease.architectural(range(t, p.drawDur * 0.8, p.drawDur + 0.4));
         const L = 34 * S * tk;

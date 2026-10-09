@@ -89,6 +89,25 @@ ${scripts}
       D.paint(g, it, lt, { W: c.width, H: c.height, images: imgs, seed });
     }
   };
+  // Motion blur: average n subframes across a 180-degree shutter. 'lighter' sums premultiplied
+  // pixels, so drawing each subframe at alpha 1/n gives an exact average, transparency included.
+  const tmp = document.createElement('canvas'); tmp.width = c.width; tmp.height = c.height;
+  D.frameBlur = (items, t, seed, n, dt) => {
+    if (!n || n < 2) return D.frame(items, t, seed);
+    const tg = tmp.getContext('2d');
+    g.setTransform(1,0,0,1,0,0); g.clearRect(0, 0, c.width, c.height);
+    for (let i = 0; i < n; i++) {
+      const ts = t + (i / (n - 1) - 0.5) * 0.5 * dt;
+      tg.setTransform(1,0,0,1,0,0); tg.clearRect(0, 0, c.width, c.height);
+      for (const it of items) {
+        const lt = ts - (it._offset || 0);
+        if (lt < 0 || lt >= it.dur) continue;
+        const imgs = {}; for (const k in images) { imgs[k] = images[k]; if (k.startsWith(it.id + ':')) imgs[k.slice(it.id.length + 1)] = images[k]; }
+        D.paint(tg, it, Math.max(0, lt), { W: c.width, H: c.height, images: imgs, seed });
+      }
+      g.save(); g.globalCompositeOperation = 'lighter'; g.globalAlpha = 1 / n; g.drawImage(tmp, 0, 0); g.restore();
+    }
+  };
   D.png = () => c.toDataURL('image/png').slice(22);
 })();
 </script></body></html>`;
@@ -97,6 +116,7 @@ ${scripts}
 export class OverlayRenderer {
   constructor({ tl, root, cacheDir, W, H, fps }) {
     Object.assign(this, { tl, root, cacheDir: ensureDir(join(cacheDir, 'overlays')), W, H, fps });
+    this.blur = tl.motionBlur ?? 1; // subframes per frame for overlays (3 = smooth, film-like)
     const { brand, path } = loadBrand(tl, root);
     this.brand = brand; this.brandPath = path;
     this.warnings = [];
@@ -118,7 +138,7 @@ export class OverlayRenderer {
     const src = this.componentSource(item.component) + (item.component === 'endCard' ? this.componentSource('logoReveal') + this.componentSource('paperBackground') : '');
     const imgSig = Object.values(images).map(fileSig).join('|');
     const fontSig = Object.values(this.brand.fonts || {}).flatMap((f) => (f?.files || (f?.file ? [{ path: f.file }] : [])).map((x) => fileSig(resolve(REPO_DIR, x.path)))).join('|');
-    return sha({ v: 3, opaque: isOpaque(item), src: sha(src), item: { component: item.component, dur: item.dur, props: item.props }, W: this.W, H: this.H, fps: this.fps, colors: this.brand.colors, fonts: this.brand.fonts, imgSig, fontSig });
+    return sha({ v: 3, blur: this.blur, opaque: isOpaque(item), src: sha(src), item: { component: item.component, dur: item.dur, props: item.props }, W: this.W, H: this.H, fps: this.fps, colors: this.brand.colors, fonts: this.brand.fonts, imgSig, fontSig });
   }
 
   async open() {
@@ -161,7 +181,7 @@ export class OverlayRenderer {
     let ferr = ''; ff.stderr.on('data', (d) => (ferr += d));
     const plain = { id: item.id, component: item.component, dur: item.dur, props: item.props || {} };
     for (let f = 0; f < frames; f++) {
-      const b64 = await this.page.evaluate(([it, t, seed]) => { window.DOMUS.frame([it], t, seed); return window.DOMUS.png(); }, [plain, f / this.fps, 1]);
+      const b64 = await this.page.evaluate(([it, t, seed, n, dt]) => { window.DOMUS.frameBlur([it], t, seed, n, dt); return window.DOMUS.png(); }, [plain, f / this.fps, 1, this.blur, 1 / this.fps]);
       if (!ff.stdin.write(Buffer.from(b64, 'base64'))) await new Promise((r) => ff.stdin.once('drain', r));
     }
     ff.stdin.end();
