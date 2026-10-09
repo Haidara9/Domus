@@ -13,7 +13,7 @@ bash tools/get-tool.sh NullMotion  # clone into tools/vendor/ (git-ignored), ski
 | HyperFrames | nothing to install for the export; `npx hyperframes@0.8.143 check/preview/render` inside `productions/<x>/hyperframes` | Studio editing of an exported timeline |
 | Video Ad Editor | Claude plugin (`majed-video`), if not installed | montage, semantic shot search, DaVinci handoff, Arabic captions |
 | open-edit | `npx @veedstudio/openedit-cli …` | WhisperX transcription, EDL assembly, segment-cached HTML render |
-| NullMotion | `bash tools/get-tool.sh NullMotion && cd tools/vendor/NullMotion && npm start` | breaking down reference ads |
+| NullMotion | vendored in `tools/NullMotion` (owner request; no upstream license, keep repo private): `cd tools/NullMotion && npm start` | breaking down reference ads |
 | MotionClone | GPU machine only; see `docs/tool-audit.md` | abstract experiments, never property footage |
 
 Paid services (VEED, fal, Higgsfield, Enhancor/Seedance, Replicate) need the owner's explicit approval per use.

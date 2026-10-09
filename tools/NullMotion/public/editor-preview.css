@@ -1,0 +1,86 @@
+/* Film preview stage: the video, the brand layer, guides, presentation view. */
+
+.canvas-wrap {
+  display: flex; align-items: center; justify-content: center;
+  height: clamp(280px, 26vw, 420px);
+  background: #000;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.film-stage {
+  position: relative;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  background: #000;
+  overflow: hidden;
+}
+.canvas-wrap.portrait .film-stage { aspect-ratio: 9 / 16; }
+.canvas-wrap.square .film-stage { aspect-ratio: 1 / 1; }
+
+#preview-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #000; }
+
+.video-loading {
+  position: absolute; inset: 0; z-index: 2;
+  display: grid; place-items: center;
+  font-size: 11px; color: var(--faint);
+  background: #000;
+}
+.video-loading[hidden] { display: none; }
+
+/* Brand layer */
+
+.monitor-brand, .monitor-caption { position: absolute; z-index: 3; display: flex; align-items: center; gap: 8px; }
+
+.monitor-brand {
+  top: 14px; left: 14px;
+  font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: rgba(255, 255, 255, .78);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, .7);
+}
+.film-monogram {
+  display: grid; place-items: center; width: 18px; height: 18px; border-radius: 3px;
+  background: var(--accent); color: #101010; font-size: 11px; letter-spacing: 0; font-weight: 600;
+}
+
+.monitor-caption { left: 14px; bottom: 14px; font-size: 13px; color: #fff; text-shadow: 0 1px 8px rgba(0, 0, 0, .75); }
+.caption-accent { width: 2px; height: 15px; background: var(--accent); flex: none; }
+
+.film-stage.no-brand .monitor-brand,
+.film-stage.no-brand .monitor-caption,
+.canvas-wrap.reference-mode .monitor-brand,
+.canvas-wrap.reference-mode .monitor-caption { display: none; }
+
+/* Safe-area guides */
+
+.monitor-guides { position: absolute; inset: 5%; z-index: 4; border: 1px solid rgba(255, 255, 255, .22); pointer-events: none; }
+.monitor-guides[hidden] { display: none; }
+.monitor-guides span { position: absolute; inset: 5%; border: 1px solid rgba(255, 255, 255, .12); }
+
+/* Centre play button */
+
+.canvas-play {
+  position: absolute; inset: 0; z-index: 5;
+  display: grid; place-items: center;
+  color: #fff; background: rgba(0, 0, 0, .18);
+  transition: opacity .15s;
+}
+.canvas-play svg { width: 34px; height: 34px; filter: drop-shadow(0 2px 8px rgba(0, 0, 0, .6)); }
+.canvas-wrap.is-playing .canvas-play { opacity: 0; }
+.canvas-wrap.is-playing .canvas-play:hover, .canvas-wrap.is-playing .canvas-play:focus-visible { opacity: 1; }
+
+/* Presentation view */
+
+.present-mode { overflow: hidden; }
+.present-mode .topbar,
+.present-mode .rail,
+.present-mode .studio-heading,
+.present-mode .brand-panel,
+.present-mode .timeline-panel,
+.present-mode .library-panel,
+.present-mode .canvas-top,
+.present-mode .monitor-source,
+.present-mode .transport { display: none; }
+.present-mode .upper-workspace { grid-template-columns: 1fr; padding: 0; gap: 0; }
+.present-mode .canvas-wrap { height: 100vh; border: 0; border-radius: 0; background: #000; }

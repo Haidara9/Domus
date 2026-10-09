@@ -23,6 +23,15 @@ switch languages.
    before installing anything large or paid. Never spend credits (VEED, fal, Higgsfield, Enhancor) without
    explicit approval.
 
+## Standing owner instructions
+- Keep everything in this one repo (`haidara9/domus`), organized. Source of truth for owner assets: the Drive
+  folder `Domus` (https://drive.google.com/drive/folders/1spK-nUyLtCc43-aPMATSiY2NljaY4ytY): skills, repos, logos
+  (AR/EN), fonts, reference videos, footage. Pull from there; don't ask for re-uploads.
+- The logo must be used **exactly** as the files: the O carries the domed arch with columns and the roof
+  chevron above it. Never redraw or simplify it; the temporary text wordmark is for drafts only.
+- Study reference videos and past productions as training material (`reference/`), but never copy them.
+- Act as a production partner: propose stronger alternatives, inspect outputs, fix deficiencies.
+
 ## Pipeline (one production = one folder in `productions/<slug>/`)
 Brief → Asset analysis → Creative concepts → Storyboard → Shot selection → Timeline assembly → Motion/VFX →
 Color → Sound → Preview → Quality review → Final export → Learnings.

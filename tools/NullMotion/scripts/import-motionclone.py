@@ -1,0 +1,100 @@
+"""Import source references only. Videos stay local; no jobs, auth, or outputs are copied.
+
+Source videos are hard-linked into .local-media/ when the MotionClone folder is on the same
+volume as this repository. Across drives (or on file systems without hard links) they are
+copied instead, which uses extra disk space. Requires ffmpeg and ffprobe on PATH.
+"""
+import argparse
+import json
+import math
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+
+
+def link_or_copy(source, destination):
+    """Hard-link source to destination; copy it when a link is impossible (another drive, FAT/exFAT).
+
+    The copy goes to a temporary name first, so an interrupted import never leaves a truncated
+    video that later runs would mistake for a finished one.
+    """
+    try:
+        os.link(source, destination)
+        return 'linked'
+    except OSError:
+        partial = destination.with_name(destination.name + '.part')
+        try:
+            shutil.copyfile(source, partial)
+            os.replace(partial, destination)
+        except BaseException:
+            partial.unlink(missing_ok=True)
+            raise
+        return 'copied'
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--source', required=True, type=Path, help='MotionClone project directory')
+args = parser.parse_args()
+if not (args.source / 'data').is_dir():
+    sys.exit(f'No data/ folder in {args.source}. Point --source at the MotionClone project directory.')
+target = Path(__file__).resolve().parent.parent
+policy = json.loads((target / 'data' / 'reference-policy.json').read_text(encoding='utf-8'))
+media_root = target / '.local-media'
+thumb_root = target / 'public' / 'references'
+media_root.mkdir(exist_ok=True)
+thumb_root.mkdir(exist_ok=True)
+sources = []
+for directory in sorted((args.source / 'data').iterdir()):
+    if not directory.is_dir() or directory.name.startswith('.'):
+        continue
+    if (directory / 'source.mp4').exists():
+        job_file = directory / 'job.json'
+        job = json.loads(job_file.read_text(encoding='utf-8')) if job_file.exists() else {}
+        sources.append((directory.name, directory / 'source.mp4', job.get('name', 'Motion reference')))
+    elif directory.name in ('nexa-references', 'troovy-reference'):
+        for video in sorted(directory.glob('*.mp4')):
+            info_file = video.with_suffix('.info.json')
+            info = json.loads(info_file.read_text(encoding='utf-8')) if info_file.exists() else {}
+            sources.append((directory.name + '-' + video.stem, video, info.get('title', video.stem)))
+references = []
+for identifier, video, title in sources:
+    if identifier in policy['excluded']:
+        print(f'Skipped {identifier}: excluded by reference policy.', flush=True)
+        continue
+    probe = subprocess.run(['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height:format=duration', '-of', 'json', str(video)], capture_output=True, text=True, check=True)
+    details = json.loads(probe.stdout)
+    duration = float(details['format']['duration'])
+    destination = media_root / (identifier + '.mp4')
+    if not destination.exists():
+        # Same-volume hard links preserve the source without duplicating large videos;
+        # other drives fall back to a copy. The source file is only ever read.
+        if link_or_copy(video, destination) == 'copied':
+            print(f'Copied {identifier}: source is on another drive, so it could not be hard-linked.', flush=True)
+    count = max(1, math.floor(duration / 4))
+    segments = []
+    for index in range(count):
+        start = round(index * duration / count, 3)
+        end = duration if index == count - 1 else round((index + 1) * duration / count, 3)
+        image = thumb_root / f'{identifier}-{index}.jpg'
+        if not image.exists():
+            subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-threads', '1', '-ss', str((start + end) / 2), '-i', str(video), '-frames:v', '1', '-vf', 'scale=480:-2', '-threads', '1', '-q:v', '4', str(image)], check=True, stdout=subprocess.DEVNULL)
+        segments.append({'ref': identifier, 'in': start, 'out': round(end, 3), 'part': index + 1, 'poster': f'/references/{image.name}'})
+    name = str(title).split(' - ', 1)[-1].split('   ')[0].strip()
+    aliases = {
+        '09a418cdd005': 'Leo · Ideas in motion', '09782d1f7c63': 'Claude × Milanote',
+        'cf8c4707e634': 'HealthTech · Product reveal', '4d97811d6dae': 'Ask River · A better flow',
+        '919ebec37a3b': 'Troovy · Meet your next idea', '5fbdf5e42405': 'System prompts',
+        '3227c09daea3': 'Supahub · Product story', '0360df628fa3': 'Motion study 01',
+        '227b019e7968': 'SaaS · Launch sequence', '5db95a3a7c73': 'Motion study 08',
+        '5924a2f28506': 'Interface · Motion study'
+    }
+    references.append({'id': identifier, 'name': policy.get('names', {}).get(identifier, aliases.get(identifier, name[:85])), 'originalName': str(title)[:200],
+        'duration': round(duration, 3), 'width': details['streams'][0]['width'], 'height': details['streams'][0]['height'],
+        'src': f'/media/references/{identifier}.mp4', 'poster': segments[0]['poster'], 'segments': segments})
+    print(f'Imported {identifier}: {len(segments)} segments', flush=True)
+preferred = policy['featured']
+references.sort(key=lambda item: preferred.index(item['id']) if item['id'] in preferred else len(preferred))
+(thumb_root / 'catalog.json').write_text(json.dumps({'references': references}, indent=2, ensure_ascii=False), encoding='utf-8')
+print(f'Ready: {len(references)} references, {sum(len(r["segments"]) for r in references)} selectable segments.')
