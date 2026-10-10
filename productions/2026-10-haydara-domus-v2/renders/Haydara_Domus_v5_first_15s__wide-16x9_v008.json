@@ -1,0 +1,39 @@
+{
+  "file": "renders/Haydara_Domus_v5_first_15s__wide-16x9_v008.mp4",
+  "version": 8,
+  "format": "wide-16x9",
+  "W": 1920,
+  "H": 1080,
+  "fps": 30,
+  "duration": 15,
+  "quality": "final",
+  "renderedAt": "2026-10-10T00:27:02.735Z",
+  "seconds": 1050.9,
+  "stats": {
+    "segments": {
+      "rendered": 2,
+      "cached": 6
+    },
+    "overlays": {
+      "rendered": 1,
+      "cached": 9
+    }
+  },
+  "warnings": [
+    "v5: clip is only 0.43s; under 0.5s reads as a flash unless intentional",
+    "v6: clip is only 0.40s; under 0.5s reads as a flash unless intentional",
+    "v8: clip is only 0.43s; under 0.5s reads as a flash unless intentional",
+    "t1: start/dur not on frame grid (will snap)",
+    "t3: start/dur not on frame grid (will snap)",
+    "t4: start/dur not on frame grid (will snap)",
+    "g1: start/dur not on frame grid (will snap)",
+    "g3: start/dur not on frame grid (will snap)",
+    "x10: start/dur not on frame grid (will snap)",
+    "x11: start/dur not on frame grid (will snap)"
+  ],
+  "qc": {
+    "pass": true,
+    "report": "/home/user/Domus/productions/2026-10-haydara-domus-v2/renders/Haydara_Domus_v5_first_15s__wide-16x9_v008.qc.json",
+    "contact": "/home/user/Domus/productions/2026-10-haydara-domus-v2/renders/Haydara_Domus_v5_first_15s__wide-16x9_v008.contact.png"
+  }
+}
