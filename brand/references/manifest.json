@@ -1,0 +1,50 @@
+{
+  "source": "Owner attachments, 2026-10-12",
+  "assets": [
+    {
+      "file": "brand/references/5805204460614127496.jpg",
+      "sha256": "4f5876a6dd8cf9b41f1f7d57c7e28501816829aeedb8a0bdc457de825fb3b3ab",
+      "purpose": "Owner-provided identity reference; not a property listing"
+    },
+    {
+      "file": "brand/references/5805204460614127497.jpg",
+      "sha256": "795de6493dc6431a01859aa682ba4ad6fd4467882f0da979e39456f8a72c4119",
+      "purpose": "Owner-provided identity reference; not a property listing"
+    },
+    {
+      "file": "brand/references/5805204460614127499.jpg",
+      "sha256": "1689dc3d378223ed2b8d7ae61b6220198f9da6255382a28679e264f7822fc089",
+      "purpose": "Owner-provided identity reference; not a property listing"
+    },
+    {
+      "file": "brand/references/5805204460614127501.jpg",
+      "sha256": "16691b98acc1d3a22c5006fce0691c7fd815be7ece5bcc80633a9a1bb98a958f",
+      "purpose": "Owner-provided identity reference; not a property listing"
+    },
+    {
+      "file": "brand/references/5805204460614127502.jpg",
+      "sha256": "9773692564172e34888335294c544dffe6b6a9ca5ac15d147eb10e0e5f29d959",
+      "purpose": "Owner-provided identity reference; not a property listing"
+    },
+    {
+      "file": "brand/references/5805204460614127503.jpg",
+      "sha256": "0c20769a1be568de366b299680df9f7f1cccced88a1c98503a259689865beb86",
+      "purpose": "Owner-provided identity reference; not a property listing"
+    },
+    {
+      "file": "brand/references/5805204460614127504.jpg",
+      "sha256": "32038780f3083cb36f8c67a7d50326704ba43c849b5c5698fc150db28533d417",
+      "purpose": "Owner-provided identity reference; not a property listing"
+    },
+    {
+      "file": "brand/references/5918246243203223583.jpg",
+      "sha256": "e5bb27fe500296dface4d82caec241197ceb728f82b637ca4f04f66e49d2cc84",
+      "purpose": "Owner-provided identity reference; not a property listing"
+    },
+    {
+      "file": "brand/references/5918246243203223584.jpg",
+      "sha256": "6934c742be24145f269f04937e037c07f27dc44600d10c6fde835a03bcdaca60",
+      "purpose": "Owner-provided identity reference; not a property listing"
+    }
+  ]
+}

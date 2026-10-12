@@ -1,0 +1,38 @@
+{
+  "checked_at": "2026-10-12",
+  "base_domus_commit": "b7121143050e354da3a5cad8a11a8263e2e79179",
+  "sources": [
+    {
+      "name": "agency-agents",
+      "url": "https://github.com/msitarzewski/agency-agents",
+      "path": "tools/agency-agents",
+      "commit": "f99f6aa910a442b0197b768ce0ea7751e35e2060",
+      "last_commit_at": "2026-10-07T11:45:46-05:00",
+      "license": "MIT",
+      "integration": "pinned git submodule; source only"
+    },
+    {
+      "name": "video-ad-editor",
+      "url": "https://github.com/majedphotos/video-ad-editor",
+      "path": "tools/video-ad-editor",
+      "commit": "60626fd22f1a47f7705e68e19bcc68ac2a01b417",
+      "last_commit_at": "2026-10-10T21:17:13+03:00",
+      "license": "MIT",
+      "integration": "pinned git submodule; source only"
+    },
+    {
+      "name": "open-edit-main.zip",
+      "source": "Owner attachment",
+      "sha256": "593752321855dc6a4c7e58e218eed939b87d292628227aee3ce6224a5f678574",
+      "path": "tools/open-edit",
+      "integration": "Existing exact source match"
+    },
+    {
+      "name": "motion-reel-skill.zip",
+      "source": "Owner attachment",
+      "sha256": "fd710642f0f8438bad314c86c760084bbeff5704c87632a0b4a2fa2d405d5638",
+      "path": "reference/skills/motion-reel",
+      "integration": "Unmodified uploaded reference"
+    }
+  ]
+}

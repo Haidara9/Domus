@@ -1,0 +1,6 @@
+[submodule "tools/agency-agents"]
+	path = tools/agency-agents
+	url = https://github.com/msitarzewski/agency-agents.git
+[submodule "tools/video-ad-editor"]
+	path = tools/video-ad-editor
+	url = https://github.com/majedphotos/video-ad-editor.git

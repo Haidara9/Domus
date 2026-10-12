@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "id": "2026-10-rented-announcement",
+  "brand": "DOMUS Real Estate",
+  "platform": "facebook",
+  "timezone": "Asia/Damascus",
+  "format": "post",
+  "purpose": "announcement",
+  "property_status": "rented",
+  "confirmation": {
+    "status": "owner_confirmed",
+    "by": "صاحب المشروع — سياق المحادثة",
+    "at": "2026-10-12T15:32:15+03:00"
+  },
+  "objective": "إعلان تأجير العقار والتشويق للعقارات القادمة",
+  "audience": "جمهور صفحة دوموس العقارية في اللاذقية",
+  "facts": {
+    "type": null,
+    "location": null,
+    "area_sqm": null,
+    "rooms": null,
+    "price": null,
+    "currency": null,
+    "features": []
+  },
+  "contact": {
+    "method": "page_messages",
+    "public_phone": null
+  },
+  "media": {
+    "video": null
+  },
+  "production": null,
+  "sources": [
+    "طلب صاحب المشروع: بوست للإعلان أن العقار تم تأجيره وانتظرونا بالعقارات القادمة",
+    "حدد صاحب المشروع نطاق الشركة في اللاذقية، سوريا"
+  ],
+  "notes": "حالة التأجير من صاحب المشروع. توقيت التأكيد هو توقيت إتاحة السياق، وليس تاريخ حدوث التأجير. تفاصيل العقار وتاريخ التأجير والفيديو لم تحدد لهذه الحملة. النص مسودة للمراجعة؛ لم ينشر."
+}
