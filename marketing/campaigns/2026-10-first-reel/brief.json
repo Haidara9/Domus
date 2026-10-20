@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "id": "2026-10-first-reel",
+  "brand": "DOMUS Real Estate",
+  "platform": "facebook",
+  "timezone": "Asia/Damascus",
+  "format": "reel",
+  "purpose": "announcement",
+  "property_status": "unknown",
+  "confirmation": {
+    "status": "pending",
+    "by": null,
+    "at": null
+  },
+  "objective": null,
+  "audience": null,
+  "facts": {
+    "type": null,
+    "location": null,
+    "area_sqm": null,
+    "rooms": null,
+    "price": null,
+    "currency": null,
+    "features": []
+  },
+  "contact": {
+    "method": "page_messages",
+    "public_phone": null
+  },
+  "media": {
+    "video": null
+  },
+  "production": null,
+  "sources": [],
+  "notes": "بانتظار إجابات صاحب المشروع على الأسئلة الثلاثة وتحديد الفيديو. لم يُفترض العقار أو السعر أو رقم التواصل."
+}

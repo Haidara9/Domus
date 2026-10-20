@@ -1,0 +1,9 @@
+{
+  "name": "domus-marketing",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local DOMUS campaign briefs, role context, review packets, and sourced metrics. No remote API calls.",
+  "scripts": { "test": "node --test test/*.test.mjs" },
+  "engines": { "node": ">=20" }
+}

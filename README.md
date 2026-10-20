@@ -1,9 +1,13 @@
-# DOMUS Super Editor
+# DOMUS Real Estate — Marketing & Super Editor
 
 <div dir="rtl">
 
-**استوديو إنتاج سينمائي ذكي لـ دوموس العقارية (اللاذقية).** نظام متعدد الوكلاء يحوّل لقطات العقار
-إلى أفلام وريلات بمستوى After Effects وPremiere وDaVinci، بهوية دوموس، ومن غير ما يغيّر أي شي حقيقي بالعقار.
+**إنتاج ومحتوى وتسويق لـ دوموس العقارية (اللاذقية).** محرك محلي لتحرير لقطات العقار
+وإضافة النص والموشن والصوت بهوية دوموس، مع الحفاظ على حقيقة العقار.
+
+**إدارة التسويق:** [مسار دوموس للمحتوى والتسويق](marketing/README.md) للموجز والهوك والكابشن وCTA،
+أدوار متخصصة من Agency Agents، مراجعة بشرية، ملف للنشر اليدوي، وقياس أرقام موثقة المصدر.
+النشر وحساب الإعلانات غير متصلين بهذه الإضافة؛ لا تعني المسودة أو التصدير نشر منشور.
 
 - **محرك تايملاين** قابل للتعديل وغير مدمّر ودقيق للفريم، بمسارات منفصلة للفيديو والنص والموشن والمؤثرات والصوت. كل تعديل محفوظ كنسخة، وكل تعديل بيعيد رندر بس الجزء اللي تغيّر.
 - **مكتبات جاهزة:** حركات كاميرا، انتقالات (whip وdissolve وdip وغيرها)، عناوين معمارية، بطاقات مواصفات، لوغو، مؤثرات ضوء، تدرجات لون، ومؤثرات صوتية مولّدة بلا حقوق.
@@ -35,12 +39,15 @@ With Claude: ask for a production and the `domus-studio` skill runs the whole pi
 | QC (spec, loudness, black/frozen, safe zones, contact sheet) | ✅ |
 | HyperFrames export (`hyperframes check` = 0 errors; snapshots render) | ✅ |
 | Analysis: shots, sharpness/exposure/motion scoring, beats, shot matching | ✅ runs; scoring heuristics need tuning on real footage |
-| Official brand fonts & logo | ⏳ waiting for files (placeholders in use) |
+| Official brand fonts & supplied logo sources | Present; exact match to owner attachments verified 2026-10-12 |
+| Marketing workflow | Local brief/context/approval/export/metrics tests; no publishing or model API connected |
 
 ## Map
 | Path | What |
 |---|---|
 | `CLAUDE.md` | Operating rules for Claude (authenticity, facts, brand, review loop) |
+| `AGENTS.md` | DOMUS operating rules for Codex and other agents |
+| `marketing/` | Campaign briefs, role context, copy, approval-bound exports, sourced metrics |
 | `.claude/agents/` | Creative Director, Cinematography Analyst, Master Editor, Motion/VFX Artist, Colorist, Sound Designer, Quality Supervisor |
 | `.claude/skills/` | `domus-studio` (production playbook), `domus-learn` (turn productions into reusable craft) |
 | `engine/` | `domus` CLI: timeline, renderer, overlays, audio, analysis, QC, HyperFrames export |
@@ -51,3 +58,7 @@ With Claude: ask for a production and the `domus-studio` skill runs the whole pi
 | `reference/` | reference videos and breakdowns |
 | `tools/` | environment check and optional external tools |
 | `docs/assets-storage.md` | where footage, links and large files go |
+
+After cloning this branch, run `git submodule update --init --recursive` to restore the pinned
+Agency Agents and Video Ad Editor sources. See [selection audit](docs/marketing-repository-audit.md)
+and [verification report](docs/marketing-setup-verification.md).

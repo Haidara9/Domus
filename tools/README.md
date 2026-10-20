@@ -11,9 +11,13 @@ bash tools/get-tool.sh NullMotion  # clone into tools/vendor/ (git-ignored), ski
 | Tool | How to get it | Use it for |
 |---|---|---|
 | HyperFrames | nothing to install for the export; `npx hyperframes@0.8.143 check/preview/render` inside `productions/<x>/hyperframes` | Studio editing of an exported timeline |
-| Video Ad Editor | Claude plugin (`majed-video`), if not installed | montage, semantic shot search, DaVinci handoff, Arabic captions |
-| open-edit | source in `tools/open-edit` (Apache-2.0); or `npx @veedstudio/openedit-cli …` | WhisperX transcription, EDL assembly, segment-cached HTML render |
+| Agency Agents | pinned submodule `tools/agency-agents`; `git submodule update --init --recursive` | selected marketing roles through `marketing/config.json`; no model/publishing service bundled |
+| Video Ad Editor | pinned submodule `tools/video-ad-editor` (`majed-video` v4.4.3); optional scripts are used as needed | montage, semantic shot search, DaVinci handoff, Arabic captions; models and host-app integrations are separate |
+| open-edit | exact uploaded source already in `tools/open-edit` (Apache-2.0) | local CLI built and checked in this session; rebuild after cloning with dependencies installed and `npm run build` |
 | NullMotion | vendored in `tools/NullMotion` (owner request; no upstream license, keep repo private): `cd tools/NullMotion && npm start` | breaking down reference ads |
 | MotionClone | source in `tools/MotionClone` (from the owner's Drive); runs only on an NVIDIA GPU machine, see `docs/tool-audit.md` | abstract experiments, never property footage |
 
 Paid services (VEED, fal, Higgsfield, Enhancor/Seedance, Replicate) need the owner's explicit approval per use.
+
+These tools were prepared in the current Linux workspace. This does not establish their installation on
+the owner's Windows computer or a running Hermes service. Do not run upstream global installers by default.

@@ -1,7 +1,8 @@
 # DOMUS brand in motion
 
 Source: the owner's social posts and logo (seen 2026-10-09). Tokens live in `brand/brand.json`.
-**Status: provisional.** Official fonts, logo files and guidelines are still to be added (see below).
+**Status: fonts and original logo files supplied.** Their source bytes match the owner's attachments
+checked on 2026-10-12. Color codes remain sampled working tokens; an official color/clear-space guide is pending.
 
 ## Identity
 - **DOMUS — REAL ESTATE / دوموس — العقارية**, Latakia (اللاذقية).

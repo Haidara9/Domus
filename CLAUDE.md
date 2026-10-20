@@ -65,3 +65,11 @@ Quality Supervisor checklist (`.claude/agents/quality-supervisor.md`). 4. Fix th
 `brand/` identity tokens, fonts, logos · `docs/` standards, audits, libraries · `engine/` timeline + renderer ·
 `library/` motion, transitions, color, sfx, learnings · `productions/` one folder per film (`_template/`) ·
 `reference/` reference videos and breakdowns · `tools/` setup scripts for external tools.
+
+## Marketing (added 2026-10-12)
+The project now also serves DOMUS content and marketing. Follow `AGENTS.md` and `marketing/README.md`.
+Use the pinned Agency Agents roles as references, with the owner's property facts and DOMUS instructions
+taking precedence. Draft hooks, captions, CTA, and reel briefs in `marketing/campaigns/`.
+Do not describe rented/sold property as available. No social page, ads account, or model API is connected
+by the local marketing CLI. Human approval of exact content precedes local export; actual publication,
+scheduling, messaging, and paid promotion need the owner's instruction and verified DOMUS account access.

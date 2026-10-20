@@ -1,0 +1,17 @@
+{
+  "brand": "DOMUS Real Estate",
+  "location": "اللاذقية، سوريا",
+  "timezone": "Asia/Damascus",
+  "primary_platform": "facebook",
+  "language": "ar-SY",
+  "publishing": "manual-approved-packet",
+  "paid_calls": false,
+  "roles": {
+    "strategy": "tools/agency-agents/marketing/marketing-social-media-strategist.md",
+    "copy": "tools/agency-agents/marketing/marketing-content-creator.md",
+    "reels": "tools/agency-agents/marketing/marketing-short-video-editing-coach.md",
+    "brand": "tools/agency-agents/design/design-brand-guardian.md",
+    "ads": "tools/agency-agents/paid-media/paid-media-creative-strategist.md",
+    "analytics": "tools/agency-agents/support/support-analytics-reporter.md"
+  }
+}

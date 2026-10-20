@@ -1,5 +1,9 @@
 # Tool audit
 
+For the current 2026-10-12 setup, see [marketing verification](marketing-setup-verification.md):
+Agency Agents and Video Ad Editor sources are now pinned submodules; the uploaded Open Edit source
+was built and its frame extraction exercised locally. The audit below records the earlier 2026-10-09 state.
+
 Audited 2026-10-09 by cloning each repository and reading its code, licenses and dependencies.
 **Verified** means checked in code, or run in this repo's environment. **Claimed** means stated in the project's
 README but not exercised here.
