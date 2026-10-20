@@ -127,3 +127,64 @@ oversaturation, flicker, jitter, morphing between rooms, stutter in the slow gli
   e.g. entrance 01.4, kitchen 06.3, living 12.6, finale 26.5 (words: from the owner).
 - Account handle small top-right all along; end card 27.9-31.9: logo + handle (owner's account/logo).
 - Final loudness -14 LUFS.
+
+## SINGLE PROMPT (all 9 photos + reference video in one generation, 27.9 s)
+Attach in this order: @Image1 ... @Image9 (table above), then @Video1 = reference/reference.mp4 (camera motion and rhythm only).
+```
+FORMAT: vertical 9:16, 1080x1920, 30 fps, 27.9 seconds, photoreal real-estate FPV reel of ONE real apartment at night,
+all interior lights on, one continuous flight through @Image1 to @Image9.
+
+MOTION REFERENCE: copy the camera language and editing rhythm of @Video1 exactly: FPV cinewhoop one-take, ultra-wide 14mm
+lens with slight barrel distortion, flown low (30-120 cm), banked turns with gentle roll, flying through door openings,
+passing close to surfaces, long smooth glides broken by sharp whips on the downbeat, cuts hidden inside the whip blur,
+one white-flash transition. Use @Video1 ONLY for camera motion, speed and rhythm: none of its locations, house, text,
+graphics, logos, people or music.
+
+FIDELITY (highest priority): every space must match its reference photo exactly: walls, doors, ceilings, light fixtures,
+furniture, rugs, materials, colours and layout. Do not add, remove, move or restyle anything. Do not invent rooms, windows,
+views or extra space; reveal only what the photos show. Straight architectural lines stay straight and rigid.
+No people, no hands, no text, no logos, no watermarks in the picture.
+
+GRADE: crisp high-clarity commercial look, clean whites, rich contrast, warm practical lights with soft halation and bloom.
+
+RHYTHM (172 BPM, one bar = 1.395 s, every segment = 2 bars = 2.79 s): each segment is a smooth slow glide (0.6x feel) that,
+in its last 0.25 s, accelerates exponentially into a fast whip (3-4x, strong directional motion blur) landing exactly on
+the downbeat; the next space starts from that blur and settles instantly into the next glide. Speed changes are S-curves.
+
+SHOTS:
+00.00-02.79 @Image1 ENTRANCE. Start 40 cm above the stone floor, glide toward the gold-framed doorway, banking right to
+  reveal the gold wrought-iron scrolls and cream brick walls; wall sconces bloom on at 01.40; whip through the doorway at 02.55.
+  Keep empty floor space in the lower third for a graphic added later.
+02.79-05.58 @Image2 CORRIDOR. Centred on the corridor axis, slow glide toward the lit wooden door at the far end, slight
+  roll with the beat; at 05.30 accelerate through the far doorway into a clean WHITE FLASH (4 frames).
+05.58-08.37 @Image3 KITCHEN. Out of the flash, the ceiling ring lights snap on one by one front to back on the beats
+  (06.28, 06.63, 06.98, 07.33); skim 30 cm above the red floral rug, rise and dive close past the glossy dark upper cabinets
+  with a 20-degree roll; whip left at 08.15.
+08.37-11.16 @Image4 KITCHEN ANGLE. Slow lateral glide along the black counter, the LED strip under the cabinets sweeps on
+  left to right, passing the sink and washing machine; whip right at 10.90.
+11.16-13.95 @Image5 LIVING ROOM. Low over the patterned cream rug, tilt up as the blue LED cove ignites and the gold carved
+  medallion glows; slow 15-degree orbit; spotlights pop on in sequence; whip at 13.70.
+13.95-16.74 @Image6 FORMAL SALON. Perfectly symmetrical one-point view down the centre axis, flying low over the traditional
+  rug between the burgundy sofas toward the crimson curtained window; at 15.75 rise toward the glowing orange-red
+  stained-glass skylight; whip up-right at 16.50.
+16.74-19.53 @Image8 MASTER BEDROOM. Slide past the dark wooden door edge in the foreground (natural wipe), glide toward the
+  carved cream bed and the red heart wall as the yellow stained-glass ceiling panel glows; whip left at 19.30.
+19.53-22.32 @Image7 CHILDREN'S ROOM. Start on the brass pendant lamp and the geometric ceiling motif, crane down smoothly to
+  the twin beds and the patterned floor; the pendant glows warmer; whip right at 22.10.
+22.32-25.11 @Image9 BATHROOM. Push through the open door into the white marble bathroom, the round ceiling light flares,
+  reflections glide across the marble; dive close to the frosted door with the sun motif; whip out backwards at 24.85.
+25.11-27.90 @Image2 then @Image1 FINALE. Fly back down the corridor, continuously accelerating to 3x, burst out through the
+  gold-framed doorway and brake hard into a calm, symmetric hero frame of the entrance with the sconces glowing; hold
+  perfectly still for the last 0.8 s (clean frame for the end card).
+
+AUDIO: native stereo. Energetic premium electronic track at 172 BPM (driving drums, bright synth stabs, short wordless vocal
+chop), original music, not the track of @Video1. SFX: airy whoosh on every whip (02.79, 05.58, 08.37, 11.16, 13.95, 16.74,
+19.53, 22.32, 25.11), deep sub boom on the white flash at 05.58, crisp light-switch clicks on the kitchen ring lights,
+riser into the blue cove at 12.56 with a bass hit, shimmer on the stained-glass glows, door-wood brush on the bedroom wipe,
+tiny chime on the pendant lamp, water-drop plink in the bathroom, long rising whoosh on the corridor run into a final bass
+hit at 27.10 and a reverb tail. No voice-over, no dialogue.
+
+NEGATIVE: people, hands, pets, camera or photographer reflections, warped or melting walls, bent lines, extra furniture,
+changed patterns on rugs and floors, new windows or doors, outdoor views, anything from @Video1's house, text, captions,
+logos, watermarks, cartoon look, oversaturation, flicker, jitter, morphing between rooms, stutter in the slow glides.
+```
