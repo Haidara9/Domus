@@ -42,7 +42,7 @@ total spent, and the API job ids. Commit and push to the same branch. Then repor
 
 MASTER PROMPT (one generation):
 <<<
-FORMAT: vertical 9:16, 1080x1920, 19.53 seconds, photoreal real-estate FPV reel of ONE real apartment at night, all lights
+FORMAT: vertical 9:16, 480p, 19.53 seconds, photoreal real-estate FPV reel of ONE real apartment at night, all lights
 on. This video continues an existing reel: match its look exactly: warm golden practical lights with soft bloom and
 halation, deep clean blacks, crisp high-clarity commercial grade, rich but natural colour.
 
