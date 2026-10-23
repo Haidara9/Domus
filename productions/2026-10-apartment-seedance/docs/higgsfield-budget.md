@@ -15,3 +15,10 @@ about 3 credits/s at 480p, 7 at 720p, 16 at 1080p. Seedance 2.0: about 4.5 credi
 
 Rules: show the exact cost of each generation before running it; stop and ask if a step would exceed its line or the
 total would pass 258 credits; report credits used and the balance after each step.
+
+## APPROVED by the owner (2026-10-23): Higgsfield API, USD
+- All three inserts at 480p, total 19.53 s (A 5.58 s + B 8.37 s + C 5.58 s), prompt: docs/seedance-inserts-prompt.md.
+- Hard ceiling: $2.00 total. Estimate ~$1.70 at ~$0.085/s (Seedance 2.5 480p, public price; confirm with the API's
+  own price before running). If the API's quoted total exceeds $2.00, do not run: report and ask.
+- Blocked in the session of 2026-10-23: no HIGGSFIELD_API_KEY in the environment and *.higgsfield.ai denied by the
+  network policy. Run in a new session once both are set.
