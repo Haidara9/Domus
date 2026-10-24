@@ -73,3 +73,8 @@ taking precedence. Draft hooks, captions, CTA, and reel briefs in `marketing/cam
 Do not describe rented/sold property as available. No social page, ads account, or model API is connected
 by the local marketing CLI. Human approval of exact content precedes local export; actual publication,
 scheduling, messaging, and paid promotion need the owner's instruction and verified DOMUS account access.
+
+## AI video generation (added 2026-10-24)
+Paid generation (Seedance 2.5, Kling, Genjutsu) runs through the owner's Higgsfield app, repo `Haidara9/higgs-studio`
+(official SDK `@higgsfield/client`, `HF_CREDENTIALS` in git-ignored `.env.local`; see its AGENTS.md). Tests at 480p.
+Always show the exact price and get explicit approval before any generation; never handle the key in chat.
