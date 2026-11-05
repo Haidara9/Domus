@@ -62,3 +62,5 @@ With Claude: ask for a production and the `domus-studio` skill runs the whole pi
 After cloning this branch, run `git submodule update --init --recursive` to restore the pinned
 Agency Agents and Video Ad Editor sources. See [selection audit](docs/marketing-repository-audit.md)
 and [verification report](docs/marketing-setup-verification.md).
+
+Animation recipes: [46 styles + isolated DOMUS Remotion studio](animation-studio/README.md).

@@ -37,3 +37,12 @@ without the owner's specific instruction. Paid services require a concrete appro
   do not install every model or a machine-global plugin just to write a caption.
 - `node --test marketing/test/*.test.mjs` checks local workflow validation and approval binding.
 - No paid calls, publishing, or ad activation in tests.
+
+## Animation styles integration
+For animation-style tasks, read `animation-studio/README.md`. Use
+`node animation-studio/bin/styles.mjs list|show|prompt|doctor`. All 46 source recipes are indexed;
+only four named Remotion starters are implemented. Other recipes require scene construction
+and verification. Keep original logo, Cairo Arabic joining, actual property geometry and confirmed
+facts. Source palettes and fictional demos never override DOMUS identity or owner directions.
+Use the existing engine for property footage and explicit export/import for Remotion graphics.
+No paid API calls, client uploads, social publishing or global prompt installation.

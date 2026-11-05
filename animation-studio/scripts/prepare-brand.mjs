@@ -1,0 +1,11 @@
+import {copyFileSync,mkdirSync,readFileSync,writeFileSync} from 'node:fs';
+import {fileURLToPath} from 'node:url';
+import {resolve,basename} from 'node:path';
+const root=fileURLToPath(new URL('../../',import.meta.url));
+const b=JSON.parse(readFileSync(resolve(root,'brand/brand.json'),'utf8'));
+const target=resolve(root,'animation-studio/public/brand');mkdirSync(target,{recursive:true});
+for(const role of ['arabicDisplay','latinDisplay'])copyFileSync(resolve(root,b.fonts[role].files[0].path),resolve(target,role+'.ttf'));
+for(const key of ['logoAr','logoEn'])copyFileSync(resolve(root,b.logos[key]),resolve(target,basename(b.logos[key])));
+writeFileSync(resolve(target,'brand.json'),JSON.stringify(b,null,2));
+writeFileSync(resolve(root,'animation-studio/src/brand.generated.json'),JSON.stringify({colors:b.colors,arabic:b.fonts.arabicDisplay.family,latin:b.fonts.latinDisplay.family},null,2));
+console.log('Prepared existing DOMUS fonts, original logos and identity tokens.');

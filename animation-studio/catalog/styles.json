@@ -1,0 +1,953 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "author": "Shaan Johari",
+    "url": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf",
+    "reviewedOn": "2026-11-04",
+    "coverage": "46 expanded cards, usage and bonus notes",
+    "notes": "Original implementation notes, not a verbatim archive; original full cards remain at source."
+  },
+  "styles": [
+    {
+      "id": "glow-world",
+      "name": "Glow World",
+      "part": 5,
+      "medium": "2d",
+      "referencePalette": [
+        "#140C40",
+        "#FF5FB2",
+        "#FACB22"
+      ],
+      "referenceFonts": [
+        "Nunito"
+      ],
+      "look": "Flat rounded illustrated layers",
+      "motion": "Flat rounded illustrated layers; parallax push, split hero, ignite interior.",
+      "never": "No channel mascots, glossy realism or copied scenes.",
+      "composition": null,
+      "domusFit": "concept-only",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "flat-cartoon",
+      "name": "Flat Cartoon",
+      "part": 5,
+      "medium": "2d",
+      "referencePalette": [
+        "#E3EDF6",
+        "#30ABD5",
+        "#4D4A91"
+      ],
+      "referenceFonts": [
+        "Montserrat"
+      ],
+      "look": "Side-view flat-shaded characters act a cause and reaction",
+      "motion": "Side-view flat-shaded characters act a cause and reaction; land one caption.",
+      "never": "No real faces, gradients or heavy outlines.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "hologram",
+      "name": "Hologram",
+      "part": 5,
+      "medium": "3d",
+      "referencePalette": [
+        "#03070D",
+        "#85C9FB",
+        "#CF3538"
+      ],
+      "referenceFonts": [
+        "JetBrains Mono"
+      ],
+      "look": "Frosted blue model",
+      "motion": "Frosted blue model; orbit, scan one red focus, draw its route and leaders.",
+      "never": "No HUD clutter, realistic branding or overlapping labels.",
+      "composition": null,
+      "domusFit": "concept-only",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "red-relief",
+      "name": "Red Relief",
+      "part": 5,
+      "medium": "3d",
+      "referencePalette": [
+        "#030303",
+        "#A8A8A8",
+        "#FF2933"
+      ],
+      "referenceFonts": [
+        "Permanent Marker",
+        "IM Fell English SC"
+      ],
+      "look": "Raised charcoal terrain",
+      "motion": "Raised charcoal terrain; flood a red region, stamp an emblem, trace a route.",
+      "never": "No satellite substitute, portraits or second highlight color.",
+      "composition": null,
+      "domusFit": "concept-only",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "ink-doodle",
+      "name": "Ink Doodle",
+      "part": 5,
+      "medium": "2d",
+      "referencePalette": [
+        "#1D1B1A",
+        "#A9E2EC",
+        "#E1191F"
+      ],
+      "referenceFonts": [
+        "Patrick Hand"
+      ],
+      "look": "Thin irregular ink and flat side-view setting",
+      "motion": "Thin irregular ink and flat side-view setting; escalate a beat then resolve a gesture.",
+      "never": "No heavy outline, shading or copied characters.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "deep-time",
+      "name": "Deep Time",
+      "part": 5,
+      "medium": "3d",
+      "referencePalette": [
+        "#070504",
+        "#B26D3C",
+        "#FFF1E0"
+      ],
+      "referenceFonts": [
+        "Source Sans 3"
+      ],
+      "look": "Letterboxed smoky space",
+      "motion": "Letterboxed smoky space; one physical event, time jump and stopped camera.",
+      "never": "No borrowed footage/music, big title or second color family.",
+      "composition": null,
+      "domusFit": "concept-only",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "neon-silhouette",
+      "name": "Neon Silhouette",
+      "part": 5,
+      "medium": "2d",
+      "referencePalette": [
+        "#48304F",
+        "#08070B",
+        "#FF5A44"
+      ],
+      "referenceFonts": [
+        "Oswald",
+        "Rubik"
+      ],
+      "look": "Dark flat figure, coral rim and layered sunset room",
+      "motion": "Dark flat figure, coral rim and layered sunset room; prop trigger and reaction.",
+      "never": "No detailed face, neon tubes or copied characters.",
+      "composition": null,
+      "domusFit": "concept-only",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "pov-doodle",
+      "name": "POV Doodle",
+      "part": 5,
+      "medium": "2d",
+      "referencePalette": [
+        "#33201C",
+        "#B2B392",
+        "#5B8E86"
+      ],
+      "referenceFonts": [
+        "Mansalva"
+      ],
+      "look": "Rough brown marker and muted painted fills",
+      "motion": "Rough brown marker and muted painted fills; accelerating repeated events and calendar.",
+      "never": "No thin vectors, bright colors or moving final hold.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "blue-grid",
+      "name": "Blue Grid",
+      "part": 5,
+      "medium": "3d",
+      "referencePalette": [
+        "#042D61",
+        "#EAEEF2",
+        "#F38F3F"
+      ],
+      "referenceFonts": [
+        "Montserrat"
+      ],
+      "look": "White clay cutaway",
+      "motion": "White clay cutaway; orbit, draw force or heat through it, label three parts.",
+      "never": "No exploded parts, realistic metal or particle storm.",
+      "composition": null,
+      "domusFit": "concept-only",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "product-turntable",
+      "name": "Product turntable",
+      "part": 4,
+      "medium": "3d",
+      "referencePalette": [
+        "#090A0C",
+        "#353940",
+        "#F1F3F6"
+      ],
+      "referenceFonts": [
+        "Manrope",
+        "DM Mono"
+      ],
+      "look": "Graphite studio and closed product",
+      "motion": "Graphite studio and closed product; slow turn, low hero camera, four pinned specs.",
+      "never": "No teardown, fast spin, colored ground or glow.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "money-stack",
+      "name": "Money stack",
+      "part": 4,
+      "medium": "3d",
+      "referencePalette": [
+        "#F3F5F7",
+        "#CFDCCF",
+        "#0E7A4C"
+      ],
+      "referenceFonts": [
+        "Plus Jakarta Sans"
+      ],
+      "look": "Invented banded note bricks",
+      "motion": "Invented banded note bricks; drop layers, crane up, count once per landing.",
+      "never": "No banknote artwork, loose bills or counter ahead of stack.",
+      "composition": null,
+      "domusFit": "concept-only",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "card-flip",
+      "name": "Card flip",
+      "part": 4,
+      "medium": "3d",
+      "referencePalette": [
+        "#EEF0F3",
+        "#15171A",
+        "#FF5A1F"
+      ],
+      "referenceFonts": [
+        "Manrope"
+      ],
+      "look": "Thick satin card",
+      "motion": "Thick satin card; true perspective flip, highlight sweep, then three benefits.",
+      "never": "No flat squash pretending 3D, bank marks or tiny copy.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "receipt",
+      "name": "Receipt",
+      "part": 4,
+      "medium": "3d",
+      "referencePalette": [
+        "#06090F",
+        "#F3F5F4",
+        "#1C1F25"
+      ],
+      "referenceFonts": [
+        "IBM Plex Mono"
+      ],
+      "look": "Curled thermal paper feeds from a dark printer",
+      "motion": "Curled thermal paper feeds from a dark printer; reveal total last.",
+      "never": "No typed floating text, fake shop proof or excess items.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "iceberg",
+      "name": "Iceberg",
+      "part": 4,
+      "medium": "3d",
+      "referencePalette": [
+        "#F2F8FC",
+        "#A6DDEF",
+        "#205A93"
+      ],
+      "referenceFonts": [
+        "Figtree"
+      ],
+      "look": "Faceted pale ice in clear water",
+      "motion": "Faceted pale ice in clear water; dive, pull back, draw slice boundaries and labels.",
+      "never": "No photoreal texture, bubbles or detached labels.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "text-thread",
+      "name": "Text thread",
+      "part": 4,
+      "medium": "3d",
+      "referencePalette": [
+        "#EDF1F7",
+        "#10141B",
+        "#2B5FF7"
+      ],
+      "referenceFonts": [
+        "Figtree"
+      ],
+      "look": "Short hovering chat on pale grid floor",
+      "motion": "Short hovering chat on pale grid floor; crane back, pop bubbles, morph key reply.",
+      "never": "No real app chrome, long text or invented testimonial proof.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "scale-lineup",
+      "name": "Scale lineup",
+      "part": 4,
+      "medium": "3d",
+      "referencePalette": [
+        "#F1F2F4",
+        "#D2D7DD",
+        "#111316"
+      ],
+      "referenceFonts": [
+        "Instrument Sans"
+      ],
+      "look": "White clay objects on one baseline",
+      "motion": "White clay objects on one baseline; one pullback reveals smallest to largest.",
+      "never": "No chasing camera, uneven labels or unverified dimensions.",
+      "composition": null,
+      "domusFit": "preferred",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "milestone-trophy",
+      "name": "Milestone trophy",
+      "part": 4,
+      "medium": "3d",
+      "referencePalette": [
+        "#030D0A",
+        "#144234",
+        "#F3F5F7"
+      ],
+      "referenceFonts": [
+        "Barlow Semi Condensed",
+        "Montserrat"
+      ],
+      "look": "Silver plaque and black panel in green studio",
+      "motion": "Silver plaque and black panel in green studio; lift, turn, odometer milestone.",
+      "never": "No copied platform awards, confetti or invented achievement.",
+      "composition": null,
+      "domusFit": "concept-only",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "donut-breakdown",
+      "name": "Donut breakdown",
+      "part": 4,
+      "medium": "2d",
+      "referencePalette": [
+        "#FFFFFF",
+        "#E6E9EF",
+        "#12A150"
+      ],
+      "referenceFonts": [
+        "Sora",
+        "Inter Tight"
+      ],
+      "look": "Muted ring slices sweep in sequentially, total follows, one slice lifts outward.",
+      "motion": "Muted ring slices sweep in sequentially, total follows, one slice lifts outward.",
+      "never": "No mismatched totals, rainbow or overlapping legend.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "globe-arcs",
+      "name": "Globe arcs",
+      "part": 3,
+      "medium": "3d",
+      "referencePalette": [
+        "#0E1830",
+        "#C9D6EE",
+        "#FF8A3D"
+      ],
+      "referenceFonts": [
+        "Inter Tight",
+        "JetBrains Mono"
+      ],
+      "look": "Dark dot-land globe",
+      "motion": "Dark dot-land globe; gentle turn, stagger warm routes, step count at landings.",
+      "never": "No flat-map substitute, hidden endpoints or fabricated reach.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "laptop-reveal",
+      "name": "Laptop reveal",
+      "part": 3,
+      "medium": "3d",
+      "referencePalette": [
+        "#F5F5F7",
+        "#1D1D1F",
+        "#2F6BFF"
+      ],
+      "referenceFonts": [
+        "Inter Tight"
+      ],
+      "look": "Silver laptop with contact shadow",
+      "motion": "Silver laptop with contact shadow; open lid while orbiting front, sharpen UI, scroll/click.",
+      "never": "No plain-box device, tiny copy or floating clutter.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "isometric-flow",
+      "name": "Isometric flow",
+      "part": 3,
+      "medium": "3d",
+      "referencePalette": [
+        "#EEF2F7",
+        "#36C39A",
+        "#3B6CF6"
+      ],
+      "referenceFonts": [
+        "Inter Tight"
+      ],
+      "look": "Orthographic miniature slab",
+      "motion": "Orthographic miniature slab; raise three steps, draw road, move an item to completion.",
+      "never": "No perspective substitute, overlapping labels or opacity entrances.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "notification-stack",
+      "name": "Notification stack",
+      "part": 3,
+      "medium": "2d",
+      "referencePalette": [
+        "#070A12",
+        "#0F4C5C",
+        "#1FB872"
+      ],
+      "referenceFonts": [
+        "Inter"
+      ],
+      "look": "Dark lockscreen and frosted cards",
+      "motion": "Dark lockscreen and frosted cards; accelerate arrivals, tuck old cards, synchronize totals.",
+      "never": "No fake sales proof, private client details or shifting digit widths.",
+      "composition": null,
+      "domusFit": "concept-only",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "before-and-after-slider",
+      "name": "Before and after slider",
+      "part": 3,
+      "medium": "2d",
+      "referencePalette": [
+        "#EEF1F6",
+        "#121418",
+        "#E4572E"
+      ],
+      "referenceFonts": [
+        "Inter Tight",
+        "Manrope"
+      ],
+      "look": "Aligned versions under one divider",
+      "motion": "Aligned versions under one divider; sweep, then return to an even split.",
+      "never": "No crossfade, viewpoint mismatch or misleading renovation claim.",
+      "composition": "DomusBeforeAfter",
+      "domusFit": "preferred",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "ranking-bars",
+      "name": "Ranking bars",
+      "part": 3,
+      "medium": "2d",
+      "referencePalette": [
+        "#FFFFFF",
+        "#FF5A36",
+        "#7F93B5"
+      ],
+      "referenceFonts": [
+        "Inter Tight"
+      ],
+      "look": "Six bars, one hero and year",
+      "motion": "Six bars, one hero and year; interpolate values and ranking, swap exactly at crossings.",
+      "never": "No teleporting bars, crowded labels or fabricated metrics.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "social-post-receipt",
+      "name": "Social post receipt",
+      "part": 3,
+      "medium": "2d",
+      "referencePalette": [
+        "#F1F3F6",
+        "#0F1419",
+        "#F4385E"
+      ],
+      "referenceFonts": [
+        "Inter"
+      ],
+      "look": "Light post cards, restrained metrics",
+      "motion": "Light post cards, restrained metrics; settle main card, stack replies, rough underline.",
+      "never": "No false quotations, invented engagement or fake evidence.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "day-counter",
+      "name": "Day counter",
+      "part": 3,
+      "medium": "2d",
+      "referencePalette": [
+        "#FFFFFF",
+        "#111111",
+        "#E5383B"
+      ],
+      "referenceFonts": [
+        "Anton",
+        "Inter"
+      ],
+      "look": "Large day count and month-correct calendar",
+      "motion": "Large day count and month-correct calendar; slow-fast-slow numbers with synced checks.",
+      "never": "No unsupported streak, wrong weekdays or disconnected checks.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "versus",
+      "name": "Versus",
+      "part": 3,
+      "medium": "2d",
+      "referencePalette": [
+        "#0B0D12",
+        "#3D7BFF",
+        "#FF7A30"
+      ],
+      "referenceFonts": [
+        "Anton",
+        "Barlow Condensed"
+      ],
+      "look": "Two dark halves, consistent colors",
+      "motion": "Two dark halves, consistent colors; names land, badge pops, four outward bar rows.",
+      "never": "No invented winner, third color or bars that contradict numbers.",
+      "composition": null,
+      "domusFit": "preferred",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "3d-map-route",
+      "name": "3D Map Route",
+      "part": 2,
+      "medium": "3d",
+      "referencePalette": [
+        "#F7F7F5",
+        "#1A73E8",
+        "#EA4335"
+      ],
+      "referenceFonts": [
+        "Inter"
+      ],
+      "look": "Pale low-rise city",
+      "motion": "Pale low-rise city; rise from location dot, trace streets, drop pin and trip card.",
+      "never": "Source demo is fictional; never present invented streets or times as a listing location.",
+      "composition": null,
+      "domusFit": "concept-only",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "exploded-teardown",
+      "name": "Exploded Teardown",
+      "part": 2,
+      "medium": "3d",
+      "referencePalette": [
+        "#0A0A0C",
+        "#ECEEF1",
+        "#FF5A2A"
+      ],
+      "referenceFonts": [
+        "IBM Plex Sans",
+        "IBM Plex Mono"
+      ],
+      "look": "Believable product layers",
+      "motion": "Believable product layers; lift top-down on distinct beats with drawn leaders.",
+      "never": "No flat cutout substitute, simultaneous explosion or crossing leaders.",
+      "composition": null,
+      "domusFit": "concept-only",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "ink-wash",
+      "name": "Ink Wash",
+      "part": 2,
+      "medium": "canvas",
+      "referencePalette": [
+        "#EEEAE0",
+        "#1B1A18",
+        "#B8352A"
+      ],
+      "referenceFonts": [
+        "Cormorant SC",
+        "Cormorant Garamond"
+      ],
+      "look": "Spare paper landscape",
+      "motion": "Spare paper landscape; spread wet-edged washes, grow strokes, stamp a red seal.",
+      "never": "No digital gradient reveal, shadows or broad second color.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "paper-desk",
+      "name": "Paper Desk",
+      "part": 2,
+      "medium": "2d",
+      "referencePalette": [
+        "#2D684C",
+        "#F4F2EC",
+        "#D4231B",
+        "#FFE024"
+      ],
+      "referenceFonts": [
+        "Libre Caslon Text",
+        "IBM Plex Mono",
+        "Permanent Marker"
+      ],
+      "look": "Top-down evidence sheets and tape",
+      "motion": "Top-down evidence sheets and tape; weighty paper landings, hand-drawn annotations.",
+      "never": "No fabricated evidence, shadowless sheets or opacity reveal.",
+      "composition": null,
+      "domusFit": "preferred",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "headline-highlight",
+      "name": "Headline Highlight",
+      "part": 2,
+      "medium": "2d",
+      "referencePalette": [
+        "#15181C",
+        "#FCFCFA",
+        "#C9F52A"
+      ],
+      "referenceFonts": [
+        "Newsreader",
+        "Inter"
+      ],
+      "look": "Tilted article over blurred cards",
+      "motion": "Tilted article over blurred cards; dolly into paragraph, multiply rough highlights, pop source.",
+      "never": "No false masthead, invented article proof or clean rectangle marker.",
+      "composition": null,
+      "domusFit": "preferred",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "stat-chart",
+      "name": "Stat Chart",
+      "part": 2,
+      "medium": "2d",
+      "referencePalette": [
+        "#0A0B0D",
+        "#F4F5F6",
+        "#FF5B1F"
+      ],
+      "referenceFonts": [
+        "Inter Tight",
+        "IBM Plex Mono"
+      ],
+      "look": "Huge tabular value and line",
+      "motion": "Huge tabular value and line; counter tracks line tip, accent changes at a sourced event.",
+      "never": "No misleading axis, independent counter or unsupported growth.",
+      "composition": "DomusStatChart",
+      "domusFit": "preferred",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "app-mockup",
+      "name": "App Mockup",
+      "part": 2,
+      "medium": "css3d",
+      "referencePalette": [
+        "#DFE6EE",
+        "#0E1116",
+        "#0E9F6E"
+      ],
+      "referenceFonts": [
+        "Plus Jakarta Sans"
+      ],
+      "look": "Dimensional phone and crisp UI",
+      "motion": "Dimensional phone and crisp UI; settle phone, build screen, morph three cards from chips.",
+      "never": "No unshipped feature claim, flat fake device or simultaneous arrivals.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "screen-recording-zoom",
+      "name": "Screen-Recording Zoom",
+      "part": 2,
+      "medium": "2d",
+      "referencePalette": [
+        "#E3EFE9",
+        "#1B1C20",
+        "#3D7BFA"
+      ],
+      "referenceFonts": [
+        "Inter",
+        "JetBrains Mono"
+      ],
+      "look": "Crisp UI on quiet field",
+      "motion": "Crisp UI on quiet field; curved cursor leads one smooth close move, press, step pill.",
+      "never": "No private files, fuzzy enlarged type or bouncing camera.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "timeline",
+      "name": "Timeline",
+      "part": 2,
+      "medium": "css3d",
+      "referencePalette": [
+        "#F5F6F8",
+        "#0E1116",
+        "#2442F5"
+      ],
+      "referenceFonts": [
+        "Schibsted Grotesk",
+        "JetBrains Mono"
+      ],
+      "look": "Perspective years and raised cards",
+      "motion": "Perspective years and raised cards; playhead leads, cards hinge at their dates.",
+      "never": "No invented history, early final card or drifting end camera.",
+      "composition": null,
+      "domusFit": "preferred",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "glow-orb",
+      "name": "Glow Orb",
+      "part": 1,
+      "medium": "2d",
+      "referencePalette": [
+        "#070304",
+        "#531829",
+        "#F696DE"
+      ],
+      "referenceFonts": [
+        "Outfit"
+      ],
+      "look": "One luminous orb and sparse circles",
+      "motion": "One luminous orb and sparse circles; deep breath, gentle parallax, detached ring.",
+      "never": "No particles, second accent or full-frame glow; Arabic remains joined.",
+      "composition": null,
+      "domusFit": "concept-only",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "frosted-glass-ui",
+      "name": "Frosted Glass UI",
+      "part": 1,
+      "medium": "shader",
+      "referencePalette": [
+        "#1F5A6E",
+        "#0E2A3D",
+        "#FF8A5C"
+      ],
+      "referenceFonts": [
+        "Plus Jakarta Sans"
+      ],
+      "look": "Smoked glass on dithered defocused field",
+      "motion": "Smoked glass on dithered defocused field; query, shift bar, unfold results, stretch highlight.",
+      "never": "No unreadable white glass, banded blur or fade entrances.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "apple-one-take",
+      "name": "Apple One-Take",
+      "part": 1,
+      "medium": "2d",
+      "referencePalette": [
+        "#EEEEEC",
+        "#111113",
+        "#FF3B30"
+      ],
+      "referenceFonts": [
+        "Inter Tight"
+      ],
+      "look": "One carrier on flat ground",
+      "motion": "One carrier on flat ground; morph dot to control to card to device to closing type.",
+      "never": "No cuts, dissolves or reshaping the official DOMUS logo.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "retro-crt-glow",
+      "name": "Retro CRT Glow",
+      "part": 1,
+      "medium": "shader",
+      "referencePalette": [
+        "#07090F",
+        "#FCFBF8",
+        "#FF9A90"
+      ],
+      "referenceFonts": [
+        "Syncopate",
+        "Share Tech Mono"
+      ],
+      "look": "Tube black and white phosphor",
+      "motion": "Tube black and white phosphor; unfold scan line, type system text, hold, collapse loop.",
+      "never": "No neon outline, heavy settled glitch or border.",
+      "composition": null,
+      "domusFit": "concept-only",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "oscilloscope",
+      "name": "Oscilloscope",
+      "part": 1,
+      "medium": "canvas",
+      "referencePalette": [
+        "#030805",
+        "#46FF8C",
+        "#D7FFF3"
+      ],
+      "referenceFonts": [
+        "Share Tech Mono"
+      ],
+      "look": "One monoline trace",
+      "motion": "One monoline trace; wave to Lissajous to damped line to connected word.",
+      "never": "No swapped letters, neon-sign halo or corner readouts.",
+      "composition": null,
+      "domusFit": "concept-only",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "magazine-layout-and-note",
+      "name": "Magazine Layout and Note",
+      "part": 1,
+      "medium": "2d",
+      "referencePalette": [
+        "#EAEDED",
+        "#1B1E25",
+        "#C42E26"
+      ],
+      "referenceFonts": [
+        "Bodoni Moda",
+        "Newsreader",
+        "La Belle Aurore"
+      ],
+      "look": "Serif editorial hierarchy and photo column",
+      "motion": "Serif editorial hierarchy and photo column; masked lines, photo reveal, stroke note.",
+      "never": "No fake handwriting typewriter, photo frame or page curl.",
+      "composition": "DomusEditorial",
+      "domusFit": "preferred",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "blue-editorial",
+      "name": "Blue Editorial",
+      "part": 1,
+      "medium": "2d",
+      "referencePalette": [
+        "#2433F0",
+        "#F4F5FA"
+      ],
+      "referenceFonts": [
+        "Instrument Serif",
+        "Schibsted Grotesk"
+      ],
+      "look": "Flat blue cover stack",
+      "motion": "Flat blue cover stack; scale jumps, slanted wipes, tucked words and sliced type.",
+      "never": "No third face, glow or Swiss grid; move Arabic words or lines.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "risograph",
+      "name": "Risograph",
+      "part": 1,
+      "medium": "canvas",
+      "referencePalette": [
+        "#EDEFEE",
+        "#FF48B0",
+        "#3255A4"
+      ],
+      "referenceFonts": [
+        "Bricolage Grotesque"
+      ],
+      "look": "Two mottled ink plates and halftones",
+      "motion": "Two mottled ink plates and halftones; animate on twos, stamp, slip and realign.",
+      "never": "No smooth motion blur, clean vectors or extra ink.",
+      "composition": null,
+      "domusFit": "adapt",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "swiss-grid",
+      "name": "Swiss Grid",
+      "part": 1,
+      "medium": "2d",
+      "referencePalette": [
+        "#F0F0E8",
+        "#101010",
+        "#F03820"
+      ],
+      "referenceFonts": [
+        "Public Sans"
+      ],
+      "look": "Modular grid and aligned type",
+      "motion": "Modular grid and aligned type; draw grid, step circle, expand cells, lock baselines.",
+      "never": "No gradients, arbitrary landing or glow; mirror Arabic alignment.",
+      "composition": "DomusSwissGrid",
+      "domusFit": "preferred",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    },
+    {
+      "id": "pencil-to-blueprint",
+      "name": "Pencil to Blueprint",
+      "part": 1,
+      "medium": "canvas",
+      "referencePalette": [
+        "#ECECE6",
+        "#25262B",
+        "#1C4C8F"
+      ],
+      "referenceFonts": [
+        "Barlow Semi Condensed"
+      ],
+      "look": "Same schematic from graphite to technical ink",
+      "motion": "Same schematic from graphite to technical ink; construct, draw, irregular flood, dimension.",
+      "never": "No swapped object, invented real property plan or unsupported measurements.",
+      "composition": null,
+      "domusFit": "preferred",
+      "sourceUrl": "https://ruby-cotija-fb5.notion.site/Animation-styles-you-can-build-with-Claude-or-Codex-3fa28691eca3814ebb34c73a7cc261bf"
+    }
+  ]
+}

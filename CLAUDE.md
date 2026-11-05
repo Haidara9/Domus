@@ -78,3 +78,12 @@ scheduling, messaging, and paid promotion need the owner's instruction and verif
 Paid generation (Seedance 2.5, Kling, Genjutsu) runs through the owner's Higgsfield app, repo `Haidara9/higgs-studio`
 (official SDK `@higgsfield/client`, `HF_CREDENTIALS` in git-ignored `.env.local`; see its AGENTS.md). Tests at 480p.
 Always show the exact price and get explicit approval before any generation; never handle the key in chat.
+
+## Animation styles integration
+For animation-style tasks, read `animation-studio/README.md`. Use
+`node animation-studio/bin/styles.mjs list|show|prompt|doctor`. All 46 source recipes are indexed;
+only four named Remotion starters are implemented. Other recipes require scene construction
+and verification. Keep original logo, Cairo Arabic joining, actual property geometry and confirmed
+facts. Source palettes and fictional demos never override DOMUS identity or owner directions.
+Use the existing engine for property footage and explicit export/import for Remotion graphics.
+No paid API calls, client uploads, social publishing or global prompt installation.

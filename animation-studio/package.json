@@ -1,0 +1,32 @@
+{
+  "name": "domus-animation-studio",
+  "version": "1.0.1",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "prepare:assets": "node scripts/prepare-brand.mjs",
+    "studio": "remotion studio src/index.ts --no-open --port=3106",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test test/*.test.mjs",
+    "styles": "node bin/styles.mjs",
+    "doctor": "node bin/styles.mjs doctor",
+    "commands": "node scripts/generate-commands.mjs",
+    "bundle": "remotion bundle src/index.ts --out-dir=out/bundle"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.540",
+    "@remotion/fonts": "4.0.540",
+    "@remotion/renderer": "4.0.540",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "remotion": "4.0.540"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.9.0"
+  }
+}
