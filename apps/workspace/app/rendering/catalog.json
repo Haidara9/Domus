@@ -1,0 +1,656 @@
+[
+  {
+    "id": "domus-clean",
+    "name": "دوموس · قصّ نظيف",
+    "backend": "ffmpeg",
+    "look": "وصل الخام بالترتيب، الحفاظ على الكادر والصوت، بلا تقصير.",
+    "ready": true,
+    "source": "DOMUS adaptation"
+  },
+  {
+    "id": "domus-warm",
+    "name": "دوموس · دفء هادئ",
+    "backend": "ffmpeg",
+    "look": "تعديل لوني خفيف مقترح، بلا إعادة بناء المكان.",
+    "ready": true,
+    "source": "DOMUS adaptation"
+  },
+  {
+    "id": "swiss-grid",
+    "name": "Swiss Grid · DOMUS",
+    "backend": "remotion",
+    "look": "عنوان من المالك مع شبكة برونزية صغيرة فوق الخام؛ تكييف أصلي لدوموس.",
+    "ready": true,
+    "source": "DOMUS adaptation"
+  },
+  {
+    "id": "magazine-layout-and-note",
+    "name": "Editorial · DOMUS",
+    "backend": "remotion",
+    "look": "شريط عنوان تحريري فوق الفيديو الحقيقي.",
+    "ready": true,
+    "source": "DOMUS adaptation"
+  },
+  {
+    "id": "checklist",
+    "name": "Checklist · DOMUS",
+    "backend": "hyperframes",
+    "look": "قائمة معلومات يكتبها المالك، بلا قيم تجريبية.",
+    "ready": true,
+    "source": "DOMUS adaptation"
+  },
+  {
+    "id": "digital_zoom",
+    "name": "Digital Zoom · DOMUS",
+    "backend": "ffmpeg",
+    "look": "تكبير رقمي محدود 3%، ليس حركة كاميرا أو عدسة جديدة.",
+    "ready": true,
+    "source": "DOMUS adaptation"
+  },
+  {
+    "id": "frame_break",
+    "name": "Frame · DOMUS",
+    "backend": "hyperframes",
+    "look": "إطار بيج متحرك حول الخام؛ لا فصل شخص أو تغيير خلفية.",
+    "ready": true,
+    "source": "DOMUS adaptation"
+  },
+  {
+    "id": "headline-highlight",
+    "name": "عنوان وإضاءة خط · DOMUS",
+    "backend": "hyperframes",
+    "look": "عنوان عربي كامل مع خط برونزي متحرك.",
+    "ready": true,
+    "source": "DOMUS adaptation"
+  },
+  {
+    "id": "glow-world",
+    "name": "Glow World",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Flat rounded illustrated layers",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "flat-cartoon",
+    "name": "Flat Cartoon",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Side-view flat-shaded characters act a cause and reaction",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "hologram",
+    "name": "Hologram",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Frosted blue model",
+    "requires": "بناء مشهد ثلاثي الأبعاد وأصول ومراجعة",
+    "originalComposition": null
+  },
+  {
+    "id": "red-relief",
+    "name": "Red Relief",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Raised charcoal terrain",
+    "requires": "بناء مشهد ثلاثي الأبعاد وأصول ومراجعة",
+    "originalComposition": null
+  },
+  {
+    "id": "ink-doodle",
+    "name": "Ink Doodle",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Thin irregular ink and flat side-view setting",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "deep-time",
+    "name": "Deep Time",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Letterboxed smoky space",
+    "requires": "بناء مشهد ثلاثي الأبعاد وأصول ومراجعة",
+    "originalComposition": null
+  },
+  {
+    "id": "neon-silhouette",
+    "name": "Neon Silhouette",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Dark flat figure, coral rim and layered sunset room",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "pov-doodle",
+    "name": "POV Doodle",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Rough brown marker and muted painted fills",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "blue-grid",
+    "name": "Blue Grid",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "White clay cutaway",
+    "requires": "بناء مشهد ثلاثي الأبعاد وأصول ومراجعة",
+    "originalComposition": null
+  },
+  {
+    "id": "product-turntable",
+    "name": "Product turntable",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Graphite studio and closed product",
+    "requires": "بناء مشهد ثلاثي الأبعاد وأصول ومراجعة",
+    "originalComposition": null
+  },
+  {
+    "id": "money-stack",
+    "name": "Money stack",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Invented banded note bricks",
+    "requires": "بناء مشهد ثلاثي الأبعاد وأصول ومراجعة",
+    "originalComposition": null
+  },
+  {
+    "id": "card-flip",
+    "name": "Card flip",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Thick satin card",
+    "requires": "بناء مشهد ثلاثي الأبعاد وأصول ومراجعة",
+    "originalComposition": null
+  },
+  {
+    "id": "receipt",
+    "name": "Receipt",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Curled thermal paper feeds from a dark printer",
+    "requires": "بناء مشهد ثلاثي الأبعاد وأصول ومراجعة",
+    "originalComposition": null
+  },
+  {
+    "id": "iceberg",
+    "name": "Iceberg",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Faceted pale ice in clear water",
+    "requires": "بناء مشهد ثلاثي الأبعاد وأصول ومراجعة",
+    "originalComposition": null
+  },
+  {
+    "id": "text-thread",
+    "name": "Text thread",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Short hovering chat on pale grid floor",
+    "requires": "بناء مشهد ثلاثي الأبعاد وأصول ومراجعة",
+    "originalComposition": null
+  },
+  {
+    "id": "scale-lineup",
+    "name": "Scale lineup",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "White clay objects on one baseline",
+    "requires": "بناء مشهد ثلاثي الأبعاد وأصول ومراجعة",
+    "originalComposition": null
+  },
+  {
+    "id": "milestone-trophy",
+    "name": "Milestone trophy",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Silver plaque and black panel in green studio",
+    "requires": "بناء مشهد ثلاثي الأبعاد وأصول ومراجعة",
+    "originalComposition": null
+  },
+  {
+    "id": "donut-breakdown",
+    "name": "Donut breakdown",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Muted ring slices sweep in sequentially, total follows, one slice lifts outward.",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "globe-arcs",
+    "name": "Globe arcs",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Dark dot-land globe",
+    "requires": "بناء مشهد ثلاثي الأبعاد وأصول ومراجعة",
+    "originalComposition": null
+  },
+  {
+    "id": "laptop-reveal",
+    "name": "Laptop reveal",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Silver laptop with contact shadow",
+    "requires": "بناء مشهد ثلاثي الأبعاد وأصول ومراجعة",
+    "originalComposition": null
+  },
+  {
+    "id": "isometric-flow",
+    "name": "Isometric flow",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Orthographic miniature slab",
+    "requires": "بناء مشهد ثلاثي الأبعاد وأصول ومراجعة",
+    "originalComposition": null
+  },
+  {
+    "id": "notification-stack",
+    "name": "Notification stack",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Dark lockscreen and frosted cards",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "before-and-after-slider",
+    "name": "Before and after slider",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Aligned versions under one divider",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": "DomusBeforeAfter"
+  },
+  {
+    "id": "ranking-bars",
+    "name": "Ranking bars",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Six bars, one hero and year",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "social-post-receipt",
+    "name": "Social post receipt",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Light post cards, restrained metrics",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "day-counter",
+    "name": "Day counter",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Large day count and month-correct calendar",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "versus",
+    "name": "Versus",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Two dark halves, consistent colors",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "3d-map-route",
+    "name": "3D Map Route",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Pale low-rise city",
+    "requires": "بناء مشهد ثلاثي الأبعاد وأصول ومراجعة",
+    "originalComposition": null
+  },
+  {
+    "id": "exploded-teardown",
+    "name": "Exploded Teardown",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Believable product layers",
+    "requires": "بناء مشهد ثلاثي الأبعاد وأصول ومراجعة",
+    "originalComposition": null
+  },
+  {
+    "id": "ink-wash",
+    "name": "Ink Wash",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Spare paper landscape",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "paper-desk",
+    "name": "Paper Desk",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Top-down evidence sheets and tape",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "stat-chart",
+    "name": "Stat Chart",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Huge tabular value and line",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": "DomusStatChart"
+  },
+  {
+    "id": "app-mockup",
+    "name": "App Mockup",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Dimensional phone and crisp UI",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "screen-recording-zoom",
+    "name": "Screen-Recording Zoom",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Crisp UI on quiet field",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "timeline",
+    "name": "Timeline",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Perspective years and raised cards",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "glow-orb",
+    "name": "Glow Orb",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "One luminous orb and sparse circles",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "frosted-glass-ui",
+    "name": "Frosted Glass UI",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Smoked glass on dithered defocused field",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "apple-one-take",
+    "name": "Apple One-Take",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "One carrier on flat ground",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "retro-crt-glow",
+    "name": "Retro CRT Glow",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Tube black and white phosphor",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "oscilloscope",
+    "name": "Oscilloscope",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "One monoline trace",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "blue-editorial",
+    "name": "Blue Editorial",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Flat blue cover stack",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "risograph",
+    "name": "Risograph",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Two mottled ink plates and halftones",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "pencil-to-blueprint",
+    "name": "Pencil to Blueprint",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Shaan Johari · indexed guide",
+    "look": "Same schematic from graphite to technical ink",
+    "requires": "بناء مشهد والتحقق منه",
+    "originalComposition": null
+  },
+  {
+    "id": "orbit",
+    "name": "orbit",
+    "backend": "motion-pack",
+    "ready": false,
+    "source": "ملف 16 حركة المرفق",
+    "look": "مرجع حركة للمقدّم، يحتاج أصولًا وقناع شخص ومراجعة؛ لا يطبّق على هندسة العقار."
+  },
+  {
+    "id": "couch_wall",
+    "name": "couch_wall",
+    "backend": "motion-pack",
+    "ready": false,
+    "source": "ملف 16 حركة المرفق",
+    "look": "مرجع حركة للمقدّم، يحتاج أصولًا وقناع شخص ومراجعة؛ لا يطبّق على هندسة العقار."
+  },
+  {
+    "id": "ui_world",
+    "name": "ui_world",
+    "backend": "motion-pack",
+    "ready": false,
+    "source": "ملف 16 حركة المرفق",
+    "look": "مرجع حركة للمقدّم، يحتاج أصولًا وقناع شخص ومراجعة؛ لا يطبّق على هندسة العقار."
+  },
+  {
+    "id": "phone_mockup",
+    "name": "phone_mockup",
+    "backend": "motion-pack",
+    "ready": false,
+    "source": "ملف 16 حركة المرفق",
+    "look": "مرجع حركة للمقدّم، يحتاج أصولًا وقناع شخص ومراجعة؛ لا يطبّق على هندسة العقار."
+  },
+  {
+    "id": "headline_wall",
+    "name": "headline_wall",
+    "backend": "motion-pack",
+    "ready": false,
+    "source": "ملف 16 حركة المرفق",
+    "look": "مرجع حركة للمقدّم، يحتاج أصولًا وقناع شخص ومراجعة؛ لا يطبّق على هندسة العقار."
+  },
+  {
+    "id": "zoom_through_cut",
+    "name": "zoom_through_cut",
+    "backend": "motion-pack",
+    "ready": false,
+    "source": "ملف 16 حركة المرفق",
+    "look": "مرجع حركة للمقدّم، يحتاج أصولًا وقناع شخص ومراجعة؛ لا يطبّق على هندسة العقار."
+  },
+  {
+    "id": "chart_grow",
+    "name": "chart_grow",
+    "backend": "motion-pack",
+    "ready": false,
+    "source": "ملف 16 حركة المرفق",
+    "look": "مرجع حركة للمقدّم، يحتاج أصولًا وقناع شخص ومراجعة؛ لا يطبّق على هندسة العقار."
+  },
+  {
+    "id": "pull_back_reveal",
+    "name": "pull_back_reveal",
+    "backend": "motion-pack",
+    "ready": false,
+    "source": "ملف 16 حركة المرفق",
+    "look": "مرجع حركة للمقدّم، يحتاج أصولًا وقناع شخص ومراجعة؛ لا يطبّق على هندسة العقار."
+  },
+  {
+    "id": "green_screen",
+    "name": "green_screen",
+    "backend": "motion-pack",
+    "ready": false,
+    "source": "ملف 16 حركة المرفق",
+    "look": "مرجع حركة للمقدّم، يحتاج أصولًا وقناع شخص ومراجعة؛ لا يطبّق على هندسة العقار."
+  },
+  {
+    "id": "paper_cut",
+    "name": "paper_cut",
+    "backend": "motion-pack",
+    "ready": false,
+    "source": "ملف 16 حركة المرفق",
+    "look": "مرجع حركة للمقدّم، يحتاج أصولًا وقناع شخص ومراجعة؛ لا يطبّق على هندسة العقار."
+  },
+  {
+    "id": "doodle_boil",
+    "name": "doodle_boil",
+    "backend": "motion-pack",
+    "ready": false,
+    "source": "ملف 16 حركة المرفق",
+    "look": "مرجع حركة للمقدّم، يحتاج أصولًا وقناع شخص ومراجعة؛ لا يطبّق على هندسة العقار."
+  },
+  {
+    "id": "cover_story",
+    "name": "cover_story",
+    "backend": "motion-pack",
+    "ready": false,
+    "source": "ملف 16 حركة المرفق",
+    "look": "مرجع حركة للمقدّم، يحتاج أصولًا وقناع شخص ومراجعة؛ لا يطبّق على هندسة العقار."
+  },
+  {
+    "id": "glass_type",
+    "name": "glass_type",
+    "backend": "motion-pack",
+    "ready": false,
+    "source": "ملف 16 حركة المرفق",
+    "look": "مرجع حركة للمقدّم، يحتاج أصولًا وقناع شخص ومراجعة؛ لا يطبّق على هندسة العقار."
+  },
+  {
+    "id": "brody-over-the-shoulder",
+    "name": "over-the-shoulder",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Brody · prompt pack",
+    "look": "مرجع يحتاج تنفيذًا وقيمًا موثقة وقناعًا أو تتبعًا عند الحاجة."
+  },
+  {
+    "id": "brody-glass-graph",
+    "name": "glass-graph",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Brody · prompt pack",
+    "look": "مرجع يحتاج تنفيذًا وقيمًا موثقة وقناعًا أو تتبعًا عند الحاجة."
+  },
+  {
+    "id": "brody-freeze-frame",
+    "name": "freeze-frame",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Brody · prompt pack",
+    "look": "مرجع يحتاج تنفيذًا وقيمًا موثقة وقناعًا أو تتبعًا عند الحاجة."
+  },
+  {
+    "id": "brody-tier-list",
+    "name": "tier-list",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Brody · prompt pack",
+    "look": "مرجع يحتاج تنفيذًا وقيمًا موثقة وقناعًا أو تتبعًا عند الحاجة."
+  },
+  {
+    "id": "brody-text-behind",
+    "name": "text-behind",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Brody · prompt pack",
+    "look": "مرجع يحتاج تنفيذًا وقيمًا موثقة وقناعًا أو تتبعًا عند الحاجة."
+  },
+  {
+    "id": "brody-color-grade",
+    "name": "color-grade",
+    "backend": "remotion",
+    "ready": false,
+    "source": "Brody · prompt pack",
+    "look": "مرجع يحتاج تنفيذًا وقيمًا موثقة وقناعًا أو تتبعًا عند الحاجة."
+  },
+  {
+    "id": "keyboard-copy-loop",
+    "name": "Keyboard Copy Loop",
+    "backend": "3d",
+    "ready": false,
+    "source": "Claude motion prompt pack",
+    "look": "مرجع تحريك مجسم/شخصية مستقل؛ الأصول الأصلية غير مرفقة."
+  }
+]

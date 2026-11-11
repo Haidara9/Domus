@@ -1,0 +1,21 @@
+{
+  "name": "domus-render-worker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "start": "node worker.mjs",
+    "doctor": "node doctor.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "gsap": "3.14.2",
+    "hyperframes": "0.9.33"
+  },
+  "overrides": {
+    "undici": "7.30.1"
+  }
+}

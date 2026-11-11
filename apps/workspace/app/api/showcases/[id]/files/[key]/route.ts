@@ -1,0 +1,3 @@
+import {env} from 'cloudflare:workers';
+import {readShowcase,showcaseAccess} from '../../../../../showcase-data';
+export async function GET(req:Request,{params}:{params:Promise<{id:string;key:string}>}){const {id,key}=await params;const s=await readShowcase(id);if(!s||!showcaseAccess(req,s)||!s.properties.some((p:any)=>p.files.some((f:any)=>f.key===key)))return new Response('غير متاح',{status:404});const file=await env.BUCKET!.get(key);if(!file)return new Response('غير متاح',{status:404});return new Response(file.body,{headers:{'Content-Type':file.httpMetadata?.contentType||'application/octet-stream','Cache-Control':'private, max-age=120','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'; sandbox"}});}

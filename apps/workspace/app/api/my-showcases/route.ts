@@ -1,0 +1,3 @@
+import {env} from 'cloudflare:workers';
+import {noCache} from '../../access';
+export async function GET(req:Request){const email=req.headers.get('oai-authenticated-user-email')?.toLowerCase();if(!email||!req.headers.get('oai-authenticated-user-id'))return Response.json({showcases:[]},{headers:noCache});const rows=await env.DB!.prepare('SELECT data FROM records WHERE kind=?').bind('showcase').all<any>();return Response.json({showcases:rows.results.map(r=>JSON.parse(r.data)).filter(s=>s.status==='approved'&&(s.recipients||[]).includes(email)).map(s=>({id:s.id,title:s.title,subtitle:s.subtitle,propertyCount:s.properties.length}))},{headers:noCache});}
