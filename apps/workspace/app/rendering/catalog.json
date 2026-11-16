@@ -64,6 +64,38 @@
     "source": "DOMUS adaptation"
   },
   {
+    "id": "domus-lower-third",
+    "name": "دوموس · شريط سفلي بالقوس",
+    "backend": "hyperframes",
+    "look": "عنوان وسطر من المالك أسفل الكادر مع قوس دوموس العمودي والخط البرونزي؛ يظهر أول الفيديو ثم يختفي.",
+    "ready": true,
+    "source": "DOMUS adaptation"
+  },
+  {
+    "id": "domus-spec-card",
+    "name": "دوموس · بطاقة مواصفات",
+    "backend": "hyperframes",
+    "look": "بطاقة ورقية بيج بعنوان وحتى أربعة سطور مواصفات يكتبها المالك (مثل «المساحة: …»)؛ لا قيم من القالب.",
+    "ready": true,
+    "source": "DOMUS adaptation"
+  },
+  {
+    "id": "domus-logo-outro",
+    "name": "دوموس · خاتمة الشعار",
+    "backend": "ffmpeg",
+    "look": "يضيف في النهاية بطاقة بيج 2.6 ثانية بشعار دوموس العربي الأصلي؛ الخام نفسه لا يتغير.",
+    "ready": true,
+    "source": "DOMUS adaptation"
+  },
+  {
+    "id": "domus-counter",
+    "name": "دوموس · عدّاد اللقطات",
+    "backend": "ffmpeg",
+    "look": "عدّاد «01 / 03» بخط Playfair مع خط برونزي قصير أسفل يسار كل لقطة؛ لا نص آخر.",
+    "ready": true,
+    "source": "DOMUS adaptation"
+  },
+  {
     "id": "glow-world",
     "name": "Glow World",
     "backend": "remotion",

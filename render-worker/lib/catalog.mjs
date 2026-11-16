@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import {resolveTransition} from './transitions.mjs';
 const root=path.resolve(import.meta.dirname,'../..');
 const original=JSON.parse(fs.readFileSync(path.join(root,'animation-studio/catalog/styles.json')));
 const executable=[
@@ -10,7 +11,11 @@ const executable=[
  {id:'checklist',name:'Checklist · DOMUS',backend:'hyperframes',look:'قائمة معلومات يكتبها المالك، بلا قيم تجريبية.'},
  {id:'digital_zoom',name:'Digital Zoom · DOMUS',backend:'ffmpeg',look:'تكبير رقمي محدود 3%، ليس حركة كاميرا أو عدسة جديدة.'},
  {id:'frame_break',name:'Frame · DOMUS',backend:'hyperframes',look:'إطار بيج متحرك حول الخام؛ لا فصل شخص أو تغيير خلفية.'},
- {id:'headline-highlight',name:'عنوان وإضاءة خط · DOMUS',backend:'hyperframes',look:'عنوان عربي كامل مع خط برونزي متحرك.'}
+ {id:'headline-highlight',name:'عنوان وإضاءة خط · DOMUS',backend:'hyperframes',look:'عنوان عربي كامل مع خط برونزي متحرك.'},
+ {id:'domus-lower-third',name:'دوموس · شريط سفلي بالقوس',backend:'hyperframes',look:'عنوان وسطر من المالك أسفل الكادر مع قوس دوموس العمودي والخط البرونزي؛ يظهر أول الفيديو ثم يختفي.'},
+ {id:'domus-spec-card',name:'دوموس · بطاقة مواصفات',backend:'hyperframes',look:'بطاقة ورقية بيج بعنوان وحتى أربعة سطور مواصفات يكتبها المالك (مثل «المساحة: …»)؛ لا قيم من القالب.'},
+ {id:'domus-logo-outro',name:'دوموس · خاتمة الشعار',backend:'ffmpeg',look:'يضيف في النهاية بطاقة بيج 2.6 ثانية بشعار دوموس العربي الأصلي؛ الخام نفسه لا يتغير.'},
+ {id:'domus-counter',name:'دوموس · عدّاد اللقطات',backend:'ffmpeg',look:'عدّاد «01 / 03» بخط Playfair مع خط برونزي قصير أسفل يسار كل لقطة؛ لا نص آخر.'}
 ].map(x=>({...x,ready:true,source:'DOMUS adaptation'}));
 const extra16=['orbit','couch_wall','ui_world','frame_break','digital_zoom','phone_mockup','checklist','headline_wall','zoom_through_cut','chart_grow','pull_back_reveal','green_screen','paper_cut','doodle_boil','cover_story','glass_type'];
 const brody=['over-the-shoulder','glass-graph','freeze-frame','tier-list','text-behind','color-grade'];
@@ -36,5 +41,8 @@ export function validateSpec(s){
  if(typeof s.title!=='string'||s.title.length>80||typeof s.lines!=='string'||s.lines.length>240)throw Error('اختصر النص.');
  if(['remotion','hyperframes'].includes(style.backend)&&!s.title.trim()&&style.id!=='frame_break')throw Error('أدخل النص الحقيقي للعنوان.');
  if(s.lines.split('\n').length>4)throw Error('استخدم أربعة سطور نصية كحد أقصى.');
- return {mention:'@'+style.id,styleId:style.id,backend:style.backend,files:s.files.map(f=>({key:f.key,name:String(f.name||'raw').slice(0,200)})),format:s.format,audio:s.audio,noSfx:true,maxCut:s.maxCut,minDuration:s.minDuration,title:s.title,lines:s.lines};
+ if(style.id==='domus-spec-card'&&!s.lines.trim())throw Error('أدخل سطور المواصفات الحقيقية.');
+ const tr=resolveTransition(s.transition,s.files.length);
+ if(tr.cut>s.maxCut+1e-9)throw Error('هذا الترانزيشن يقصّر الفيديو '+tr.cut.toFixed(2)+' ثانية؛ ارفع «أقصى تقصير مسموح» أو اختر ترانزيشن لا يغيّر المدة.');
+ return {mention:'@'+style.id,styleId:style.id,backend:style.backend,files:s.files.map(f=>({key:f.key,name:String(f.name||'raw').slice(0,200)})),format:s.format,audio:s.audio,noSfx:true,maxCut:s.maxCut,minDuration:s.minDuration,title:s.title,lines:s.lines,transition:tr.id};
 }

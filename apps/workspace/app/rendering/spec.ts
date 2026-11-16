@@ -1,5 +1,8 @@
 import catalog from './catalog.json';
-export {catalog};
+import transitions from '../transitions-catalog.json';
+export {catalog,transitions};
+// Seconds removed from the film by a transition (overlap transitions only); mirrors render-worker/lib/transitions.mjs.
+export function transitionCut(id:string,clips:number){const t:any=transitions.find(x=>x.id===id);return t?.ready&&t.shortens&&clips>1?+(t.seconds*(clips-1)).toFixed(3):0;}
 export function validateSpec(s:any){
  const ids=typeof s?.mention==='string'?[...s.mention.matchAll(/@([a-z0-9_-]+)/gi)].map(x=>x[1].toLowerCase()):[];
  const style=catalog.find(x=>x.id===ids[0]);
@@ -11,5 +14,11 @@ export function validateSpec(s:any){
  if(typeof s.title!=='string'||s.title.length>80||typeof s.lines!=='string'||s.lines.length>240)throw Error('اختصر النص.');
  if(['remotion','hyperframes'].includes(style.backend)&&style.id!=='frame_break'&&!s.title.trim())throw Error('أدخل النص الحقيقي للعنوان.');
  if(s.lines.split('\n').length>4)throw Error('استخدم أربعة سطور نصية كحد أقصى.');
- return {mention:'@'+style.id,styleId:style.id,backend:style.backend,files:s.files.map((f:any)=>({key:f.key,name:String(f.name||'raw').slice(0,200)})),format:s.format,audio:s.audio,noSfx:true,maxCut:s.maxCut,minDuration:s.minDuration,title:s.title,lines:s.lines};
+ if(style.id==='domus-spec-card'&&!s.lines.trim())throw Error('أدخل سطور المواصفات الحقيقية.');
+ const wanted=s.transition===undefined||s.transition===null||s.transition===''?'tr-cut':s.transition,tr:any=typeof wanted==='string'?transitions.find(x=>x.id===wanted):null;
+ if(!tr)throw Error('الترانزيشن غير موجود في مكتبة دوموس.');
+ if(!tr.ready)throw Error('هذا الترانزيشن وصفة مرجعية تحتاج تنفيذًا.');
+ const transition=s.files.length>1?tr.id:'tr-cut',cut=transitionCut(transition,s.files.length);
+ if(cut>s.maxCut+1e-9)throw Error('هذا الترانزيشن يقصّر الفيديو '+cut.toFixed(2)+' ثانية؛ ارفع «أقصى تقصير مسموح» أو اختر ترانزيشن لا يغيّر المدة.');
+ return {mention:'@'+style.id,styleId:style.id,backend:style.backend,files:s.files.map((f:any)=>({key:f.key,name:String(f.name||'raw').slice(0,200)})),format:s.format,audio:s.audio,noSfx:true,maxCut:s.maxCut,minDuration:s.minDuration,title:s.title,lines:s.lines,transition};
 }
