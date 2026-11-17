@@ -4,6 +4,7 @@
 |---|---|---|
 | Fonts, logos, guidelines | `brand/` (git) | add files, update `brand/brand.json` |
 | Reference films | `reference/<name>/` (git if < 95 MB, else manifest) | `domus fetch` |
+| Reusable music (CC0, CC BY) and CC0 sound effects | `library/music/`, `library/sfx/` (git) | `node library/bin/audio.mjs list music\|sfx`, catalog entry with licence and sha256 |
 | Footage, photos, music, VO for a production | `productions/<slug>/media/` | `domus fetch <dir> <url> --import` or `domus import` |
 | Renders (deliverables) | `productions/<slug>/renders/` (git, < 95 MB each) | `domus render` |
 | Render cache | `productions/<slug>/cache/` (never committed) | regenerated |
