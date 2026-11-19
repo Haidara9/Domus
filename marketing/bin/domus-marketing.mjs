@@ -2,7 +2,9 @@
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { campaignPath, newBrief, readJSON, writeJSON, validateBrief, validateCopy, loadCampaign, buildContext, approve, exportPacket, metricReport } from '../src/campaign.mjs';
+import { campaignPath, newBrief, readJSON, writeJSON, validateBrief, validateCopy, loadCampaign, buildContext, approve, exportPacket, metricReport, within } from '../src/campaign.mjs';
+
+import { newAdPlan, adPlanReport, adResultsReport } from '../src/ads.mjs';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const [command = 'help', slug, arg] = process.argv.slice(2);
@@ -33,6 +35,23 @@ try {
   } else if (command === 'export') {
     const packet = exportPacket(root, slug);
     console.log(`${packet.id}: ${packet.status}. This is a local export, not a published post.`);
+  } else if (['ads-init', 'ads-check', 'ads-report'].includes(command)) {
+    const dir = campaignPath(root, slug);
+    const brief = readJSON(within(dir, 'brief.json'));
+    if (brief.id !== slug) throw new Error('Campaign id does not match its folder');
+    const planFile = within(dir, 'ads-plan.json');
+    if (command === 'ads-init') {
+      writeFileSync(planFile, JSON.stringify(newAdPlan(), null, 2) + '\n', { flag: 'wx' });
+      console.log(`Created ${planFile}. Fill in the category review and creative variants.`);
+    } else if (command === 'ads-check') {
+      const report = adPlanReport(brief, readJSON(planFile));
+      console.log(JSON.stringify(report, null, 2));
+      if (!report.ok) process.exitCode = 1;
+    } else {
+      const report = adResultsReport(brief, readJSON(planFile), readJSON(within(dir, 'ads-results.json')));
+      writeJSON(within(dir, 'review/ads-report.json'), report);
+      console.log(JSON.stringify(report, null, 2));
+    }
   } else if (command === 'report') {
     const dir = campaignPath(root, slug);
     const report = metricReport(readJSON(resolve(dir, 'metrics.json')));
@@ -53,6 +72,9 @@ node marketing/bin/domus-marketing.mjs validate <slug>
 node marketing/bin/domus-marketing.mjs approve <slug> "<human reviewer>"  # only after exact-content approval
 node marketing/bin/domus-marketing.mjs export <slug>
 node marketing/bin/domus-marketing.mjs report <slug>  # metrics.json must cite source/date
+node marketing/bin/domus-marketing.mjs ads-init <slug>
+node marketing/bin/domus-marketing.mjs ads-check <slug>
+node marketing/bin/domus-marketing.mjs ads-report <slug>
 node marketing/bin/domus-marketing.mjs doctor`);
   } else throw new Error('Unknown command; run help');
 } catch (error) {
