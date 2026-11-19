@@ -160,7 +160,9 @@ Brand: retain the original logo; Cairo Arabic; Playfair Display English; working
 All audience hypotheses and expected outcomes must be labeled [استنتاج] in the internal review, with observed patterns as their basis where appropriate. Public copy must contain only confirmed claims.
 Research current platform requirements from primary sources when needed. Do not treat upstream social-algorithm assertions as verified facts.
 Deliver role findings plus (where relevant) three distinct hooks, one caption, one CTA, hashtags, and a reel shot/text plan tied to actual footage. Save copy to copy.json with hook, caption, cta, hashtags. Approval is a human action after factual and visual review.`;
-  return `# Upstream role reference\n\n${readFileSync(rolePath, 'utf8')}\n\n# Controlling DOMUS instructions\n\n${limits}\n\n# Authoritative project rules\n\n${readFileSync(resolve(root, 'AGENTS.md'), 'utf8')}\n\n# Brand identity\n\n${JSON.stringify(identity, null, 2)}\n\n# Campaign brief\n\n${JSON.stringify(brief, null, 2)}\n`;
+  const ads = role === 'ads' || role === 'analytics' ? `
+For paid listings, use ads-plan.json and ads-check. Develop distinct messages for location/view, space/layout, and value/verified feature; omit unsupported angles with a reason. Tie each variant to a distinct confirmed fact, shot, overlay and CTA. A cosmetic edit does not count as a new angle. Review the applicable Meta category for the intended markets; do not assume eligibility. This workflow has no official delivery estimate. Use only observed, sourced ad-level figures in ads-results.json; see marketing/README.md for reporting.` : '';
+  return `# Upstream role reference\n\n${readFileSync(rolePath, 'utf8')}\n\n# Controlling DOMUS instructions\n\n${limits}${ads}\n\n# Authoritative project rules\n\n${readFileSync(resolve(root, 'AGENTS.md'), 'utf8')}\n\n# Brand identity\n\n${JSON.stringify(identity, null, 2)}\n\n# Campaign brief\n\n${JSON.stringify(brief, null, 2)}\n`;
 }
 
 export function metricReport(metrics) {
